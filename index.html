@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>杜氏家谱</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;
+      background:#f5f0e8;color:#333;display:flex;flex-direction:column;height:100vh;overflow:hidden}
+header{background:linear-gradient(135deg,#8b4513,#c0722a);color:#fff;
+        padding:14px 16px;text-align:center;flex-shrink:0}
+header h1{font-size:1.6em;letter-spacing:4px;text-shadow:0 1px 4px rgba(0,0,0,.3)}
+header p{font-size:.75em;margin-top:4px;opacity:.85}
+.poem{background:#6b2e08;color:#ffd700;text-align:center;padding:7px;
+       font-size:.82em;letter-spacing:2px;flex-shrink:0}
+#canvas-wrap{flex:1;overflow:hidden;position:relative;cursor:grab;touch-action:none}
+#canvas-wrap.dragging{cursor:grabbing}
+svg#tree{display:block}
+.edge{stroke:#aaa;stroke-width:1.5;fill:none}
+.node{cursor:pointer}
+.node rect{transition:filter .15s}
+.node:hover rect{filter:brightness(.9)}
+.node-name{font-size:15px;font-weight:700;fill:#333;pointer-events:none;
+            font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif}
+.gen-lbl{font-size:13px;fill:#888;font-weight:600;
+          font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif}
+/* 缩放提示 */
+.hint{position:absolute;bottom:12px;right:16px;font-size:.72em;color:#bbb;
+       background:rgba(255,255,255,.8);padding:3px 8px;border-radius:6px;pointer-events:none}
+/* Modal */
+.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);
+          z-index:200;align-items:center;justify-content:center}
+.overlay.on{display:flex}
+.modal{background:#fff;border-radius:18px;padding:24px;width:88%;
+        max-width:380px;max-height:82vh;overflow-y:auto;box-shadow:0 8px 32px rgba(0,0,0,.2)}
+.modal-title{font-size:1.4em;font-weight:700;color:#8b4513;
+              border-bottom:2px solid #f0dcc8;padding-bottom:10px;margin-bottom:14px}
+.row{display:flex;margin-bottom:10px;font-size:.88em}
+.lbl{color:#aaa;width:72px;flex-shrink:0;padding-top:1px}
+.val{color:#333;flex:1;line-height:1.6}
+.val a{color:#8b4513;text-decoration:none;font-weight:600}
+.btn-close{width:100%;margin-top:18px;padding:11px;background:#8b4513;
+            color:#fff;border:none;border-radius:10px;font-size:1em;cursor:pointer}
+.btn-edit{width:100%;margin-top:10px;padding:11px;background:#fff;color:#8b4513;
+           border:1.5px solid #8b4513;border-radius:10px;font-size:1em;cursor:pointer}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>杜氏家谱</h1>
+  <p>明洪武元年（约1370年）奉诏迁居开封府繁塔侧云寄桥 &nbsp;·&nbsp; 共 20 位成员</p>
+</header>
+<div class="poem">如峰田绪远 · 祥开世泽长 · 继祖承兆庆 · 勤宗永康昌</div>
+
+<div id="canvas-wrap">
+  <svg id="tree" width="1780" height="695" xmlns="http://www.w3.org/2000/svg">
+    <g id="root-g">
+      <g class="edges" stroke="#aaa" stroke-width="1.5" fill="none">
+  <line x1="1660.0" y1="215" x2="1660.0" y2="257.8"/>
+  <line x1="1660.0" y1="257.8" x2="1660.0" y2="310.0"/>
+  <line x1="1128.0" y1="495" x2="1128.0" y2="537.8"/>
+  <line x1="1052.0" y1="537.8" x2="1204.0" y2="537.8"/>
+  <line x1="1052.0" y1="537.8" x2="1052.0" y2="590.0"/>
+  <line x1="1204.0" y1="537.8" x2="1204.0" y2="590.0"/>
+  <line x1="710.0" y1="215" x2="710.0" y2="257.8"/>
+  <line x1="710.0" y1="257.8" x2="710.0" y2="310.0"/>
+  <line x1="1185.0" y1="75" x2="1185.0" y2="117.8"/>
+  <line x1="710.0" y1="117.8" x2="1660.0" y2="117.8"/>
+  <line x1="710.0" y1="117.8" x2="710.0" y2="170.0"/>
+  <line x1="1432.0" y1="117.8" x2="1432.0" y2="170.0"/>
+  <line x1="1660.0" y1="117.8" x2="1660.0" y2="170.0"/>
+  <line x1="710.0" y1="355" x2="710.0" y2="397.8"/>
+  <line x1="292.0" y1="397.8" x2="1128.0" y2="397.8"/>
+  <line x1="292.0" y1="397.8" x2="292.0" y2="450.0"/>
+  <line x1="596.0" y1="397.8" x2="596.0" y2="450.0"/>
+  <line x1="824.0" y1="397.8" x2="824.0" y2="450.0"/>
+  <line x1="1128.0" y1="397.8" x2="1128.0" y2="450.0"/>
+  <line x1="1432.0" y1="215" x2="1432.0" y2="257.8"/>
+  <line x1="1356.0" y1="257.8" x2="1508.0" y2="257.8"/>
+  <line x1="1356.0" y1="257.8" x2="1356.0" y2="310.0"/>
+  <line x1="1508.0" y1="257.8" x2="1508.0" y2="310.0"/>
+  <line x1="596.0" y1="495" x2="596.0" y2="537.8"/>
+  <line x1="596.0" y1="537.8" x2="596.0" y2="590.0"/>
+  <line x1="292.0" y1="495" x2="292.0" y2="537.8"/>
+  <line x1="140.0" y1="537.8" x2="444.0" y2="537.8"/>
+  <line x1="140.0" y1="537.8" x2="140.0" y2="590.0"/>
+  <line x1="292.0" y1="537.8" x2="292.0" y2="590.0"/>
+  <line x1="444.0" y1="537.8" x2="444.0" y2="590.0"/>
+  <line x1="824.0" y1="495" x2="824.0" y2="537.8"/>
+  <line x1="748.0" y1="537.8" x2="900.0" y2="537.8"/>
+  <line x1="748.0" y1="537.8" x2="748.0" y2="590.0"/>
+  <line x1="900.0" y1="537.8" x2="900.0" y2="590.0"/>
+      </g>
+      <g class="gen-labels">
+  <text x="40" y="618.5" text-anchor="middle" class="gen-lbl">五世</text>
+  <text x="40" y="198.5" text-anchor="middle" class="gen-lbl">二世</text>
+  <text x="40" y="478.5" text-anchor="middle" class="gen-lbl">四世</text>
+  <text x="40" y="58.5" text-anchor="middle" class="gen-lbl">一世</text>
+  <text x="40" y="338.5" text-anchor="middle" class="gen-lbl">三世</text>
+      </g>
+      <g class="nodes">
+  <g class="node" onclick="showDetail('杜文杰')"><rect x="80.0" y="590.0" width="120" height="45" rx="8" fill="#ffe8cc" stroke="#d4780a" stroke-width="2"/><text x="140.0" y="618.5" text-anchor="middle" class="node-name">杜文杰</text></g>
+  <g class="node" onclick="showDetail('杜文锋')"><rect x="232.0" y="590.0" width="120" height="45" rx="8" fill="#ffe8cc" stroke="#d4780a" stroke-width="2"/><text x="292.0" y="618.5" text-anchor="middle" class="node-name">杜文锋</text></g>
+  <g class="node" onclick="showDetail('杜文彬')"><rect x="384.0" y="590.0" width="120" height="45" rx="8" fill="#ffe8cc" stroke="#d4780a" stroke-width="2"/><text x="444.0" y="618.5" text-anchor="middle" class="node-name">杜文彬</text></g>
+  <g class="node" onclick="showDetail('杜继武')"><rect x="232.0" y="450.0" width="120" height="45" rx="8" fill="#e9d5ff" stroke="#862e9c" stroke-width="2"/><text x="292.0" y="478.5" text-anchor="middle" class="node-name">杜继武</text></g>
+  <g class="node" onclick="showDetail('杜文坡')"><rect x="536.0" y="590.0" width="120" height="45" rx="8" fill="#ffe8cc" stroke="#d4780a" stroke-width="2"/><text x="596.0" y="618.5" text-anchor="middle" class="node-name">杜文坡</text></g>
+  <g class="node" onclick="showDetail('杜继文')"><rect x="536.0" y="450.0" width="120" height="45" rx="8" fill="#e9d5ff" stroke="#862e9c" stroke-width="2"/><text x="596.0" y="478.5" text-anchor="middle" class="node-name">杜继文</text></g>
+  <g class="node" onclick="showDetail('杜文涛')"><rect x="688.0" y="590.0" width="120" height="45" rx="8" fill="#ffe8cc" stroke="#d4780a" stroke-width="2"/><text x="748.0" y="618.5" text-anchor="middle" class="node-name">杜文涛</text></g>
+  <g class="node" onclick="showDetail('杜文辉')"><rect x="840.0" y="590.0" width="120" height="45" rx="8" fill="#ffe8cc" stroke="#d4780a" stroke-width="2"/><text x="900.0" y="618.5" text-anchor="middle" class="node-name">杜文辉</text></g>
+  <g class="node" onclick="showDetail('杜继双')"><rect x="764.0" y="450.0" width="120" height="45" rx="8" fill="#e9d5ff" stroke="#862e9c" stroke-width="2"/><text x="824.0" y="478.5" text-anchor="middle" class="node-name">杜继双</text></g>
+  <g class="node" onclick="showDetail('杜文凯')"><rect x="992.0" y="590.0" width="120" height="45" rx="8" fill="#ffe8cc" stroke="#d4780a" stroke-width="2"/><text x="1052.0" y="618.5" text-anchor="middle" class="node-name">杜文凯</text></g>
+  <g class="node" onclick="showDetail('杜文明')"><rect x="1144.0" y="590.0" width="120" height="45" rx="8" fill="#ffe8cc" stroke="#d4780a" stroke-width="2"/><text x="1204.0" y="618.5" text-anchor="middle" class="node-name">杜文明</text></g>
+  <g class="node" onclick="showDetail('杜继全')"><rect x="1068.0" y="450.0" width="120" height="45" rx="8" fill="#e9d5ff" stroke="#862e9c" stroke-width="2"/><text x="1128.0" y="478.5" text-anchor="middle" class="node-name">杜继全</text></g>
+  <g class="node" onclick="showDetail('杜诗凡')"><rect x="650.0" y="310.0" width="120" height="45" rx="8" fill="#b2f2bb" stroke="#2b8a3e" stroke-width="2"/><text x="710.0" y="338.5" text-anchor="middle" class="node-name">杜诗凡</text></g>
+  <g class="node" onclick="showDetail('杜好仁')"><rect x="650.0" y="170.0" width="120" height="45" rx="8" fill="#a5d8ff" stroke="#1864ab" stroke-width="2"/><text x="710.0" y="198.5" text-anchor="middle" class="node-name">杜好仁</text></g>
+  <g class="node" onclick="showDetail('杜诗豪')"><rect x="1296.0" y="310.0" width="120" height="45" rx="8" fill="#b2f2bb" stroke="#2b8a3e" stroke-width="2"/><text x="1356.0" y="338.5" text-anchor="middle" class="node-name">杜诗豪</text></g>
+  <g class="node" onclick="showDetail('杜诗义')"><rect x="1448.0" y="310.0" width="120" height="45" rx="8" fill="#b2f2bb" stroke="#2b8a3e" stroke-width="2"/><text x="1508.0" y="338.5" text-anchor="middle" class="node-name">杜诗义</text></g>
+  <g class="node" onclick="showDetail('杜好贤')"><rect x="1372.0" y="170.0" width="120" height="45" rx="8" fill="#a5d8ff" stroke="#1864ab" stroke-width="2"/><text x="1432.0" y="198.5" text-anchor="middle" class="node-name">杜好贤</text></g>
+  <g class="node" onclick="showDetail('杜诗信')"><rect x="1600.0" y="310.0" width="120" height="45" rx="8" fill="#b2f2bb" stroke="#2b8a3e" stroke-width="2"/><text x="1660.0" y="338.5" text-anchor="middle" class="node-name">杜诗信</text></g>
+  <g class="node" onclick="showDetail('杜好林')"><rect x="1600.0" y="170.0" width="120" height="45" rx="8" fill="#a5d8ff" stroke="#1864ab" stroke-width="2"/><text x="1660.0" y="198.5" text-anchor="middle" class="node-name">杜好林</text></g>
+  <g class="node" onclick="showDetail('杜如松')"><rect x="1125.0" y="30.0" width="120" height="45" rx="8" fill="#ffc9c9" stroke="#c92a2a" stroke-width="2"/><text x="1185.0" y="58.5" text-anchor="middle" class="node-name">杜如松</text></g>
+      </g>
+    </g>
+  </svg>
+  <div class="hint">拖拽移动 · 双指/滚轮缩放</div>
+</div>
+
+<div class="overlay" id="overlay" onclick="bgClose(event)">
+  <div class="modal">
+    <div class="modal-title" id="m-name"></div>
+    <div id="m-body"></div>
+    
+    <button class="btn-close" onclick="closeModal()">关闭</button>
+  </div>
+</div>
+
+<script>
+const D = {"杜文明": {"name": "杜文明", "gen": "五世（辈字：文）", "gender": "男", "father": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜继全')\">杜继全</a>", "mother": "—", "children": "—", "siblings": "—", "notes": "—"}, "杜好林": {"name": "杜好林", "gen": "二世（辈字：好）", "gender": "男", "father": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜如松')\">杜如松</a>", "mother": "—", "children": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜诗信')\">杜诗信</a>", "siblings": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜好仁')\">杜好仁</a>、<a href=\"javascript:void(0)\" onclick=\"showDetail('杜好贤')\">杜好贤</a>", "notes": "—"}, "杜文彬": {"name": "杜文彬", "gen": "五世（辈字：文）", "gender": "男", "father": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜继武')\">杜继武</a>", "mother": "—", "children": "—", "siblings": "—", "notes": "—"}, "杜继全": {"name": "杜继全", "gen": "四世（辈字：继）", "gender": "男", "father": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜诗凡')\">杜诗凡</a>", "mother": "—", "children": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜文凯')\">杜文凯</a>、<a href=\"javascript:void(0)\" onclick=\"showDetail('杜文明')\">杜文明</a>", "siblings": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜继武')\">杜继武</a>、<a href=\"javascript:void(0)\" onclick=\"showDetail('杜继文')\">杜继文</a>、<a href=\"javascript:void(0)\" onclick=\"showDetail('杜继双')\">杜继双</a>", "notes": "—"}, "杜好仁": {"name": "杜好仁", "gen": "二世（辈字：好）", "gender": "男", "father": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜如松')\">杜如松</a>", "mother": "—", "children": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜诗凡')\">杜诗凡</a>", "siblings": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜好贤')\">杜好贤</a>、<a href=\"javascript:void(0)\" onclick=\"showDetail('杜好林')\">杜好林</a>", "notes": "—"}, "杜文坡": {"name": "杜文坡", "gen": "五世（辈字：文）", "gender": "男", "father": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜继文')\">杜继文</a>", "mother": "—", "children": "—", "siblings": "—", "notes": "—"}, "杜如松": {"name": "杜如松", "gen": "一世（家谱第15世，辈字：如）", "gender": "男", "father": "—", "mother": "—", "children": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜好仁')\">杜好仁</a>、<a href=\"javascript:void(0)\" onclick=\"showDetail('杜好贤')\">杜好贤</a>、<a href=\"javascript:void(0)\" onclick=\"showDetail('杜好林')\">杜好林</a>", "siblings": "—", "notes": "明洪武元年（约1370年）奉诏迁居开封府繁塔侧云寄桥，后逐渐流居于杞县西寨等地。"}, "杜诗凡": {"name": "杜诗凡", "gen": "三世（辈字：诗）", "gender": "男", "father": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜好仁')\">杜好仁</a>", "mother": "—", "children": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜继武')\">杜继武</a>、<a href=\"javascript:void(0)\" onclick=\"showDetail('杜继文')\">杜继文</a>、<a href=\"javascript:void(0)\" onclick=\"showDetail('杜继双')\">杜继双</a>、<a href=\"javascript:void(0)\" onclick=\"showDetail('杜继全')\">杜继全</a>", "siblings": "—", "notes": "—"}, "杜文涛": {"name": "杜文涛", "gen": "五世（辈字：文）", "gender": "男", "father": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜继双')\">杜继双</a>", "mother": "—", "children": "—", "siblings": "—", "notes": "—"}, "杜诗义": {"name": "杜诗义", "gen": "三世（辈字：诗）", "gender": "男", "father": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜好贤')\">杜好贤</a>", "mother": "—", "children": "—", "siblings": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜诗豪')\">杜诗豪</a>", "notes": "—"}, "杜文杰": {"name": "杜文杰", "gen": "五世（辈字：文）", "gender": "男", "father": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜继武')\">杜继武</a>", "mother": "—", "children": "—", "siblings": "—", "notes": "—"}, "杜诗豪": {"name": "杜诗豪", "gen": "三世（辈字：诗）", "gender": "男", "father": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜好贤')\">杜好贤</a>", "mother": "—", "children": "—", "siblings": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜诗义')\">杜诗义</a>", "notes": "—"}, "杜文辉": {"name": "杜文辉", "gen": "五世（辈字：文）", "gender": "男", "father": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜继双')\">杜继双</a>", "mother": "—", "children": "—", "siblings": "—", "notes": "—"}, "杜好贤": {"name": "杜好贤", "gen": "二世（辈字：好）", "gender": "男", "father": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜如松')\">杜如松</a>", "mother": "—", "children": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜诗豪')\">杜诗豪</a>、<a href=\"javascript:void(0)\" onclick=\"showDetail('杜诗义')\">杜诗义</a>", "siblings": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜好仁')\">杜好仁</a>、<a href=\"javascript:void(0)\" onclick=\"showDetail('杜好林')\">杜好林</a>", "notes": "—"}, "杜文锋": {"name": "杜文锋", "gen": "五世（辈字：文）", "gender": "男", "father": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜继武')\">杜继武</a>", "mother": "—", "children": "—", "siblings": "—", "notes": "—"}, "杜诗信": {"name": "杜诗信", "gen": "三世（辈字：诗）", "gender": "男", "father": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜好林')\">杜好林</a>", "mother": "—", "children": "—", "siblings": "—", "notes": "—"}, "杜文凯": {"name": "杜文凯", "gen": "五世（辈字：文）", "gender": "男", "father": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜继全')\">杜继全</a>", "mother": "—", "children": "—", "siblings": "—", "notes": "—"}, "杜继文": {"name": "杜继文", "gen": "四世（辈字：继）", "gender": "男", "father": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜诗凡')\">杜诗凡</a>", "mother": "—", "children": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜文坡')\">杜文坡</a>", "siblings": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜继武')\">杜继武</a>、<a href=\"javascript:void(0)\" onclick=\"showDetail('杜继双')\">杜继双</a>、<a href=\"javascript:void(0)\" onclick=\"showDetail('杜继全')\">杜继全</a>", "notes": "—"}, "杜继武": {"name": "杜继武", "gen": "四世（辈字：继）", "gender": "男", "father": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜诗凡')\">杜诗凡</a>", "mother": "—", "children": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜文杰')\">杜文杰</a>、<a href=\"javascript:void(0)\" onclick=\"showDetail('杜文锋')\">杜文锋</a>、<a href=\"javascript:void(0)\" onclick=\"showDetail('杜文彬')\">杜文彬</a>", "siblings": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜继文')\">杜继文</a>、<a href=\"javascript:void(0)\" onclick=\"showDetail('杜继双')\">杜继双</a>、<a href=\"javascript:void(0)\" onclick=\"showDetail('杜继全')\">杜继全</a>", "notes": "—"}, "杜继双": {"name": "杜继双", "gen": "四世（辈字：继）", "gender": "男", "father": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜诗凡')\">杜诗凡</a>", "mother": "—", "children": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜文涛')\">杜文涛</a>、<a href=\"javascript:void(0)\" onclick=\"showDetail('杜文辉')\">杜文辉</a>", "siblings": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜继武')\">杜继武</a>、<a href=\"javascript:void(0)\" onclick=\"showDetail('杜继文')\">杜继文</a>、<a href=\"javascript:void(0)\" onclick=\"showDetail('杜继全')\">杜继全</a>", "notes": "—"}};
+
+
+// ── 详情弹窗 ──
+function showDetail(n) {
+  const d = D[n]; if (!d) return;
+  document.getElementById('m-name').textContent = d.name;
+  document.getElementById('m-body').innerHTML = `
+    <div class="row"><span class="lbl">世代</span><span class="val">${d.gen}</span></div>
+    <div class="row"><span class="lbl">性别</span><span class="val">${d.gender||'—'}</span></div>
+    <div class="row"><span class="lbl">父亲</span><span class="val">${d.father}</span></div>
+    <div class="row"><span class="lbl">母亲</span><span class="val">${d.mother}</span></div>
+    <div class="row"><span class="lbl">子女</span><span class="val">${d.children}</span></div>
+    <div class="row"><span class="lbl">兄弟姐妹</span><span class="val">${d.siblings}</span></div>
+    <div class="row"><span class="lbl">备注</span><span class="val">${d.notes}</span></div>`;
+  document.getElementById('fb-person') && (document.getElementById('fb-person').value = n);
+  document.getElementById('fb-status') && (document.getElementById('fb-status').textContent = '');
+  document.getElementById('overlay').classList.add('on');
+}
+function closeModal() { document.getElementById('overlay').classList.remove('on'); }
+function bgClose(e) { if (e.target.id === 'overlay') closeModal(); }
+
+// ── 拖拽 & 缩放 ──
+const wrap = document.getElementById('canvas-wrap');
+const g    = document.getElementById('root-g');
+const SVG_W = 1780, SVG_H = 695;
+
+let tx = 0, ty = 0, scale = 1;
+let dragging = false, startX = 0, startY = 0, startTx = 0, startTy = 0;
+let pinchDist = 0, pinchScale = 1, pinchTx = 0, pinchTy = 0;
+
+function applyTransform() {
+  g.setAttribute('transform', `translate(${tx},${ty}) scale(${scale})`);
+}
+
+// 初始居中
+function initView() {
+  const cw = wrap.clientWidth, ch = wrap.clientHeight;
+  scale = Math.min(cw / SVG_W, ch / SVG_H, 1) * 0.95;
+  tx = (cw - SVG_W * scale) / 2;
+  ty = (ch - SVG_H * scale) / 2;
+  applyTransform();
+}
+initView();
+window.addEventListener('resize', initView);
+
+// 鼠标拖拽
+wrap.addEventListener('mousedown', e => {
+  if (e.button !== 0) return;
+  dragging = true; startX = e.clientX; startY = e.clientY;
+  startTx = tx; startTy = ty;
+  wrap.classList.add('dragging');
+});
+window.addEventListener('mousemove', e => {
+  if (!dragging) return;
+  tx = startTx + e.clientX - startX;
+  ty = startTy + e.clientY - startY;
+  applyTransform();
+});
+window.addEventListener('mouseup', () => { dragging = false; wrap.classList.remove('dragging'); });
+
+// 滚轮缩放
+wrap.addEventListener('wheel', e => {
+  e.preventDefault();
+  const rect = wrap.getBoundingClientRect();
+  const mx = e.clientX - rect.left, my = e.clientY - rect.top;
+  const delta = e.deltaY < 0 ? 1.12 : 0.89;
+  const ns = Math.max(0.2, Math.min(4, scale * delta));
+  tx = mx - (mx - tx) * ns / scale;
+  ty = my - (my - ty) * ns / scale;
+  scale = ns;
+  applyTransform();
+}, { passive: false });
+
+// 触摸拖拽 & 双指缩放
+function touchDist(t) {
+  const dx = t[0].clientX - t[1].clientX, dy = t[0].clientY - t[1].clientY;
+  return Math.sqrt(dx*dx + dy*dy);
+}
+function touchMid(t, rect) {
+  return [(t[0].clientX + t[1].clientX)/2 - rect.left,
+          (t[0].clientY + t[1].clientY)/2 - rect.top];
+}
+
+wrap.addEventListener('touchstart', e => {
+  e.preventDefault();
+  const ts = e.touches;
+  if (ts.length === 1) {
+    dragging = true; startX = ts[0].clientX; startY = ts[0].clientY;
+    startTx = tx; startTy = ty;
+  } else if (ts.length === 2) {
+    dragging = false;
+    pinchDist = touchDist(ts); pinchScale = scale; pinchTx = tx; pinchTy = ty;
+  }
+}, { passive: false });
+
+wrap.addEventListener('touchmove', e => {
+  e.preventDefault();
+  const ts = e.touches;
+  if (ts.length === 1 && dragging) {
+    tx = startTx + ts[0].clientX - startX;
+    ty = startTy + ts[0].clientY - startY;
+  } else if (ts.length === 2) {
+    const rect = wrap.getBoundingClientRect();
+    const d = touchDist(ts);
+    const ratio = d / pinchDist;
+    const ns = Math.max(0.2, Math.min(4, pinchScale * ratio));
+    const [mx, my] = touchMid(ts, rect);
+    tx = mx - (mx - pinchTx) * ns / pinchScale;
+    ty = my - (my - pinchTy) * ns / pinchScale;
+    scale = ns;
+  }
+  applyTransform();
+}, { passive: false });
+
+wrap.addEventListener('touchend', e => {
+  if (e.touches.length === 0) dragging = false;
+});
+</script>
+</body>
+</html>
