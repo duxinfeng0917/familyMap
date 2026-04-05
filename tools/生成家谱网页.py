@@ -24,7 +24,7 @@ OUTPUT = VAULT / "家谱网页.html"
 #   2. 新建 Form，复制 endpoint，格式为 https://formspree.io/f/xxxxxxxx
 #   3. 粘贴到下面引号内
 # 留空则不显示「申请修改」功能
-FORMSPREE_ENDPOINT = ""  # 例如 "https://formspree.io/f/abcdefgh"
+FORMSPREE_ENDPOINT = "https://formspree.io/f/mzdkklzn"  # 例如 "https://formspree.io/f/abcdefgh"
 
 # 世代排序表
 GEN_ORDER = ["一世","二世","三世","四世","五世","六世","七世","八世","九世","十世"]
