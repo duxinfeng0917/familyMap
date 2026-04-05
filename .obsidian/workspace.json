@@ -4,19 +4,17 @@
     "type": "split",
     "children": [
       {
-        "id": "d14d3b915626f903",
+        "id": "c4f53c70df79a03c",
         "type": "tabs",
         "children": [
           {
-            "id": "09e3dc774a1f62c2",
+            "id": "e99d02e4e4c8f58a",
             "type": "leaf",
             "state": {
-              "type": "excalidraw",
-              "state": {
-                "file": "家族关系图.excalidraw"
-              },
-              "icon": "excalidraw-icon",
-              "title": "家族关系图"
+              "type": "empty",
+              "state": {},
+              "icon": "lucide-file",
+              "title": "新标签页"
             }
           }
         ]
@@ -182,12 +180,13 @@
       "obsidian-excalidraw-plugin:New drawing": false
     }
   },
-  "active": "09e3dc774a1f62c2",
+  "active": "e99d02e4e4c8f58a",
   "lastOpenFiles": [
-    "README.md",
-    "family_map.jpg",
-    "家族关系图.md",
+    "家谱首页.md",
     "家族关系图.excalidraw",
-    "家谱首页.md"
+    "家族关系图.md",
+    "family_map.jpg",
+    "README.md",
+    "Templates/人物模板.md"
   ]
 }
