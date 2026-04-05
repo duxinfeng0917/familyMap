@@ -1,0 +1,38 @@
+name: 生成家谱网页
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'People/**'
+      - 'tools/生成家谱网页.py'
+      - '.github/workflows/build.yml'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: 拉取代码
+        uses: actions/checkout@v4
+
+      - name: 配置 Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: 生成家谱网页
+        run: |
+          python3 tools/生成家谱网页.py
+          mkdir -p dist
+          cp 家谱网页.html dist/index.html
+
+      - name: 部署到 GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./dist
+          publish_branch: gh-pages
+          commit_message: '自动构建：更新家谱网页'

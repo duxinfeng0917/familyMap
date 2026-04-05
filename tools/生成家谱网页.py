@@ -18,10 +18,13 @@ VAULT  = Path(__file__).parent.parent
 PEOPLE = VAULT / "People"
 OUTPUT = VAULT / "家谱网页.html"
 
-# ── 配置：填入你的腾讯文档收集表链接 ────────────────────────────────
-# 步骤：腾讯文档 → 新建 → 收集表 → 创建后复制分享链接粘贴到此处
-# 留空则不显示「申请修改」按钮
-FEEDBACK_URL = ""  # 例如 "https://docs.qq.com/form/page/xxxxxxxx"
+# ── 配置：填入你的 Formspree endpoint ───────────────────────────────
+# 步骤：
+#   1. 访问 https://formspree.io 注册（免费）
+#   2. 新建 Form，复制 endpoint，格式为 https://formspree.io/f/xxxxxxxx
+#   3. 粘贴到下面引号内
+# 留空则不显示「申请修改」功能
+FORMSPREE_ENDPOINT = ""  # 例如 "https://formspree.io/f/abcdefgh"
 
 # 世代排序表
 GEN_ORDER = ["一世","二世","三世","四世","五世","六世","七世","八世","九世","十世"]
@@ -262,17 +265,49 @@ def generate(people):
     details_json = build_detail_json(people)
     count        = len(people)
 
-    feedback_btn = (
-        '<button class="btn-edit" onclick="openFeedback()">申请修改此人信息</button>'
-        if FEEDBACK_URL else ""
-    )
-    feedback_js = (
-        f'function openFeedback(){{\n'
-        f'  var n=document.getElementById("m-name").textContent;\n'
-        f'  window.open("{FEEDBACK_URL}?entry.name="+encodeURIComponent(n),"_blank");\n'
-        f'}}'
-        if FEEDBACK_URL else "function openFeedback(){}"
-    )
+    if FORMSPREE_ENDPOINT:
+        feedback_block = f'''
+    <div id="fb-wrap" style="margin-top:14px;border-top:1px solid #f0dcc8;padding-top:14px">
+      <div style="font-size:.8em;color:#aaa;margin-bottom:8px">如有信息有误，请提交修改建议：</div>
+      <form id="fb-form" onsubmit="submitFb(event)">
+        <input type="hidden" id="fb-person" name="人物姓名">
+        <textarea name="修改建议" required rows="3"
+          style="width:100%;border:1px solid #ddd;border-radius:8px;padding:8px;
+                 font-size:.85em;resize:vertical;font-family:inherit"
+          placeholder="请描述需要修改的内容（如：出生年、子女信息等）…"></textarea>
+        <input type="text" name="你的姓名" placeholder="你的姓名（选填）"
+          style="width:100%;margin-top:6px;border:1px solid #ddd;border-radius:8px;
+                 padding:8px;font-size:.85em;font-family:inherit">
+        <button type="submit"
+          style="width:100%;margin-top:8px;padding:10px;background:#fff;color:#8b4513;
+                 border:1.5px solid #8b4513;border-radius:10px;font-size:.9em;cursor:pointer">
+          提交修改建议
+        </button>
+        <div id="fb-status" style="text-align:center;font-size:.8em;margin-top:6px;color:#666"></div>
+      </form>
+    </div>'''
+        feedback_js = f'''
+async function submitFb(e) {{
+  e.preventDefault();
+  const btn = e.target.querySelector('[type=submit]');
+  btn.disabled = true; btn.textContent = '提交中…';
+  try {{
+    const res = await fetch('{FORMSPREE_ENDPOINT}', {{
+      method: 'POST', body: new FormData(e.target),
+      headers: {{ 'Accept': 'application/json' }}
+    }});
+    if (res.ok) {{
+      document.getElementById('fb-status').textContent = '✓ 已提交，感谢你的建议！';
+      e.target.reset();
+    }} else {{
+      document.getElementById('fb-status').textContent = '提交失败，请稍后重试。';
+    }}
+  }} catch {{ document.getElementById('fb-status').textContent = '网络错误，请稍后重试。'; }}
+  btn.disabled = false; btn.textContent = '提交修改建议';
+}}'''
+    else:
+        feedback_block = ""
+        feedback_js    = ""
 
     return f'''<!DOCTYPE html>
 <html lang="zh-CN">
@@ -351,7 +386,7 @@ svg#tree{{display:block}}
   <div class="modal">
     <div class="modal-title" id="m-name"></div>
     <div id="m-body"></div>
-    {feedback_btn}
+    {feedback_block}
     <button class="btn-close" onclick="closeModal()">关闭</button>
   </div>
 </div>
@@ -372,11 +407,13 @@ function showDetail(n) {{
     <div class="row"><span class="lbl">子女</span><span class="val">${{d.children}}</span></div>
     <div class="row"><span class="lbl">兄弟姐妹</span><span class="val">${{d.siblings}}</span></div>
     <div class="row"><span class="lbl">备注</span><span class="val">${{d.notes}}</span></div>`;
+  document.getElementById('fb-person') && (document.getElementById('fb-person').value = n);
+  document.getElementById('fb-status') && (document.getElementById('fb-status').textContent = '');
   document.getElementById('overlay').classList.add('on');
 }}
 function closeModal() {{ document.getElementById('overlay').classList.remove('on'); }}
 function bgClose(e) {{ if (e.target.id === 'overlay') closeModal(); }}
-
+{feedback_js}
 // ── 拖拽 & 缩放 ──
 const wrap = document.getElementById('canvas-wrap');
 const g    = document.getElementById('root-g');
