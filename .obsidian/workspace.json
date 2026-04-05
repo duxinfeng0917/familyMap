@@ -1,0 +1,193 @@
+{
+  "main": {
+    "id": "d577fe7b847de360",
+    "type": "split",
+    "children": [
+      {
+        "id": "d14d3b915626f903",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "09e3dc774a1f62c2",
+            "type": "leaf",
+            "state": {
+              "type": "excalidraw",
+              "state": {
+                "file": "家族关系图.excalidraw"
+              },
+              "icon": "excalidraw-icon",
+              "title": "家族关系图"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "2ef384b0b993df4f",
+    "type": "split",
+    "children": [
+      {
+        "id": "528015e67b687082",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "09dab28bfc480c1b",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical",
+                "autoReveal": false
+              },
+              "icon": "lucide-folder-closed",
+              "title": "文件列表"
+            }
+          },
+          {
+            "id": "1f8784acb06ea246",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              },
+              "icon": "lucide-search",
+              "title": "搜索"
+            }
+          },
+          {
+            "id": "01770936c3b881b8",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {},
+              "icon": "lucide-bookmark",
+              "title": "书签"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300
+  },
+  "right": {
+    "id": "56f72e422f8abfec",
+    "type": "split",
+    "children": [
+      {
+        "id": "2fdf9044b52275a6",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "3f4f1332f8c7acdb",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "file": "家族关系图.excalidraw",
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-coming-in",
+              "title": "家族关系图 的反向链接列表"
+            }
+          },
+          {
+            "id": "9df3d1c687ba23aa",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "file": "家族关系图.excalidraw",
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-going-out",
+              "title": "家族关系图 的出链列表"
+            }
+          },
+          {
+            "id": "0a7e9f7e4470a211",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-tags",
+              "title": "标签"
+            }
+          },
+          {
+            "id": "851e95c92aefbae1",
+            "type": "leaf",
+            "state": {
+              "type": "all-properties",
+              "state": {
+                "sortOrder": "frequency",
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-archive",
+              "title": "添加笔记属性"
+            }
+          },
+          {
+            "id": "5b8cc4f4b307bd44",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "file": "家族关系图.excalidraw",
+                "followCursor": false,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-list",
+              "title": "家族关系图 的大纲"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300,
+    "collapsed": true
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "switcher:打开快速切换": false,
+      "graph:查看关系图谱": false,
+      "canvas:新建白板": false,
+      "daily-notes:打开/创建今天的日记": false,
+      "templates:插入模板": false,
+      "command-palette:打开命令面板": false,
+      "bases:新建数据库": false,
+      "obsidian-excalidraw-plugin:New drawing": false
+    }
+  },
+  "active": "09e3dc774a1f62c2",
+  "lastOpenFiles": [
+    "README.md",
+    "family_map.jpg",
+    "家族关系图.md",
+    "家族关系图.excalidraw",
+    "家谱首页.md"
+  ]
+}
