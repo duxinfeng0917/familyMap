@@ -413,7 +413,6 @@ function showDetail(n) {{
 }}
 function closeModal() {{ document.getElementById('overlay').classList.remove('on'); }}
 function bgClose(e) {{ if (e.target.id === 'overlay') closeModal(); }}
-{feedback_js}
 // ── 拖拽 & 缩放 ──
 const wrap = document.getElementById('canvas-wrap');
 const g    = document.getElementById('root-g');
@@ -508,7 +507,21 @@ wrap.addEventListener('touchmove', e => {{
 }}, {{ passive: false }});
 
 wrap.addEventListener('touchend', e => {{
-  if (e.touches.length === 0) dragging = false;
+  if (e.touches.length === 0) {{
+    const touch = e.changedTouches[0];
+    const dx = touch.clientX - startX;
+    const dy = touch.clientY - startY;
+    // 移动小于 10px 视为点击，手动触发 showDetail
+    if (dragging && Math.abs(dx) < 10 && Math.abs(dy) < 10) {{
+      const el = document.elementFromPoint(touch.clientX, touch.clientY);
+      const node = el && el.closest('.node');
+      if (node) {{
+        const m = (node.getAttribute('onclick') || '').match(/showDetail\('(.+?)'\)/);
+        if (m) showDetail(m[1]);
+      }}
+    }}
+    dragging = false;
+  }}
 }});
 </script>
 </body>
