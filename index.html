@@ -132,6 +132,25 @@ svg#tree{display:block}
     <div class="modal-title" id="m-name"></div>
     <div id="m-body"></div>
     
+    <div id="fb-wrap" style="margin-top:14px;border-top:1px solid #f0dcc8;padding-top:14px">
+      <div style="font-size:.8em;color:#aaa;margin-bottom:8px">如有信息有误，请提交修改建议：</div>
+      <form id="fb-form" onsubmit="submitFb(event)">
+        <input type="hidden" id="fb-person" name="人物姓名">
+        <textarea name="修改建议" required rows="3"
+          style="width:100%;border:1px solid #ddd;border-radius:8px;padding:8px;
+                 font-size:.85em;resize:vertical;font-family:inherit"
+          placeholder="请描述需要修改的内容（如：出生年、子女信息等）…"></textarea>
+        <input type="text" name="你的姓名" placeholder="你的姓名（选填）"
+          style="width:100%;margin-top:6px;border:1px solid #ddd;border-radius:8px;
+                 padding:8px;font-size:.85em;font-family:inherit">
+        <button type="submit"
+          style="width:100%;margin-top:8px;padding:10px;background:#fff;color:#8b4513;
+                 border:1.5px solid #8b4513;border-radius:10px;font-size:.9em;cursor:pointer">
+          提交修改建议
+        </button>
+        <div id="fb-status" style="text-align:center;font-size:.8em;margin-top:6px;color:#666"></div>
+      </form>
+    </div>
     <button class="btn-close" onclick="closeModal()">关闭</button>
   </div>
 </div>
@@ -139,6 +158,24 @@ svg#tree{display:block}
 <script>
 const D = {"杜文明": {"name": "杜文明", "gen": "五世（辈字：文）", "gender": "男", "father": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜继全')\">杜继全</a>", "mother": "—", "children": "—", "siblings": "—", "notes": "—"}, "杜好林": {"name": "杜好林", "gen": "二世（辈字：好）", "gender": "男", "father": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜如松')\">杜如松</a>", "mother": "—", "children": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜诗信')\">杜诗信</a>", "siblings": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜好仁')\">杜好仁</a>、<a href=\"javascript:void(0)\" onclick=\"showDetail('杜好贤')\">杜好贤</a>", "notes": "—"}, "杜文彬": {"name": "杜文彬", "gen": "五世（辈字：文）", "gender": "男", "father": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜继武')\">杜继武</a>", "mother": "—", "children": "—", "siblings": "—", "notes": "—"}, "杜继全": {"name": "杜继全", "gen": "四世（辈字：继）", "gender": "男", "father": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜诗凡')\">杜诗凡</a>", "mother": "—", "children": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜文凯')\">杜文凯</a>、<a href=\"javascript:void(0)\" onclick=\"showDetail('杜文明')\">杜文明</a>", "siblings": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜继武')\">杜继武</a>、<a href=\"javascript:void(0)\" onclick=\"showDetail('杜继文')\">杜继文</a>、<a href=\"javascript:void(0)\" onclick=\"showDetail('杜继双')\">杜继双</a>", "notes": "—"}, "杜好仁": {"name": "杜好仁", "gen": "二世（辈字：好）", "gender": "男", "father": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜如松')\">杜如松</a>", "mother": "—", "children": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜诗凡')\">杜诗凡</a>", "siblings": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜好贤')\">杜好贤</a>、<a href=\"javascript:void(0)\" onclick=\"showDetail('杜好林')\">杜好林</a>", "notes": "—"}, "杜文坡": {"name": "杜文坡", "gen": "五世（辈字：文）", "gender": "男", "father": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜继文')\">杜继文</a>", "mother": "—", "children": "—", "siblings": "—", "notes": "—"}, "杜如松": {"name": "杜如松", "gen": "一世（家谱第15世，辈字：如）", "gender": "男", "father": "—", "mother": "—", "children": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜好仁')\">杜好仁</a>、<a href=\"javascript:void(0)\" onclick=\"showDetail('杜好贤')\">杜好贤</a>、<a href=\"javascript:void(0)\" onclick=\"showDetail('杜好林')\">杜好林</a>", "siblings": "—", "notes": "明洪武元年（约1370年）奉诏迁居开封府繁塔侧云寄桥，后逐渐流居于杞县西寨等地。"}, "杜诗凡": {"name": "杜诗凡", "gen": "三世（辈字：诗）", "gender": "男", "father": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜好仁')\">杜好仁</a>", "mother": "—", "children": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜继武')\">杜继武</a>、<a href=\"javascript:void(0)\" onclick=\"showDetail('杜继文')\">杜继文</a>、<a href=\"javascript:void(0)\" onclick=\"showDetail('杜继双')\">杜继双</a>、<a href=\"javascript:void(0)\" onclick=\"showDetail('杜继全')\">杜继全</a>", "siblings": "—", "notes": "—"}, "杜文涛": {"name": "杜文涛", "gen": "五世（辈字：文）", "gender": "男", "father": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜继双')\">杜继双</a>", "mother": "—", "children": "—", "siblings": "—", "notes": "—"}, "杜诗义": {"name": "杜诗义", "gen": "三世（辈字：诗）", "gender": "男", "father": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜好贤')\">杜好贤</a>", "mother": "—", "children": "—", "siblings": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜诗豪')\">杜诗豪</a>", "notes": "—"}, "杜文杰": {"name": "杜文杰", "gen": "五世（辈字：文）", "gender": "男", "father": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜继武')\">杜继武</a>", "mother": "—", "children": "—", "siblings": "—", "notes": "—"}, "杜诗豪": {"name": "杜诗豪", "gen": "三世（辈字：诗）", "gender": "男", "father": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜好贤')\">杜好贤</a>", "mother": "—", "children": "—", "siblings": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜诗义')\">杜诗义</a>", "notes": "—"}, "杜文辉": {"name": "杜文辉", "gen": "五世（辈字：文）", "gender": "男", "father": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜继双')\">杜继双</a>", "mother": "—", "children": "—", "siblings": "—", "notes": "—"}, "杜好贤": {"name": "杜好贤", "gen": "二世（辈字：好）", "gender": "男", "father": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜如松')\">杜如松</a>", "mother": "—", "children": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜诗豪')\">杜诗豪</a>、<a href=\"javascript:void(0)\" onclick=\"showDetail('杜诗义')\">杜诗义</a>", "siblings": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜好仁')\">杜好仁</a>、<a href=\"javascript:void(0)\" onclick=\"showDetail('杜好林')\">杜好林</a>", "notes": "—"}, "杜文锋": {"name": "杜文锋", "gen": "五世（辈字：文）", "gender": "男", "father": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜继武')\">杜继武</a>", "mother": "—", "children": "—", "siblings": "—", "notes": "—"}, "杜诗信": {"name": "杜诗信", "gen": "三世（辈字：诗）", "gender": "男", "father": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜好林')\">杜好林</a>", "mother": "—", "children": "—", "siblings": "—", "notes": "—"}, "杜文凯": {"name": "杜文凯", "gen": "五世（辈字：文）", "gender": "男", "father": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜继全')\">杜继全</a>", "mother": "—", "children": "—", "siblings": "—", "notes": "—"}, "杜继文": {"name": "杜继文", "gen": "四世（辈字：继）", "gender": "男", "father": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜诗凡')\">杜诗凡</a>", "mother": "—", "children": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜文坡')\">杜文坡</a>", "siblings": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜继武')\">杜继武</a>、<a href=\"javascript:void(0)\" onclick=\"showDetail('杜继双')\">杜继双</a>、<a href=\"javascript:void(0)\" onclick=\"showDetail('杜继全')\">杜继全</a>", "notes": "—"}, "杜继武": {"name": "杜继武", "gen": "四世（辈字：继）", "gender": "男", "father": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜诗凡')\">杜诗凡</a>", "mother": "—", "children": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜文杰')\">杜文杰</a>、<a href=\"javascript:void(0)\" onclick=\"showDetail('杜文锋')\">杜文锋</a>、<a href=\"javascript:void(0)\" onclick=\"showDetail('杜文彬')\">杜文彬</a>", "siblings": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜继文')\">杜继文</a>、<a href=\"javascript:void(0)\" onclick=\"showDetail('杜继双')\">杜继双</a>、<a href=\"javascript:void(0)\" onclick=\"showDetail('杜继全')\">杜继全</a>", "notes": "—"}, "杜继双": {"name": "杜继双", "gen": "四世（辈字：继）", "gender": "男", "father": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜诗凡')\">杜诗凡</a>", "mother": "—", "children": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜文涛')\">杜文涛</a>、<a href=\"javascript:void(0)\" onclick=\"showDetail('杜文辉')\">杜文辉</a>", "siblings": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜继武')\">杜继武</a>、<a href=\"javascript:void(0)\" onclick=\"showDetail('杜继文')\">杜继文</a>、<a href=\"javascript:void(0)\" onclick=\"showDetail('杜继全')\">杜继全</a>", "notes": "—"}};
 
+async function submitFb(e) {
+  e.preventDefault();
+  const btn = e.target.querySelector('[type=submit]');
+  btn.disabled = true; btn.textContent = '提交中…';
+  try {
+    const res = await fetch('https://formspree.io/f/mzdkklzn', {
+      method: 'POST', body: new FormData(e.target),
+      headers: { 'Accept': 'application/json' }
+    });
+    if (res.ok) {
+      document.getElementById('fb-status').textContent = '✓ 已提交，感谢你的建议！';
+      e.target.reset();
+    } else {
+      document.getElementById('fb-status').textContent = '提交失败，请稍后重试。';
+    }
+  } catch { document.getElementById('fb-status').textContent = '网络错误，请稍后重试。'; }
+  btn.disabled = false; btn.textContent = '提交修改建议';
+}
 
 // ── 详情弹窗 ──
 function showDetail(n) {
@@ -159,6 +196,24 @@ function showDetail(n) {
 function closeModal() { document.getElementById('overlay').classList.remove('on'); }
 function bgClose(e) { if (e.target.id === 'overlay') closeModal(); }
 
+async function submitFb(e) {
+  e.preventDefault();
+  const btn = e.target.querySelector('[type=submit]');
+  btn.disabled = true; btn.textContent = '提交中…';
+  try {
+    const res = await fetch('https://formspree.io/f/mzdkklzn', {
+      method: 'POST', body: new FormData(e.target),
+      headers: { 'Accept': 'application/json' }
+    });
+    if (res.ok) {
+      document.getElementById('fb-status').textContent = '✓ 已提交，感谢你的建议！';
+      e.target.reset();
+    } else {
+      document.getElementById('fb-status').textContent = '提交失败，请稍后重试。';
+    }
+  } catch { document.getElementById('fb-status').textContent = '网络错误，请稍后重试。'; }
+  btn.disabled = false; btn.textContent = '提交修改建议';
+}
 // ── 拖拽 & 缩放 ──
 const wrap = document.getElementById('canvas-wrap');
 const g    = document.getElementById('root-g');
