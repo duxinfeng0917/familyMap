@@ -4,17 +4,19 @@
     "type": "split",
     "children": [
       {
-        "id": "c4f53c70df79a03c",
+        "id": "2e792f7b1015d58d",
         "type": "tabs",
         "children": [
           {
-            "id": "e99d02e4e4c8f58a",
+            "id": "fb3f49a7401ac978",
             "type": "leaf",
             "state": {
-              "type": "empty",
-              "state": {},
-              "icon": "lucide-file",
-              "title": "新标签页"
+              "type": "excalidraw",
+              "state": {
+                "file": "家族关系图.excalidraw"
+              },
+              "icon": "excalidraw-icon",
+              "title": "家族关系图"
             }
           }
         ]
@@ -177,16 +179,24 @@
       "templates:插入模板": false,
       "command-palette:打开命令面板": false,
       "bases:新建数据库": false,
-      "obsidian-excalidraw-plugin:New drawing": false
+      "obsidian-excalidraw-plugin:New drawing": false,
+      "templater-obsidian:Templater": false
     }
   },
-  "active": "e99d02e4e4c8f58a",
+  "active": "fb3f49a7401ac978",
   "lastOpenFiles": [
-    "家谱首页.md",
-    "家族关系图.excalidraw",
     "家族关系图.md",
-    "family_map.jpg",
+    "家谱首页.md",
+    "家谱网页.html",
     "README.md",
-    "Templates/人物模板.md"
+    "family_map.jpg",
+    "家族关系图.excalidraw",
+    "tools/生成家谱网页.py",
+    "tools",
+    "People/杜继安.md",
+    "Templates/人物模板.md",
+    "People/杜诗信.md",
+    "People/杜文明.md",
+    "Templates/续写-新增子嗣.md"
   ]
 }
