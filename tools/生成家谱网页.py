@@ -29,12 +29,18 @@ FORMSPREE_ENDPOINT = "https://formspree.io/f/mzdkklzn"  # 例如 "https://formsp
 # 世代排序表
 GEN_ORDER = ["一世","二世","三世","四世","五世","六世","七世","八世","九世","十世"]
 
+# 家谱起始世数（一世 = 第15世）
+BASE_GEN = 15
+
+# 辈份诗（20字，自15世起）：如峰田绪远，祥开世泽长，继祖承兆庆，勤宗永康昌
+GEN_POEM = list("如峰田绪远祥开世泽长继祖承兆庆勤宗永康昌")
+
 # 节点尺寸与间距
 BOX_W  = 120   # 节点宽度
 BOX_H  = 45    # 节点高度
 H_GAP  = 32    # 同代节点水平间距
 V_STEP = 140   # 世代中心到中心垂直距离
-LEFT_PAD = 80  # 左侧世代标签宽度
+LEFT_PAD = 100 # 左侧世代标签宽度（加宽以容纳双行标签）
 TOP_PAD  = 30  # 顶部留白
 
 # 各世代节点颜色 (fill, stroke)
@@ -204,7 +210,7 @@ def render_svg_elements(people, positions, children):
             f'</g>'
         )
 
-    # 世代标签（左侧固定列）
+    # 世代标签（左侧固定列）：显示辈份诗字 + 绝对世数 + 相对世数
     gen_labels = []
     seen_gens = {}
     for name, p in people.items():
@@ -213,10 +219,20 @@ def render_svg_elements(people, positions, children):
             continue
         seen_gens[prefix] = True
         _, y = positions[name]
-        label_y = y + BOX_H / 2 + 6
+        cx = LEFT_PAD // 2
+        cy = y + BOX_H / 2
+        # 计算绝对世数及对应辈份诗字
+        idx = GEN_ORDER.index(prefix)           # 0-based（一世=0）
+        abs_gen = BASE_GEN + idx                # 绝对世数（15、16…）
+        poem_char = GEN_POEM[idx] if idx < len(GEN_POEM) else ""
+        # 三行标签：辈份诗字 / 第N世 / （相对世）
         gen_labels.append(
-            f'<text x="{LEFT_PAD // 2}" y="{label_y:.1f}" '
-            f'text-anchor="middle" class="gen-lbl">{prefix}</text>'
+            f'<text x="{cx}" y="{cy - 10:.1f}" text-anchor="middle" class="gen-lbl" '
+            f'font-size="15px" font-weight="800" fill="#8b4513">{poem_char}</text>'
+            f'<text x="{cx}" y="{cy + 6:.1f}" text-anchor="middle" class="gen-lbl" '
+            f'font-size="12px">{abs_gen}世</text>'
+            f'<text x="{cx}" y="{cy + 20:.1f}" text-anchor="middle" class="gen-lbl" '
+            f'font-size="11px" fill="#bbb">{prefix}</text>'
         )
 
     # 画布尺寸
