@@ -391,6 +391,27 @@ svg#tree{{display:block}}
 .poem-cell.active .pc{{color:#fff}}
 .poem-cell.active .pg{{color:#ffcba0}}
 .poem-origin{{font-size:.72em;color:#a07850;text-align:center;margin-bottom:4px}}
+/* 视图切换按钮 */
+.view-btn{{position:absolute;top:10px;right:14px;z-index:100;
+           background:#8b4513;color:#fff;border:none;border-radius:20px;
+           padding:6px 14px;font-size:.8em;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.2)}}
+/* 竖列名册视图 */
+#list-view{{display:none;flex:1;overflow-x:auto;overflow-y:auto;
+            padding:16px 10px;background:#f5f0e8}}
+#list-view.show{{display:flex;align-items:flex-start;gap:0}}
+.gen-col{{display:flex;flex-direction:column;align-items:center;
+          min-width:76px;border-right:1px dashed #d4b896;padding:0 6px}}
+.gen-col:last-child{{border-right:none}}
+.gen-col-hd{{display:flex;flex-direction:column;align-items:center;
+             background:#8b4513;color:#fff;border-radius:10px;
+             padding:6px 10px;margin-bottom:10px;text-align:center}}
+.gen-col-hd .ch{{font-size:1.3em;font-weight:800;line-height:1.2}}
+.gen-col-hd .ws{{font-size:.72em;opacity:.85;margin-top:2px}}
+.name-card{{background:#fff;border:1px solid #e8d5b7;border-radius:8px;
+            padding:6px 10px;margin-bottom:6px;font-size:.92em;font-weight:600;
+            color:#333;cursor:pointer;text-align:center;width:100%;
+            transition:background .15s}}
+.name-card:hover{{background:#fdf0e0}}
 </style>
 </head>
 <body>
@@ -430,6 +451,8 @@ svg#tree{{display:block}}
   </div>
 </div>
 
+<button class="view-btn" id="view-btn" onclick="toggleView()">竖列名册</button>
+
 <div id="canvas-wrap">
   <svg id="tree" width="{canvas_w}" height="{canvas_h}" xmlns="http://www.w3.org/2000/svg">
     <g id="root-g">
@@ -447,6 +470,8 @@ svg#tree{{display:block}}
   <div class="hint">拖拽移动 · 双指/滚轮缩放</div>
 </div>
 
+<div id="list-view"></div>
+
 <div class="overlay" id="overlay" onclick="bgClose(event)">
   <div class="modal">
     <div class="modal-title" id="m-name"></div>
@@ -459,6 +484,56 @@ svg#tree{{display:block}}
 <script>
 const D = {details_json};
 {feedback_js}
+
+// ── 竖列名册视图 ──
+const GEN_POEM_MAP = {{"田":"15世","绪":"16世","远":"17世","祥":"18世","开":"19世","世":"20世"}};
+const GEN_CHAR_ORDER = ["田","绪","远","祥","开","世"];
+
+function toggleView() {{
+  const wrap = document.getElementById('canvas-wrap');
+  const list = document.getElementById('list-view');
+  const btn  = document.getElementById('view-btn');
+  const isTree = list.style.display !== 'flex' && !list.classList.contains('show');
+  if (isTree) {{
+    wrap.style.display = 'none';
+    list.classList.add('show');
+    btn.textContent = '树形图';
+    buildListView();
+  }} else {{
+    wrap.style.display = '';
+    list.classList.remove('show');
+    btn.textContent = '竖列名册';
+  }}
+}}
+
+function buildListView() {{
+  const list = document.getElementById('list-view');
+  if (list.dataset.built) return;
+  list.dataset.built = '1';
+
+  // 按辈字分组
+  const groups = {{}};
+  GEN_CHAR_ORDER.forEach(ch => groups[ch] = []);
+  for (const [name, d] of Object.entries(D)) {{
+    // 从世代字段提取辈字，格式：XX世（N世，辈字：X）
+    const m = d.gen.match(/辈字：(.)/);
+    if (m && groups[m[1]] !== undefined) groups[m[1]].push(name);
+  }}
+
+  let html = '';
+  GEN_CHAR_ORDER.forEach(ch => {{
+    const ws = GEN_POEM_MAP[ch];
+    const names = groups[ch];
+    if (!names.length) return;
+    html += `<div class="gen-col">
+      <div class="gen-col-hd"><span class="ch">${{ch}}</span><span class="ws">${{ws}}</span></div>`;
+    names.forEach(n => {{
+      html += `<div class="name-card" onclick="showDetail('${{n}}')">${{n}}</div>`;
+    }});
+    html += '</div>';
+  }});
+  list.innerHTML = html;
+}}
 
 // ── 辈份诗对照展开 ──
 function togglePoem() {{
