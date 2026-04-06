@@ -29,13 +29,12 @@ FORMSPREE_ENDPOINT = "https://formspree.io/f/mzdkklzn"  # 例如 "https://formsp
 # 世代排序表
 GEN_ORDER = ["一世","二世","三世","四世","五世","六世","七世","八世","九世","十世"]
 
-# 家谱起始世数（一世 = 第17世，辈字：田）
-BASE_GEN = 17
-
-# 辈份诗（20字，自15世起）：如峰田绪远，祥开世泽长，继祖承兆庆，勤宗永康昌
-# 一世对应第3字"田"（17世），故从索引2开始取
-GEN_POEM_ALL = list("如峰田绪远祥开世泽长继祖承兆庆勤宗永康昌")
-GEN_POEM = GEN_POEM_ALL[2:]   # 田绪远祥开世泽长…
+# 家谱起始世数（一世 = 第15世，辈字：田）
+# 完整辈份诗：如峰田绪远，祥开世泽长，继祖承兆庆，勤宗永康昌
+# 田=15世（诗中第3字），故一世对应诗索引2
+BASE_GEN = 15
+_POEM_ALL = list("如峰田绪远祥开世泽长继祖承兆庆勤宗永康昌")
+GEN_POEM  = _POEM_ALL[2:]   # 田绪远祥开世泽长继祖承兆庆勤宗永康昌
 
 # 节点尺寸与间距
 BOX_W  = 120   # 节点宽度
@@ -213,7 +212,7 @@ def render_svg_elements(people, positions, children):
             f'</g>'
         )
 
-    # 世代标签（左侧固定列）：显示辈份诗字 + 绝对世数 + 相对世数
+    # 世代标签（左侧固定列）：辈份诗字 + 绝对世数（两行）
     gen_labels = []
     seen_gens = {}
     for name, p in people.items():
@@ -224,18 +223,14 @@ def render_svg_elements(people, positions, children):
         _, y = positions[name]
         cx = LEFT_PAD // 2
         cy = y + BOX_H / 2
-        # 计算绝对世数及对应辈份诗字
-        idx = GEN_ORDER.index(prefix)           # 0-based（一世=0）
-        abs_gen = BASE_GEN + idx                # 绝对世数（15、16…）
+        idx = GEN_ORDER.index(prefix)
+        abs_gen = BASE_GEN + idx
         poem_char = GEN_POEM[idx] if idx < len(GEN_POEM) else ""
-        # 三行标签：辈份诗字 / 第N世 / （相对世）
         gen_labels.append(
-            f'<text x="{cx}" y="{cy - 10:.1f}" text-anchor="middle" class="gen-lbl" '
-            f'font-size="15px" font-weight="800" fill="#8b4513">{poem_char}</text>'
-            f'<text x="{cx}" y="{cy + 6:.1f}" text-anchor="middle" class="gen-lbl" '
-            f'font-size="12px">{abs_gen}世</text>'
-            f'<text x="{cx}" y="{cy + 20:.1f}" text-anchor="middle" class="gen-lbl" '
-            f'font-size="11px" fill="#bbb">{prefix}</text>'
+            f'<text x="{cx}" y="{cy - 5:.1f}" text-anchor="middle" class="gen-lbl" '
+            f'font-size="16px" font-weight="800" fill="#8b4513">{poem_char}</text>'
+            f'<text x="{cx}" y="{cy + 13:.1f}" text-anchor="middle" class="gen-lbl" '
+            f'font-size="12px" fill="#888">{abs_gen}世</text>'
         )
 
     # 画布尺寸
@@ -374,15 +369,66 @@ svg#tree{{display:block}}
             color:#fff;border:none;border-radius:10px;font-size:1em;cursor:pointer}}
 .btn-edit{{width:100%;margin-top:10px;padding:11px;background:#fff;color:#8b4513;
            border:1.5px solid #8b4513;border-radius:10px;font-size:1em;cursor:pointer}}
+/* 沿革信息栏 */
+.info-bar{{background:#fdf6ee;border-bottom:1px solid #e8d5b7;
+           padding:5px 14px;font-size:.74em;color:#7a5230;line-height:1.6;
+           flex-shrink:0;text-align:center;cursor:pointer;user-select:none}}
+.info-bar .hl{{color:#8b4513;font-weight:700}}
+.info-bar .arrow{{font-size:.8em;margin-left:4px;transition:transform .25s;display:inline-block}}
+.info-bar.open .arrow{{transform:rotate(180deg)}}
+/* 辈份诗对照展开面板 */
+.poem-detail{{display:none;background:#fdf6ee;border-bottom:1px solid #e8d5b7;
+              padding:8px 16px 10px;flex-shrink:0}}
+.poem-detail.show{{display:block}}
+.poem-grid{{display:flex;flex-wrap:wrap;justify-content:center;gap:6px 10px;
+            margin-top:6px}}
+.poem-cell{{display:flex;flex-direction:column;align-items:center;
+            background:#fff;border:1px solid #e8d5b7;border-radius:8px;
+            padding:4px 8px;min-width:42px}}
+.poem-cell .pc{{font-size:1.2em;font-weight:800;color:#8b4513;line-height:1.3}}
+.poem-cell .pg{{font-size:.68em;color:#999;margin-top:1px}}
+.poem-cell.active{{background:#8b4513;border-color:#8b4513}}
+.poem-cell.active .pc{{color:#fff}}
+.poem-cell.active .pg{{color:#ffcba0}}
+.poem-origin{{font-size:.72em;color:#a07850;text-align:center;margin-bottom:4px}}
 </style>
 </head>
 <body>
 
 <header>
   <h1>杜氏家谱</h1>
-  <p>明洪武元年（约1370年）奉诏迁居开封府繁塔侧云寄桥 &nbsp;·&nbsp; 共 {count} 位成员</p>
+  <p>共 <strong>{count}</strong> 位成员 &nbsp;·&nbsp; 自第15世始记</p>
 </header>
 <div class="poem">如峰田绪远 · 祥开世泽长 · 继祖承兆庆 · 勤宗永康昌</div>
+<div class="info-bar" id="info-bar" onclick="togglePoem()">
+  <span class="hl">溯源：</span>明洪武元年（约公元1370年）奉诏迁居开封府繁塔侧云寄桥，后逐渐流居于杞县西寨、柿园万寨、祥符仇楼、杜良等地 &nbsp;｜&nbsp;
+  <span class="hl">点击查看辈份诗对照 <span class="arrow">▼</span></span>
+</div>
+<div class="poem-detail" id="poem-detail">
+  <div class="poem-origin">自第15世续订辈份（20字）：如峰田绪远，祥开世泽长，继祖承兆庆，勤宗永康昌</div>
+  <div class="poem-grid">
+    <div class="poem-cell"><span class="pc">如</span><span class="pg">13世</span></div>
+    <div class="poem-cell"><span class="pc">峰</span><span class="pg">14世</span></div>
+    <div class="poem-cell active"><span class="pc">田</span><span class="pg">15世</span></div>
+    <div class="poem-cell active"><span class="pc">绪</span><span class="pg">16世</span></div>
+    <div class="poem-cell active"><span class="pc">远</span><span class="pg">17世</span></div>
+    <div class="poem-cell active"><span class="pc">祥</span><span class="pg">18世</span></div>
+    <div class="poem-cell active"><span class="pc">开</span><span class="pg">19世</span></div>
+    <div class="poem-cell active"><span class="pc">世</span><span class="pg">20世</span></div>
+    <div class="poem-cell"><span class="pc">泽</span><span class="pg">21世</span></div>
+    <div class="poem-cell"><span class="pc">长</span><span class="pg">22世</span></div>
+    <div class="poem-cell"><span class="pc">继</span><span class="pg">23世</span></div>
+    <div class="poem-cell"><span class="pc">祖</span><span class="pg">24世</span></div>
+    <div class="poem-cell"><span class="pc">承</span><span class="pg">25世</span></div>
+    <div class="poem-cell"><span class="pc">兆</span><span class="pg">26世</span></div>
+    <div class="poem-cell"><span class="pc">庆</span><span class="pg">27世</span></div>
+    <div class="poem-cell"><span class="pc">勤</span><span class="pg">28世</span></div>
+    <div class="poem-cell"><span class="pc">宗</span><span class="pg">29世</span></div>
+    <div class="poem-cell"><span class="pc">永</span><span class="pg">30世</span></div>
+    <div class="poem-cell"><span class="pc">康</span><span class="pg">31世</span></div>
+    <div class="poem-cell"><span class="pc">昌</span><span class="pg">32世</span></div>
+  </div>
+</div>
 
 <div id="canvas-wrap">
   <svg id="tree" width="{canvas_w}" height="{canvas_h}" xmlns="http://www.w3.org/2000/svg">
@@ -413,6 +459,14 @@ svg#tree{{display:block}}
 <script>
 const D = {details_json};
 {feedback_js}
+
+// ── 辈份诗对照展开 ──
+function togglePoem() {{
+  const bar    = document.getElementById('info-bar');
+  const detail = document.getElementById('poem-detail');
+  bar.classList.toggle('open');
+  detail.classList.toggle('show');
+}}
 
 // ── 详情弹窗 ──
 function showDetail(n) {{
