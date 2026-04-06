@@ -5,88 +5,212 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
 <title>杜氏家谱</title>
 <style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700;900&display=swap');
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;
-      background:#f5f0e8;color:#333;display:flex;flex-direction:column;height:100vh;overflow:hidden}
-header{background:linear-gradient(135deg,#8b4513,#c0722a);color:#fff;
-        padding:14px 16px;text-align:center;flex-shrink:0}
-header h1{font-size:1.6em;letter-spacing:4px;text-shadow:0 1px 4px rgba(0,0,0,.3)}
-header p{font-size:.75em;margin-top:4px;opacity:.85}
-.poem{background:#6b2e08;color:#ffd700;text-align:center;padding:7px;
-       font-size:.82em;letter-spacing:2px;flex-shrink:0}
+body{
+  font-family:"Noto Serif SC","PingFang SC","STSong","SimSun",serif;
+  background:#f0ebe0;color:#2c1a0e;
+  display:flex;flex-direction:column;height:100vh;overflow:hidden;
+}
+
+/* ── 顶部 header ── */
+header{
+  background:linear-gradient(160deg,#5c1f00 0%,#8b3a0f 50%,#a8521e 100%);
+  color:#fff;padding:12px 16px 10px;text-align:center;flex-shrink:0;
+  position:relative;
+  box-shadow:0 3px 12px rgba(0,0,0,.35);
+}
+header::before{
+  content:'';position:absolute;inset:0;
+  background:repeating-linear-gradient(
+    90deg,transparent,transparent 18px,rgba(255,255,255,.03) 18px,rgba(255,255,255,.03) 19px
+  );pointer-events:none;
+}
+header h1{
+  font-size:1.75em;letter-spacing:8px;
+  text-shadow:0 1px 0 rgba(255,255,255,.15),0 2px 8px rgba(0,0,0,.4);
+  font-weight:900;position:relative;
+}
+header h1::before,header h1::after{
+  content:'◈';font-size:.5em;vertical-align:middle;
+  margin:0 10px;opacity:.6;
+}
+header p{font-size:.72em;margin-top:5px;opacity:.75;letter-spacing:1px}
+
+/* ── 辈份诗横幅 ── */
+.poem{
+  background:linear-gradient(90deg,#3d1200,#6b2e08,#3d1200);
+  color:#ffd060;text-align:center;padding:6px 12px;
+  font-size:.85em;letter-spacing:4px;flex-shrink:0;
+  text-shadow:0 1px 4px rgba(0,0,0,.5);
+  border-bottom:1px solid #2a0d00;
+}
+
+/* ── 沿革信息栏 ── */
+.info-bar{
+  background:linear-gradient(90deg,#fdf8f0,#fef9f2,#fdf8f0);
+  border-bottom:1px solid #dcc9a8;
+  padding:5px 16px;font-size:.73em;color:#7a5230;line-height:1.65;
+  flex-shrink:0;text-align:center;cursor:pointer;user-select:none;
+  transition:background .2s;
+}
+.info-bar:hover{background:#fdf0e0}
+.info-bar .hl{color:#8b3a0f;font-weight:700}
+.info-bar .arrow{font-size:.8em;margin-left:4px;transition:transform .3s;display:inline-block}
+.info-bar.open .arrow{transform:rotate(180deg)}
+
+/* ── 辈份诗对照面板 ── */
+.poem-detail{
+  display:none;
+  background:linear-gradient(180deg,#fdf8f0,#faf3e8);
+  border-bottom:1px solid #dcc9a8;
+  padding:10px 16px 12px;flex-shrink:0;
+}
+.poem-detail.show{display:block}
+.poem-origin{font-size:.72em;color:#a07850;text-align:center;margin-bottom:8px;letter-spacing:1px}
+.poem-grid{display:flex;flex-wrap:wrap;justify-content:center;gap:5px 7px}
+.poem-cell{
+  display:flex;flex-direction:column;align-items:center;
+  background:#fff;border:1px solid #e0ccaa;border-radius:10px;
+  padding:5px 9px;min-width:44px;
+  box-shadow:0 1px 4px rgba(139,58,15,.08);
+  transition:transform .15s,box-shadow .15s;
+}
+.poem-cell:hover{transform:translateY(-1px);box-shadow:0 3px 8px rgba(139,58,15,.15)}
+.poem-cell .pc{font-size:1.25em;font-weight:900;color:#8b3a0f;line-height:1.2}
+.poem-cell .pg{font-size:.65em;color:#b09070;margin-top:2px}
+.poem-cell.active{
+  background:linear-gradient(145deg,#8b3a0f,#c0722a);
+  border-color:#8b3a0f;
+  box-shadow:0 2px 8px rgba(139,58,15,.35);
+}
+.poem-cell.active .pc{color:#fff}
+.poem-cell.active .pg{color:#ffd090}
+
+/* ── 视图切换按钮 ── */
+.view-btn{
+  position:absolute;top:10px;right:14px;z-index:100;
+  background:linear-gradient(135deg,#8b3a0f,#c0722a);
+  color:#fff;border:none;border-radius:20px;
+  padding:7px 16px;font-size:.78em;cursor:pointer;
+  box-shadow:0 3px 10px rgba(139,58,15,.4);
+  font-family:inherit;letter-spacing:1px;
+  transition:box-shadow .2s,transform .15s;
+}
+.view-btn:hover{box-shadow:0 5px 14px rgba(139,58,15,.5);transform:translateY(-1px)}
+.view-btn:active{transform:translateY(0)}
+
+/* ── 树形画布 ── */
 #canvas-wrap{flex:1;overflow:hidden;position:relative;cursor:grab;touch-action:none}
 #canvas-wrap.dragging{cursor:grabbing}
 svg#tree{display:block}
-.edge{stroke:#aaa;stroke-width:1.5;fill:none}
-.node{cursor:pointer}
-.node rect{transition:filter .15s}
-.node:hover rect{filter:brightness(.9)}
-.node-name{font-size:15px;font-weight:700;fill:#333;pointer-events:none;
-            font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif}
-.gen-lbl{font-size:13px;fill:#888;font-weight:600;
-          font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif}
-/* 缩放提示 */
-.hint{position:absolute;bottom:12px;right:16px;font-size:.72em;color:#bbb;
-       background:rgba(255,255,255,.8);padding:3px 8px;border-radius:6px;pointer-events:none}
-/* Modal */
-.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);
-          z-index:200;align-items:center;justify-content:center}
+.node{cursor:pointer;filter:drop-shadow(0 2px 4px rgba(0,0,0,.12))}
+.node rect{transition:filter .15s,transform .15s}
+.node:hover rect{filter:brightness(.92)}
+.node-name{
+  font-size:14px;font-weight:700;fill:#1a0e00;pointer-events:none;
+  font-family:"Noto Serif SC","PingFang SC",serif;
+}
+.gen-lbl{
+  font-family:"Noto Serif SC","PingFang SC",serif;
+  font-weight:700;
+}
+.hint{
+  position:absolute;bottom:14px;right:16px;font-size:.68em;color:#c0a882;
+  background:rgba(255,252,245,.85);padding:4px 10px;border-radius:20px;
+  pointer-events:none;border:1px solid #e8d5b7;letter-spacing:.5px;
+  backdrop-filter:blur(4px);
+}
+
+/* ── 详情弹窗 ── */
+.overlay{
+  display:none;position:fixed;inset:0;
+  background:rgba(20,8,0,.55);backdrop-filter:blur(3px);
+  z-index:200;align-items:center;justify-content:center;
+}
 .overlay.on{display:flex}
-.modal{background:#fff;border-radius:18px;padding:24px;width:88%;
-        max-width:380px;max-height:82vh;overflow-y:auto;box-shadow:0 8px 32px rgba(0,0,0,.2)}
-.modal-title{font-size:1.4em;font-weight:700;color:#8b4513;
-              border-bottom:2px solid #f0dcc8;padding-bottom:10px;margin-bottom:14px}
-.row{display:flex;margin-bottom:10px;font-size:.88em}
-.lbl{color:#aaa;width:72px;flex-shrink:0;padding-top:1px}
-.val{color:#333;flex:1;line-height:1.6}
-.val a{color:#8b4513;text-decoration:none;font-weight:600}
-.btn-close{width:100%;margin-top:18px;padding:11px;background:#8b4513;
-            color:#fff;border:none;border-radius:10px;font-size:1em;cursor:pointer}
-.btn-edit{width:100%;margin-top:10px;padding:11px;background:#fff;color:#8b4513;
-           border:1.5px solid #8b4513;border-radius:10px;font-size:1em;cursor:pointer}
-/* 沿革信息栏 */
-.info-bar{background:#fdf6ee;border-bottom:1px solid #e8d5b7;
-           padding:5px 14px;font-size:.74em;color:#7a5230;line-height:1.6;
-           flex-shrink:0;text-align:center;cursor:pointer;user-select:none}
-.info-bar .hl{color:#8b4513;font-weight:700}
-.info-bar .arrow{font-size:.8em;margin-left:4px;transition:transform .25s;display:inline-block}
-.info-bar.open .arrow{transform:rotate(180deg)}
-/* 辈份诗对照展开面板 */
-.poem-detail{display:none;background:#fdf6ee;border-bottom:1px solid #e8d5b7;
-              padding:8px 16px 10px;flex-shrink:0}
-.poem-detail.show{display:block}
-.poem-grid{display:flex;flex-wrap:wrap;justify-content:center;gap:6px 10px;
-            margin-top:6px}
-.poem-cell{display:flex;flex-direction:column;align-items:center;
-            background:#fff;border:1px solid #e8d5b7;border-radius:8px;
-            padding:4px 8px;min-width:42px}
-.poem-cell .pc{font-size:1.2em;font-weight:800;color:#8b4513;line-height:1.3}
-.poem-cell .pg{font-size:.68em;color:#999;margin-top:1px}
-.poem-cell.active{background:#8b4513;border-color:#8b4513}
-.poem-cell.active .pc{color:#fff}
-.poem-cell.active .pg{color:#ffcba0}
-.poem-origin{font-size:.72em;color:#a07850;text-align:center;margin-bottom:4px}
-/* 视图切换按钮 */
-.view-btn{position:absolute;top:10px;right:14px;z-index:100;
-           background:#8b4513;color:#fff;border:none;border-radius:20px;
-           padding:6px 14px;font-size:.8em;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.2)}
-/* 竖列名册视图 */
-#list-view{display:none;flex:1;overflow-x:auto;overflow-y:auto;
-            padding:16px 10px;background:#f5f0e8}
+.modal{
+  background:#fffdf8;border-radius:20px;padding:0;width:88%;
+  max-width:380px;max-height:85vh;overflow:hidden;
+  box-shadow:0 16px 48px rgba(0,0,0,.3);
+  display:flex;flex-direction:column;
+}
+.modal-hd{
+  background:linear-gradient(135deg,#5c1f00,#8b3a0f);
+  color:#fff;padding:18px 22px 14px;flex-shrink:0;
+}
+.modal-title{font-size:1.5em;font-weight:900;letter-spacing:3px;
+              text-shadow:0 1px 4px rgba(0,0,0,.3)}
+.modal-sub{font-size:.72em;opacity:.75;margin-top:4px;letter-spacing:1px}
+.modal-body{padding:18px 22px;overflow-y:auto;flex:1}
+.row{
+  display:flex;align-items:flex-start;
+  padding:8px 0;border-bottom:1px solid #f0e8da;font-size:.88em;
+}
+.row:last-child{border-bottom:none}
+.lbl{
+  color:#b09070;width:70px;flex-shrink:0;font-size:.85em;
+  padding-top:1px;letter-spacing:.5px;
+}
+.val{color:#2c1a0e;flex:1;line-height:1.7}
+.val a{color:#8b3a0f;text-decoration:none;font-weight:700;
+        border-bottom:1px dotted #c0722a;}
+.modal-ft{padding:14px 22px;background:#fdf8f0;border-top:1px solid #ede0cc;flex-shrink:0}
+.btn-close{
+  width:100%;padding:12px;
+  background:linear-gradient(135deg,#8b3a0f,#c0722a);
+  color:#fff;border:none;border-radius:12px;
+  font-size:.95em;cursor:pointer;font-family:inherit;letter-spacing:1px;
+  box-shadow:0 3px 10px rgba(139,58,15,.35);transition:opacity .2s;
+}
+.btn-close:hover{opacity:.9}
+.btn-edit{
+  width:100%;margin-top:8px;padding:11px;background:#fff;color:#8b3a0f;
+  border:1.5px solid #c0722a;border-radius:12px;
+  font-size:.9em;cursor:pointer;font-family:inherit;letter-spacing:1px;
+}
+
+/* ── 竖列名册 ── */
+#list-view{
+  display:none;flex:1;overflow-x:auto;overflow-y:auto;
+  background:repeating-linear-gradient(
+    0deg,#ede7d9 0px,#ede7d9 1px,#f0ebe0 1px,#f0ebe0 28px
+  );
+  padding:20px 16px;
+}
 #list-view.show{display:flex;align-items:flex-start;gap:0}
-.gen-col{display:flex;flex-direction:column;align-items:center;
-          min-width:76px;border-right:1px dashed #d4b896;padding:0 6px}
+.gen-col{
+  display:flex;flex-direction:column;align-items:center;
+  min-width:84px;
+  border-right:1px solid #d4c0a0;
+  padding:0 8px;
+}
 .gen-col:last-child{border-right:none}
-.gen-col-hd{display:flex;flex-direction:column;align-items:center;
-             background:#8b4513;color:#fff;border-radius:10px;
-             padding:6px 10px;margin-bottom:10px;text-align:center}
-.gen-col-hd .ch{font-size:1.3em;font-weight:800;line-height:1.2}
-.gen-col-hd .ws{font-size:.72em;opacity:.85;margin-top:2px}
-.name-card{background:#fff;border:1px solid #e8d5b7;border-radius:8px;
-            padding:6px 10px;margin-bottom:6px;font-size:.92em;font-weight:600;
-            color:#333;cursor:pointer;text-align:center;width:100%;
-            transition:background .15s}
-.name-card:hover{background:#fdf0e0}
+.gen-col-hd{
+  display:flex;flex-direction:column;align-items:center;
+  background:linear-gradient(145deg,#5c1f00,#8b3a0f);
+  color:#fff;border-radius:12px;
+  padding:8px 12px;margin-bottom:12px;text-align:center;
+  box-shadow:0 4px 12px rgba(139,58,15,.35);
+  min-width:68px;
+}
+.gen-col-hd .ch{font-size:1.5em;font-weight:900;line-height:1.1;letter-spacing:1px}
+.gen-col-hd .ws{font-size:.65em;opacity:.8;margin-top:3px;letter-spacing:.5px}
+.name-card{
+  background:rgba(255,253,248,.9);
+  border:1px solid #dcc9a8;border-radius:10px;
+  padding:7px 10px;margin-bottom:7px;
+  font-size:.9em;font-weight:700;
+  color:#2c1a0e;cursor:pointer;text-align:center;width:100%;
+  box-shadow:0 1px 4px rgba(0,0,0,.06);
+  transition:background .15s,box-shadow .15s,transform .15s;
+  letter-spacing:.5px;
+}
+.name-card:hover{
+  background:#fff7ee;border-color:#c0722a;
+  box-shadow:0 3px 10px rgba(139,58,15,.18);
+  transform:translateY(-1px);
+}
 </style>
 </head>
 <body>
@@ -336,9 +460,13 @@ svg#tree{display:block}
 
 <div class="overlay" id="overlay" onclick="bgClose(event)">
   <div class="modal">
-    <div class="modal-title" id="m-name"></div>
-    <div id="m-body"></div>
-    
+    <div class="modal-hd">
+      <div class="modal-title" id="m-name"></div>
+      <div class="modal-sub" id="m-gen"></div>
+    </div>
+    <div class="modal-body" id="m-body"></div>
+    <div class="modal-ft">
+      
     <div id="fb-wrap" style="margin-top:14px;border-top:1px solid #f0dcc8;padding-top:14px">
       <div style="font-size:.8em;color:#aaa;margin-bottom:8px">如有信息有误，请提交修改建议：</div>
       <form id="fb-form" onsubmit="submitFb(event)">
@@ -358,7 +486,8 @@ svg#tree{display:block}
         <div id="fb-status" style="text-align:center;font-size:.8em;margin-top:6px;color:#666"></div>
       </form>
     </div>
-    <button class="btn-close" onclick="closeModal()">关闭</button>
+      <button class="btn-close" onclick="closeModal()">关 闭</button>
+    </div>
   </div>
 </div>
 
@@ -446,8 +575,8 @@ function togglePoem() {
 function showDetail(n) {
   const d = D[n]; if (!d) return;
   document.getElementById('m-name').textContent = d.name;
+  document.getElementById('m-gen').textContent  = d.gen;
   document.getElementById('m-body').innerHTML = `
-    <div class="row"><span class="lbl">世代</span><span class="val">${d.gen}</span></div>
     <div class="row"><span class="lbl">性别</span><span class="val">${d.gender||'—'}</span></div>
     <div class="row"><span class="lbl">父亲</span><span class="val">${d.father}</span></div>
     <div class="row"><span class="lbl">母亲</span><span class="val">${d.mother}</span></div>
