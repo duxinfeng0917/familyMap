@@ -516,7 +516,7 @@ wrap.addEventListener('touchend', e => {{
       const el = document.elementFromPoint(touch.clientX, touch.clientY);
       const node = el && el.closest('.node');
       if (node) {{
-        const m = (node.getAttribute('onclick') || '').match(/showDetail\('(.+?)'\)/);
+        const m = (node.getAttribute('onclick') || '').match(/showDetail[(]'(.+?)'[)]/);
         if (m) showDetail(m[1]);
       }}
     }}
