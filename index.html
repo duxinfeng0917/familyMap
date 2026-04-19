@@ -151,9 +151,7 @@ header p{
 /* ── 树形画布 ── */
 #canvas-wrap{
   flex:1;overflow:hidden;position:relative;cursor:grab;touch-action:none;
-  background:
-    radial-gradient(ellipse 80% 50% at 50% 0%,rgba(160,120,60,.07) 0%,transparent 65%),
-    repeating-linear-gradient(0deg,var(--bg) 0px,var(--bg) 29px,var(--bg-w) 29px,var(--bg-w) 30px);
+  background:var(--bg);
 }
 #canvas-wrap.dragging{cursor:grabbing}
 svg#tree{display:block}
