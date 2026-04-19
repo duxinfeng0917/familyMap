@@ -5,219 +5,317 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
 <title>杜氏家谱</title>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&family=Noto+Serif+SC:wght@400;600;700;900&display=swap');
+
+:root{
+  --red:    #7B1818;
+  --red-dk: #4E0F0F;
+  --red-md: #9A2424;
+  --gold:   #B07800;
+  --gold-l: #C9A030;
+  --gold-p: #EED890;
+  --ink:    #1C0A00;
+  --ink-80: #3A1E0A;
+  --ink-50: #7A5A3A;
+  --ink-30: #B09878;
+  --bg:     #FAF6EE;
+  --bg-w:   #F2EAE0;
+  --paper:  #FFFDF8;
+  --bdr:    #CEBB96;
+  --bdr-l:  #E5D8BC;
+  --sh-xs:  0 1px 3px rgba(80,20,0,.10);
+  --sh-sm:  0 2px 8px rgba(80,20,0,.14);
+  --sh-md:  0 4px 16px rgba(80,20,0,.18);
+  --sh-lg:  0 8px 32px rgba(80,20,0,.22);
+  --sh-xl:  0 16px 48px rgba(0,0,0,.28);
+  --serif:  "Noto Serif SC","PingFang SC","STSong","SimSun",serif;
+  --sans:   "Noto Sans SC","PingFang SC","STHeiti",sans-serif;
+  --dur:    200ms;
+  --ease:   cubic-bezier(.25,.46,.45,.94);
+  --r-s:    8px;
+  --r-m:    12px;
+  --r-l:    18px;
+  --r-xl:   24px;
+}
+
 *{box-sizing:border-box;margin:0;padding:0}
 body{
-  font-family:"Noto Serif SC","PingFang SC","STSong","SimSun",serif;
-  background:#f0ebe0;color:#2c1a0e;
+  font-family:var(--serif);
+  background:var(--bg);color:var(--ink);
   display:flex;flex-direction:column;height:100vh;overflow:hidden;
 }
 
-/* ── 顶部 header ── */
+/* ── Header ── */
 header{
-  background:linear-gradient(160deg,#5c1f00 0%,#8b3a0f 50%,#a8521e 100%);
-  color:#fff;padding:12px 16px 10px;text-align:center;flex-shrink:0;
-  position:relative;
-  box-shadow:0 3px 12px rgba(0,0,0,.35);
+  background:linear-gradient(160deg,var(--red-dk) 0%,var(--red) 55%,var(--red-md) 100%);
+  color:#fff;padding:14px 16px 12px;text-align:center;flex-shrink:0;
+  position:relative;box-shadow:0 4px 20px rgba(0,0,0,.38);overflow:hidden;
 }
 header::before{
   content:'';position:absolute;inset:0;
-  background:repeating-linear-gradient(
-    90deg,transparent,transparent 18px,rgba(255,255,255,.03) 18px,rgba(255,255,255,.03) 19px
-  );pointer-events:none;
+  background-image:
+    repeating-linear-gradient(90deg,rgba(255,255,255,.022) 0,rgba(255,255,255,.022) 1px,transparent 1px,transparent 22px),
+    repeating-linear-gradient(0deg,rgba(255,255,255,.012) 0,rgba(255,255,255,.012) 1px,transparent 1px,transparent 22px);
+  pointer-events:none;
+}
+header::after{
+  content:'';position:absolute;top:0;left:0;right:0;height:3px;
+  background:linear-gradient(90deg,transparent 0%,var(--gold-l) 30%,var(--gold) 50%,var(--gold-l) 70%,transparent 100%);
+}
+.header-body{position:relative;z-index:1}
+.header-title-row{
+  display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:5px;
+}
+.header-line{
+  flex:1;max-width:72px;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(200,160,40,.55));
+}
+.header-line:last-child{
+  background:linear-gradient(90deg,rgba(200,160,40,.55),transparent);
+}
+.header-diamond{
+  width:5px;height:5px;background:var(--gold-l);
+  transform:rotate(45deg);opacity:.85;flex-shrink:0;
 }
 header h1{
-  font-size:1.75em;letter-spacing:8px;
-  text-shadow:0 1px 0 rgba(255,255,255,.15),0 2px 8px rgba(0,0,0,.4);
-  font-weight:900;position:relative;
+  font-size:1.78em;letter-spacing:10px;text-indent:10px;font-weight:900;
+  color:#FFF8F0;text-shadow:0 1px 0 rgba(255,255,255,.10),0 2px 12px rgba(0,0,0,.4);
 }
-header h1::before,header h1::after{
-  content:'◈';font-size:.5em;vertical-align:middle;
-  margin:0 10px;opacity:.6;
+header p{
+  font-family:var(--sans);font-size:.71em;opacity:.68;letter-spacing:2px;
+  font-weight:300;color:#F5EEE8;
 }
-header p{font-size:.72em;margin-top:5px;opacity:.75;letter-spacing:1px}
 
 /* ── 辈份诗横幅 ── */
 .poem{
-  background:linear-gradient(90deg,#3d1200,#6b2e08,#3d1200);
-  color:#ffd060;text-align:center;padding:6px 12px;
-  font-size:.85em;letter-spacing:4px;flex-shrink:0;
-  text-shadow:0 1px 4px rgba(0,0,0,.5);
-  border-bottom:1px solid #2a0d00;
+  background:linear-gradient(90deg,#2A0C00 0%,#521E06 35%,#5A2208 50%,#521E06 65%,#2A0C00 100%);
+  color:var(--gold-p);text-align:center;padding:7px 16px;
+  font-size:.84em;letter-spacing:5px;text-indent:5px;flex-shrink:0;
+  font-weight:600;text-shadow:0 1px 6px rgba(0,0,0,.5);
+  border-bottom:1px solid rgba(0,0,0,.2);
 }
 
 /* ── 沿革信息栏 ── */
 .info-bar{
-  background:linear-gradient(90deg,#fdf8f0,#fef9f2,#fdf8f0);
-  border-bottom:1px solid #dcc9a8;
-  padding:5px 16px;font-size:.73em;color:#7a5230;line-height:1.65;
+  background:linear-gradient(90deg,var(--bg-w),var(--paper),var(--bg-w));
+  border-bottom:1px solid var(--bdr-l);padding:6px 20px;
+  font-family:var(--sans);font-size:.73em;color:var(--ink-50);line-height:1.7;
   flex-shrink:0;text-align:center;cursor:pointer;user-select:none;
-  transition:background .2s;
+  transition:background var(--dur) var(--ease);
 }
-.info-bar:hover{background:#fdf0e0}
-.info-bar .hl{color:#8b3a0f;font-weight:700}
-.info-bar .arrow{font-size:.8em;margin-left:4px;transition:transform .3s;display:inline-block}
+.info-bar:hover{background:linear-gradient(90deg,#EDE4D4,#F6F1E9,#EDE4D4)}
+.info-bar .hl{color:var(--red);font-weight:600}
+.info-bar .arrow{font-size:.8em;margin-left:4px;transition:transform .25s var(--ease);display:inline-block}
 .info-bar.open .arrow{transform:rotate(180deg)}
 
 /* ── 辈份诗对照面板 ── */
 .poem-detail{
-  display:none;
-  background:linear-gradient(180deg,#fdf8f0,#faf3e8);
-  border-bottom:1px solid #dcc9a8;
-  padding:10px 16px 12px;flex-shrink:0;
+  display:none;background:linear-gradient(180deg,var(--paper),var(--bg));
+  border-bottom:1px solid var(--bdr-l);padding:14px 20px 16px;flex-shrink:0;
 }
 .poem-detail.show{display:block}
-.poem-origin{font-size:.72em;color:#a07850;text-align:center;margin-bottom:8px;letter-spacing:1px}
-.poem-grid{display:flex;flex-wrap:wrap;justify-content:center;gap:5px 7px}
+.poem-origin{
+  font-family:var(--sans);font-size:.71em;color:var(--ink-30);
+  text-align:center;margin-bottom:12px;letter-spacing:1px;line-height:1.65;
+}
+.poem-grid{display:flex;flex-wrap:wrap;justify-content:center;gap:6px 8px}
 .poem-cell{
   display:flex;flex-direction:column;align-items:center;
-  background:#fff;border:1px solid #e0ccaa;border-radius:10px;
-  padding:5px 9px;min-width:44px;
-  box-shadow:0 1px 4px rgba(139,58,15,.08);
-  transition:transform .15s,box-shadow .15s;
+  background:var(--paper);border:1px solid var(--bdr-l);border-radius:var(--r-m);
+  padding:6px 10px;min-width:46px;box-shadow:var(--sh-xs);
+  transition:transform var(--dur) var(--ease),box-shadow var(--dur),border-color var(--dur);
 }
-.poem-cell:hover{transform:translateY(-1px);box-shadow:0 3px 8px rgba(139,58,15,.15)}
-.poem-cell .pc{font-size:1.25em;font-weight:900;color:#8b3a0f;line-height:1.2}
-.poem-cell .pg{font-size:.65em;color:#b09070;margin-top:2px}
+.poem-cell:hover{transform:translateY(-2px);box-shadow:var(--sh-sm);border-color:var(--bdr)}
+.poem-cell .pc{font-size:1.3em;font-weight:900;color:var(--red);line-height:1.2}
+.poem-cell .pg{font-family:var(--sans);font-size:.62em;color:var(--ink-30);margin-top:3px}
 .poem-cell.active{
-  background:linear-gradient(145deg,#8b3a0f,#c0722a);
-  border-color:#8b3a0f;
-  box-shadow:0 2px 8px rgba(139,58,15,.35);
+  background:linear-gradient(145deg,var(--red-dk),var(--red));
+  border-color:var(--red);box-shadow:var(--sh-sm),inset 0 1px 0 rgba(255,255,255,.08);
 }
-.poem-cell.active .pc{color:#fff}
-.poem-cell.active .pg{color:#ffd090}
+.poem-cell.active .pc{color:#FFF8F0}
+.poem-cell.active .pg{color:var(--gold-p);opacity:.88}
 
 /* ── 视图切换按钮 ── */
 .view-btn{
-  position:absolute;top:10px;right:14px;z-index:100;
-  background:linear-gradient(135deg,#8b3a0f,#c0722a);
-  color:#fff;border:none;border-radius:20px;
-  padding:7px 16px;font-size:.78em;cursor:pointer;
-  box-shadow:0 3px 10px rgba(139,58,15,.4);
-  font-family:inherit;letter-spacing:1px;
-  transition:box-shadow .2s,transform .15s;
+  position:absolute;top:50%;right:16px;transform:translateY(-50%);z-index:100;
+  background:rgba(255,255,255,.13);border:1px solid rgba(255,255,255,.28);
+  color:#FFF8F0;border-radius:var(--r-l);
+  padding:6px 16px;font-size:.75em;cursor:pointer;
+  font-family:var(--sans);letter-spacing:1.5px;font-weight:500;
+  backdrop-filter:blur(8px);
+  transition:background var(--dur),box-shadow var(--dur),transform .15s;
 }
-.view-btn:hover{box-shadow:0 5px 14px rgba(139,58,15,.5);transform:translateY(-1px)}
-.view-btn:active{transform:translateY(0)}
+.view-btn:hover{background:rgba(255,255,255,.22);box-shadow:0 2px 12px rgba(0,0,0,.28)}
+.view-btn:active{transform:translateY(calc(-50% + 1px))}
 
 /* ── 树形画布 ── */
-#canvas-wrap{flex:1;overflow:hidden;position:relative;cursor:grab;touch-action:none}
+#canvas-wrap{
+  flex:1;overflow:hidden;position:relative;cursor:grab;touch-action:none;
+  background:
+    radial-gradient(ellipse 80% 50% at 50% 0%,rgba(160,120,60,.07) 0%,transparent 65%),
+    repeating-linear-gradient(0deg,var(--bg) 0px,var(--bg) 29px,var(--bg-w) 29px,var(--bg-w) 30px);
+}
 #canvas-wrap.dragging{cursor:grabbing}
 svg#tree{display:block}
-.node{cursor:pointer;filter:drop-shadow(0 2px 4px rgba(0,0,0,.12))}
-.node rect{transition:filter .15s,transform .15s}
-.node:hover rect{filter:brightness(.92)}
+.node{cursor:pointer}
+.node rect{transition:filter .15s}
+.node:hover rect{filter:brightness(.90) drop-shadow(0 2px 6px rgba(0,0,0,.18))}
+.node:active rect{filter:brightness(.83)}
 .node-name{
-  font-size:14px;font-weight:700;fill:#1a0e00;pointer-events:none;
+  font-size:14px;font-weight:700;fill:#1A0800;pointer-events:none;
   font-family:"Noto Serif SC","PingFang SC",serif;
 }
-.gen-lbl{
-  font-family:"Noto Serif SC","PingFang SC",serif;
-  font-weight:700;
-}
+.gen-lbl{font-family:"Noto Serif SC","PingFang SC",serif;font-weight:700}
+svg .edges line{stroke:#C0A068 !important;stroke-opacity:.65}
 .hint{
-  position:absolute;bottom:14px;right:16px;font-size:.68em;color:#c0a882;
-  background:rgba(255,252,245,.85);padding:4px 10px;border-radius:20px;
-  pointer-events:none;border:1px solid #e8d5b7;letter-spacing:.5px;
-  backdrop-filter:blur(4px);
+  position:absolute;bottom:16px;right:18px;
+  font-family:var(--sans);font-size:.67em;color:var(--ink-30);
+  background:rgba(255,252,245,.92);padding:5px 12px;border-radius:var(--r-l);
+  pointer-events:none;border:1px solid var(--bdr-l);letter-spacing:.5px;
+  backdrop-filter:blur(6px);box-shadow:var(--sh-xs);
 }
 
 /* ── 详情弹窗 ── */
 .overlay{
   display:none;position:fixed;inset:0;
-  background:rgba(20,8,0,.55);backdrop-filter:blur(3px);
+  background:rgba(12,4,0,.62);backdrop-filter:blur(5px);
   z-index:200;align-items:center;justify-content:center;
 }
 .overlay.on{display:flex}
 .modal{
-  background:#fffdf8;border-radius:20px;padding:0;width:88%;
-  max-width:380px;max-height:85vh;overflow:hidden;
-  box-shadow:0 16px 48px rgba(0,0,0,.3);
-  display:flex;flex-direction:column;
+  background:var(--paper);border-radius:var(--r-xl);
+  width:88%;max-width:380px;max-height:88vh;overflow:hidden;
+  box-shadow:var(--sh-xl);display:flex;flex-direction:column;
+  border:1px solid var(--bdr-l);
 }
 .modal-hd{
-  background:linear-gradient(135deg,#5c1f00,#8b3a0f);
-  color:#fff;padding:18px 22px 14px;flex-shrink:0;
+  background:linear-gradient(150deg,var(--red-dk) 0%,var(--red) 100%);
+  color:#fff;padding:22px 24px 18px;flex-shrink:0;
+  position:relative;overflow:hidden;
 }
-.modal-title{font-size:1.5em;font-weight:900;letter-spacing:3px;
-              text-shadow:0 1px 4px rgba(0,0,0,.3)}
-.modal-sub{font-size:.72em;opacity:.75;margin-top:4px;letter-spacing:1px}
-.modal-body{padding:18px 22px;overflow-y:auto;flex:1}
+.modal-hd::before{
+  content:'';position:absolute;inset:0;
+  background:repeating-linear-gradient(90deg,rgba(255,255,255,.02) 0,rgba(255,255,255,.02) 1px,transparent 1px,transparent 20px);
+  pointer-events:none;
+}
+.modal-hd::after{
+  content:'';position:absolute;bottom:0;left:24px;right:24px;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(196,160,40,.38),transparent);
+}
+.modal-title{
+  font-size:1.6em;font-weight:900;letter-spacing:4px;text-indent:4px;
+  text-shadow:0 1px 6px rgba(0,0,0,.3);color:#FFF8F0;position:relative;
+}
+.modal-sub{
+  font-family:var(--sans);font-size:.72em;opacity:.68;
+  margin-top:5px;letter-spacing:1px;position:relative;color:#F0DDD0;
+}
+.modal-body{padding:20px 24px;overflow-y:auto;flex:1}
 .row{
   display:flex;align-items:flex-start;
-  padding:8px 0;border-bottom:1px solid #f0e8da;font-size:.88em;
+  padding:9px 0;border-bottom:1px solid var(--bdr-l);font-size:.88em;
 }
 .row:last-child{border-bottom:none}
 .lbl{
-  color:#b09070;width:70px;flex-shrink:0;font-size:.85em;
-  padding-top:1px;letter-spacing:.5px;
+  font-family:var(--sans);color:var(--ink-30);width:72px;flex-shrink:0;
+  font-size:.83em;padding-top:1px;letter-spacing:.5px;
 }
-.val{color:#2c1a0e;flex:1;line-height:1.7}
-.val a{color:#8b3a0f;text-decoration:none;font-weight:700;
-        border-bottom:1px dotted #c0722a;}
-.modal-ft{padding:14px 22px;background:#fdf8f0;border-top:1px solid #ede0cc;flex-shrink:0}
+.val{color:var(--ink-80);flex:1;line-height:1.75}
+.val a{
+  color:var(--red);text-decoration:none;font-weight:700;
+  border-bottom:1px solid rgba(123,24,24,.22);
+  transition:border-color var(--dur),color var(--dur);
+}
+.val a:hover{color:var(--red-md);border-bottom-color:var(--red)}
+.modal-ft{
+  padding:16px 24px;
+  background:linear-gradient(180deg,var(--bg-w),var(--bg));
+  border-top:1px solid var(--bdr-l);flex-shrink:0;
+}
+#fb-wrap{margin-top:16px;border-top:1px solid var(--bdr-l);padding-top:16px}
+#fb-wrap .fb-label{font-family:var(--sans);font-size:.78em;color:var(--ink-30);margin-bottom:10px}
+#fb-form textarea,#fb-form input[type=text]{
+  width:100%;border:1px solid var(--bdr-l);border-radius:var(--r-s);
+  padding:9px 12px;font-size:.84em;font-family:var(--sans);
+  color:var(--ink-80);background:var(--paper);
+  transition:border-color var(--dur);outline:none;resize:vertical;
+}
+#fb-form input[type=text]{margin-top:8px;resize:none}
+#fb-form textarea:focus,#fb-form input[type=text]:focus{border-color:var(--red)}
+#fb-form .btn-submit{
+  width:100%;margin-top:10px;padding:11px;
+  background:var(--paper);color:var(--red);
+  border:1.5px solid var(--red);border-radius:var(--r-s);
+  font-family:var(--sans);font-size:.88em;cursor:pointer;
+  letter-spacing:1px;font-weight:500;
+  transition:background var(--dur),color var(--dur);
+}
+#fb-form .btn-submit:hover{background:var(--red);color:#FFF8F0}
+#fb-status{font-family:var(--sans);text-align:center;font-size:.78em;margin-top:8px;color:var(--ink-50)}
 .btn-close{
-  width:100%;padding:12px;
-  background:linear-gradient(135deg,#8b3a0f,#c0722a);
-  color:#fff;border:none;border-radius:12px;
-  font-size:.95em;cursor:pointer;font-family:inherit;letter-spacing:1px;
-  box-shadow:0 3px 10px rgba(139,58,15,.35);transition:opacity .2s;
+  width:100%;padding:13px;
+  background:linear-gradient(135deg,var(--red),var(--red-md));
+  color:#FFF8F0;border:none;border-radius:var(--r-m);
+  font-size:.92em;cursor:pointer;font-family:var(--sans);
+  letter-spacing:2px;font-weight:500;box-shadow:var(--sh-sm);
+  transition:opacity var(--dur),box-shadow var(--dur),transform .15s;
 }
-.btn-close:hover{opacity:.9}
-.btn-edit{
-  width:100%;margin-top:8px;padding:11px;background:#fff;color:#8b3a0f;
-  border:1.5px solid #c0722a;border-radius:12px;
-  font-size:.9em;cursor:pointer;font-family:inherit;letter-spacing:1px;
-}
+.btn-close:hover{opacity:.9;box-shadow:var(--sh-md)}
+.btn-close:active{transform:scale(.99)}
 
 /* ── 竖列名册 ── */
 #list-view{
   display:none;flex:1;overflow-x:auto;overflow-y:auto;
   background:repeating-linear-gradient(
-    0deg,#ede7d9 0px,#ede7d9 1px,#f0ebe0 1px,#f0ebe0 28px
+    0deg,var(--bg-w) 0px,var(--bg-w) 1px,var(--bg) 1px,var(--bg) 32px
   );
-  padding:20px 16px;
+  padding:24px 20px;
 }
 #list-view.show{display:flex;align-items:flex-start;gap:0}
 .gen-col{
   display:flex;flex-direction:column;align-items:center;
-  min-width:84px;
-  border-right:1px solid #d4c0a0;
-  padding:0 8px;
+  min-width:92px;border-right:1px solid var(--bdr-l);padding:0 10px;
 }
 .gen-col:last-child{border-right:none}
 .gen-col-hd{
   display:flex;flex-direction:column;align-items:center;
-  background:linear-gradient(145deg,#5c1f00,#8b3a0f);
-  color:#fff;border-radius:12px;
-  padding:8px 12px;margin-bottom:12px;text-align:center;
-  box-shadow:0 4px 12px rgba(139,58,15,.35);
-  min-width:68px;
+  background:linear-gradient(145deg,var(--red-dk),var(--red));
+  color:#FFF8F0;border-radius:var(--r-m);
+  padding:10px 14px;margin-bottom:14px;text-align:center;
+  box-shadow:var(--sh-md);min-width:68px;
+  border:1px solid rgba(255,255,255,.08);
 }
-.gen-col-hd .ch{font-size:1.5em;font-weight:900;line-height:1.1;letter-spacing:1px}
-.gen-col-hd .ws{font-size:.65em;opacity:.8;margin-top:3px;letter-spacing:.5px}
+.gen-col-hd .ch{font-size:1.6em;font-weight:900;line-height:1.1;letter-spacing:1px}
+.gen-col-hd .ws{font-family:var(--sans);font-size:.62em;opacity:.72;margin-top:4px;letter-spacing:.5px;font-weight:300}
 .name-card{
-  background:rgba(255,253,248,.9);
-  border:1px solid #dcc9a8;border-radius:10px;
-  padding:7px 10px;margin-bottom:7px;
-  font-size:.9em;font-weight:700;
-  color:#2c1a0e;cursor:pointer;text-align:center;width:100%;
-  box-shadow:0 1px 4px rgba(0,0,0,.06);
-  transition:background .15s,box-shadow .15s,transform .15s;
+  background:rgba(255,253,248,.96);border:1px solid var(--bdr-l);border-radius:var(--r-s);
+  padding:8px 12px;margin-bottom:8px;font-size:.88em;font-weight:700;
+  color:var(--ink-80);cursor:pointer;text-align:center;width:100%;
+  box-shadow:var(--sh-xs);
+  transition:background var(--dur),box-shadow var(--dur),transform var(--dur),border-color var(--dur),color var(--dur);
   letter-spacing:.5px;
 }
 .name-card:hover{
-  background:#fff7ee;border-color:#c0722a;
-  box-shadow:0 3px 10px rgba(139,58,15,.18);
-  transform:translateY(-1px);
+  background:#FFF0E5;border-color:var(--red);box-shadow:var(--sh-sm);
+  transform:translateY(-1px);color:var(--red);
 }
+.name-card:active{transform:translateY(0)}
 </style>
 </head>
 <body>
 
 <header>
-  <h1>杜氏家谱</h1>
-  <p>共 <strong>65</strong> 位成员 &nbsp;·&nbsp; 自第15世始记</p>
+  <div class="header-body">
+    <div class="header-title-row">
+      <div class="header-line"></div>
+      <div class="header-diamond"></div>
+      <h1>杜氏家谱</h1>
+      <div class="header-diamond"></div>
+      <div class="header-line"></div>
+    </div>
+    <p>共 <strong>65</strong> 位成员 &nbsp;·&nbsp; 自第15世始记</p>
+  </div>
+  <button class="view-btn" id="view-btn" onclick="toggleView()">竖列名册</button>
 </header>
 <div class="poem">如峰田绪远 · 祥开世泽长 · 继祖承兆庆 · 勤宗永康昌</div>
 <div class="info-bar" id="info-bar" onclick="togglePoem()">
@@ -250,14 +348,10 @@ svg#tree{display:block}
   </div>
 </div>
 
-<button class="view-btn" id="view-btn" onclick="toggleView()">竖列名册</button>
-
 <div id="canvas-wrap">
   <svg id="tree" width="4080" height="835" xmlns="http://www.w3.org/2000/svg">
     <g id="root-g">
       <g class="edges" stroke="#aaa" stroke-width="1.5" fill="none">
-  <line x1="3200.0" y1="495" x2="3200.0" y2="537.8"/>
-  <line x1="3200.0" y1="537.8" x2="3200.0" y2="590.0"/>
   <line x1="3371.0" y1="215" x2="3371.0" y2="257.8"/>
   <line x1="2972.0" y1="257.8" x2="3770.0" y2="257.8"/>
   <line x1="2972.0" y1="257.8" x2="2972.0" y2="310.0"/>
@@ -265,123 +359,125 @@ svg#tree{display:block}
   <line x1="3770.0" y1="257.8" x2="3770.0" y2="310.0"/>
   <line x1="2288.0" y1="635" x2="2288.0" y2="677.8"/>
   <line x1="2288.0" y1="677.8" x2="2288.0" y2="730.0"/>
-  <line x1="3770.0" y1="355" x2="3770.0" y2="397.8"/>
-  <line x1="3580.0" y1="397.8" x2="3960.0" y2="397.8"/>
-  <line x1="3580.0" y1="397.8" x2="3580.0" y2="450.0"/>
-  <line x1="3808.0" y1="397.8" x2="3808.0" y2="450.0"/>
-  <line x1="3960.0" y1="397.8" x2="3960.0" y2="450.0"/>
+  <line x1="2440.0" y1="355" x2="2440.0" y2="397.8"/>
+  <line x1="2440.0" y1="397.8" x2="2440.0" y2="450.0"/>
+  <line x1="312.0" y1="635" x2="312.0" y2="677.8"/>
+  <line x1="312.0" y1="677.8" x2="312.0" y2="730.0"/>
+  <line x1="350.0" y1="495" x2="350.0" y2="537.8"/>
+  <line x1="160.0" y1="537.8" x2="540.0" y2="537.8"/>
+  <line x1="160.0" y1="537.8" x2="160.0" y2="590.0"/>
+  <line x1="312.0" y1="537.8" x2="312.0" y2="590.0"/>
+  <line x1="540.0" y1="537.8" x2="540.0" y2="590.0"/>
+  <line x1="3352.0" y1="495" x2="3352.0" y2="537.8"/>
+  <line x1="3352.0" y1="537.8" x2="3352.0" y2="590.0"/>
+  <line x1="1946.0" y1="355" x2="1946.0" y2="397.8"/>
+  <line x1="1680.0" y1="397.8" x2="2212.0" y2="397.8"/>
+  <line x1="1680.0" y1="397.8" x2="1680.0" y2="450.0"/>
+  <line x1="1908.0" y1="397.8" x2="1908.0" y2="450.0"/>
+  <line x1="2212.0" y1="397.8" x2="2212.0" y2="450.0"/>
+  <line x1="1908.0" y1="495" x2="1908.0" y2="537.8"/>
+  <line x1="1832.0" y1="537.8" x2="1984.0" y2="537.8"/>
+  <line x1="1832.0" y1="537.8" x2="1832.0" y2="590.0"/>
+  <line x1="1984.0" y1="537.8" x2="1984.0" y2="590.0"/>
+  <line x1="1984.0" y1="635" x2="1984.0" y2="677.8"/>
+  <line x1="1984.0" y1="677.8" x2="1984.0" y2="730.0"/>
+  <line x1="768.0" y1="495" x2="768.0" y2="537.8"/>
+  <line x1="768.0" y1="537.8" x2="768.0" y2="590.0"/>
   <line x1="540.0" y1="635" x2="540.0" y2="677.8"/>
   <line x1="464.0" y1="677.8" x2="616.0" y2="677.8"/>
   <line x1="464.0" y1="677.8" x2="464.0" y2="730.0"/>
   <line x1="616.0" y1="677.8" x2="616.0" y2="730.0"/>
+  <line x1="2744.0" y1="495" x2="2744.0" y2="537.8"/>
+  <line x1="2592.0" y1="537.8" x2="2896.0" y2="537.8"/>
+  <line x1="2592.0" y1="537.8" x2="2592.0" y2="590.0"/>
+  <line x1="2744.0" y1="537.8" x2="2744.0" y2="590.0"/>
+  <line x1="2896.0" y1="537.8" x2="2896.0" y2="590.0"/>
+  <line x1="2744.0" y1="635" x2="2744.0" y2="677.8"/>
+  <line x1="2744.0" y1="677.8" x2="2744.0" y2="730.0"/>
+  <line x1="2136.0" y1="635" x2="2136.0" y2="677.8"/>
+  <line x1="2136.0" y1="677.8" x2="2136.0" y2="730.0"/>
+  <line x1="1034.0" y1="495" x2="1034.0" y2="537.8"/>
+  <line x1="920.0" y1="537.8" x2="1148.0" y2="537.8"/>
+  <line x1="920.0" y1="537.8" x2="920.0" y2="590.0"/>
+  <line x1="1148.0" y1="537.8" x2="1148.0" y2="590.0"/>
+  <line x1="2896.0" y1="635" x2="2896.0" y2="677.8"/>
+  <line x1="2896.0" y1="677.8" x2="2896.0" y2="730.0"/>
+  <line x1="1148.0" y1="635" x2="1148.0" y2="677.8"/>
+  <line x1="1072.0" y1="677.8" x2="1224.0" y2="677.8"/>
+  <line x1="1072.0" y1="677.8" x2="1072.0" y2="730.0"/>
+  <line x1="1224.0" y1="677.8" x2="1224.0" y2="730.0"/>
+  <line x1="2972.0" y1="355" x2="2972.0" y2="397.8"/>
+  <line x1="2744.0" y1="397.8" x2="3200.0" y2="397.8"/>
+  <line x1="2744.0" y1="397.8" x2="2744.0" y2="450.0"/>
+  <line x1="3048.0" y1="397.8" x2="3048.0" y2="450.0"/>
+  <line x1="3200.0" y1="397.8" x2="3200.0" y2="450.0"/>
   <line x1="2212.0" y1="495" x2="2212.0" y2="537.8"/>
   <line x1="2136.0" y1="537.8" x2="2288.0" y2="537.8"/>
   <line x1="2136.0" y1="537.8" x2="2136.0" y2="590.0"/>
   <line x1="2288.0" y1="537.8" x2="2288.0" y2="590.0"/>
-  <line x1="2744.0" y1="635" x2="2744.0" y2="677.8"/>
-  <line x1="2744.0" y1="677.8" x2="2744.0" y2="730.0"/>
-  <line x1="3352.0" y1="495" x2="3352.0" y2="537.8"/>
-  <line x1="3352.0" y1="537.8" x2="3352.0" y2="590.0"/>
-  <line x1="2592.0" y1="635" x2="2592.0" y2="677.8"/>
-  <line x1="2592.0" y1="677.8" x2="2592.0" y2="730.0"/>
-  <line x1="3960.0" y1="495" x2="3960.0" y2="537.8"/>
-  <line x1="3960.0" y1="537.8" x2="3960.0" y2="590.0"/>
-  <line x1="312.0" y1="635" x2="312.0" y2="677.8"/>
-  <line x1="312.0" y1="677.8" x2="312.0" y2="730.0"/>
+  <line x1="3352.0" y1="355" x2="3352.0" y2="397.8"/>
+  <line x1="3352.0" y1="397.8" x2="3352.0" y2="450.0"/>
+  <line x1="2193.0" y1="215" x2="2193.0" y2="257.8"/>
+  <line x1="1946.0" y1="257.8" x2="2440.0" y2="257.8"/>
+  <line x1="1946.0" y1="257.8" x2="1946.0" y2="310.0"/>
+  <line x1="2440.0" y1="257.8" x2="2440.0" y2="310.0"/>
   <line x1="1452.0" y1="495" x2="1452.0" y2="537.8"/>
   <line x1="1376.0" y1="537.8" x2="1528.0" y2="537.8"/>
   <line x1="1376.0" y1="537.8" x2="1376.0" y2="590.0"/>
   <line x1="1528.0" y1="537.8" x2="1528.0" y2="590.0"/>
-  <line x1="901.0" y1="215" x2="901.0" y2="257.8"/>
-  <line x1="901.0" y1="257.8" x2="901.0" y2="310.0"/>
-  <line x1="1680.0" y1="635" x2="1680.0" y2="677.8"/>
-  <line x1="1680.0" y1="677.8" x2="1680.0" y2="730.0"/>
-  <line x1="768.0" y1="635" x2="768.0" y2="677.8"/>
-  <line x1="768.0" y1="677.8" x2="768.0" y2="730.0"/>
-  <line x1="3580.0" y1="495" x2="3580.0" y2="537.8"/>
-  <line x1="3504.0" y1="537.8" x2="3656.0" y2="537.8"/>
-  <line x1="3504.0" y1="537.8" x2="3504.0" y2="590.0"/>
-  <line x1="3656.0" y1="537.8" x2="3656.0" y2="590.0"/>
-  <line x1="2136.0" y1="75" x2="2136.0" y2="117.8"/>
-  <line x1="901.0" y1="117.8" x2="3371.0" y2="117.8"/>
-  <line x1="901.0" y1="117.8" x2="901.0" y2="170.0"/>
-  <line x1="2193.0" y1="117.8" x2="2193.0" y2="170.0"/>
-  <line x1="3371.0" y1="117.8" x2="3371.0" y2="170.0"/>
+  <line x1="1376.0" y1="635" x2="1376.0" y2="677.8"/>
+  <line x1="1376.0" y1="677.8" x2="1376.0" y2="730.0"/>
+  <line x1="3048.0" y1="495" x2="3048.0" y2="537.8"/>
+  <line x1="3048.0" y1="537.8" x2="3048.0" y2="590.0"/>
+  <line x1="1832.0" y1="635" x2="1832.0" y2="677.8"/>
+  <line x1="1832.0" y1="677.8" x2="1832.0" y2="730.0"/>
   <line x1="901.0" y1="355" x2="901.0" y2="397.8"/>
   <line x1="350.0" y1="397.8" x2="1452.0" y2="397.8"/>
   <line x1="350.0" y1="397.8" x2="350.0" y2="450.0"/>
   <line x1="768.0" y1="397.8" x2="768.0" y2="450.0"/>
   <line x1="1034.0" y1="397.8" x2="1034.0" y2="450.0"/>
   <line x1="1452.0" y1="397.8" x2="1452.0" y2="450.0"/>
-  <line x1="920.0" y1="635" x2="920.0" y2="677.8"/>
-  <line x1="920.0" y1="677.8" x2="920.0" y2="730.0"/>
-  <line x1="2440.0" y1="355" x2="2440.0" y2="397.8"/>
-  <line x1="2440.0" y1="397.8" x2="2440.0" y2="450.0"/>
-  <line x1="2136.0" y1="635" x2="2136.0" y2="677.8"/>
-  <line x1="2136.0" y1="677.8" x2="2136.0" y2="730.0"/>
-  <line x1="2896.0" y1="635" x2="2896.0" y2="677.8"/>
-  <line x1="2896.0" y1="677.8" x2="2896.0" y2="730.0"/>
-  <line x1="3048.0" y1="495" x2="3048.0" y2="537.8"/>
-  <line x1="3048.0" y1="537.8" x2="3048.0" y2="590.0"/>
-  <line x1="1832.0" y1="635" x2="1832.0" y2="677.8"/>
-  <line x1="1832.0" y1="677.8" x2="1832.0" y2="730.0"/>
-  <line x1="1984.0" y1="635" x2="1984.0" y2="677.8"/>
-  <line x1="1984.0" y1="677.8" x2="1984.0" y2="730.0"/>
-  <line x1="1908.0" y1="495" x2="1908.0" y2="537.8"/>
-  <line x1="1832.0" y1="537.8" x2="1984.0" y2="537.8"/>
-  <line x1="1832.0" y1="537.8" x2="1832.0" y2="590.0"/>
-  <line x1="1984.0" y1="537.8" x2="1984.0" y2="590.0"/>
-  <line x1="2744.0" y1="495" x2="2744.0" y2="537.8"/>
-  <line x1="2592.0" y1="537.8" x2="2896.0" y2="537.8"/>
-  <line x1="2592.0" y1="537.8" x2="2592.0" y2="590.0"/>
-  <line x1="2744.0" y1="537.8" x2="2744.0" y2="590.0"/>
-  <line x1="2896.0" y1="537.8" x2="2896.0" y2="590.0"/>
-  <line x1="1946.0" y1="355" x2="1946.0" y2="397.8"/>
-  <line x1="1680.0" y1="397.8" x2="2212.0" y2="397.8"/>
-  <line x1="1680.0" y1="397.8" x2="1680.0" y2="450.0"/>
-  <line x1="1908.0" y1="397.8" x2="1908.0" y2="450.0"/>
-  <line x1="2212.0" y1="397.8" x2="2212.0" y2="450.0"/>
-  <line x1="1148.0" y1="635" x2="1148.0" y2="677.8"/>
-  <line x1="1072.0" y1="677.8" x2="1224.0" y2="677.8"/>
-  <line x1="1072.0" y1="677.8" x2="1072.0" y2="730.0"/>
-  <line x1="1224.0" y1="677.8" x2="1224.0" y2="730.0"/>
-  <line x1="2440.0" y1="495" x2="2440.0" y2="537.8"/>
-  <line x1="2440.0" y1="537.8" x2="2440.0" y2="590.0"/>
-  <line x1="2193.0" y1="215" x2="2193.0" y2="257.8"/>
-  <line x1="1946.0" y1="257.8" x2="2440.0" y2="257.8"/>
-  <line x1="1946.0" y1="257.8" x2="1946.0" y2="310.0"/>
-  <line x1="2440.0" y1="257.8" x2="2440.0" y2="310.0"/>
-  <line x1="2972.0" y1="355" x2="2972.0" y2="397.8"/>
-  <line x1="2744.0" y1="397.8" x2="3200.0" y2="397.8"/>
-  <line x1="2744.0" y1="397.8" x2="2744.0" y2="450.0"/>
-  <line x1="3048.0" y1="397.8" x2="3048.0" y2="450.0"/>
-  <line x1="3200.0" y1="397.8" x2="3200.0" y2="450.0"/>
-  <line x1="1376.0" y1="635" x2="1376.0" y2="677.8"/>
-  <line x1="1376.0" y1="677.8" x2="1376.0" y2="730.0"/>
-  <line x1="1680.0" y1="495" x2="1680.0" y2="537.8"/>
-  <line x1="1680.0" y1="537.8" x2="1680.0" y2="590.0"/>
-  <line x1="768.0" y1="495" x2="768.0" y2="537.8"/>
-  <line x1="768.0" y1="537.8" x2="768.0" y2="590.0"/>
-  <line x1="350.0" y1="495" x2="350.0" y2="537.8"/>
-  <line x1="160.0" y1="537.8" x2="540.0" y2="537.8"/>
-  <line x1="160.0" y1="537.8" x2="160.0" y2="590.0"/>
-  <line x1="312.0" y1="537.8" x2="312.0" y2="590.0"/>
-  <line x1="540.0" y1="537.8" x2="540.0" y2="590.0"/>
-  <line x1="1034.0" y1="495" x2="1034.0" y2="537.8"/>
-  <line x1="920.0" y1="537.8" x2="1148.0" y2="537.8"/>
-  <line x1="920.0" y1="537.8" x2="920.0" y2="590.0"/>
-  <line x1="1148.0" y1="537.8" x2="1148.0" y2="590.0"/>
-  <line x1="3352.0" y1="355" x2="3352.0" y2="397.8"/>
-  <line x1="3352.0" y1="397.8" x2="3352.0" y2="450.0"/>
+  <line x1="768.0" y1="635" x2="768.0" y2="677.8"/>
+  <line x1="768.0" y1="677.8" x2="768.0" y2="730.0"/>
+  <line x1="3580.0" y1="495" x2="3580.0" y2="537.8"/>
+  <line x1="3504.0" y1="537.8" x2="3656.0" y2="537.8"/>
+  <line x1="3504.0" y1="537.8" x2="3504.0" y2="590.0"/>
+  <line x1="3656.0" y1="537.8" x2="3656.0" y2="590.0"/>
   <line x1="3048.0" y1="635" x2="3048.0" y2="677.8"/>
   <line x1="3048.0" y1="677.8" x2="3048.0" y2="730.0"/>
+  <line x1="3770.0" y1="355" x2="3770.0" y2="397.8"/>
+  <line x1="3580.0" y1="397.8" x2="3960.0" y2="397.8"/>
+  <line x1="3580.0" y1="397.8" x2="3580.0" y2="450.0"/>
+  <line x1="3808.0" y1="397.8" x2="3808.0" y2="450.0"/>
+  <line x1="3960.0" y1="397.8" x2="3960.0" y2="450.0"/>
+  <line x1="2592.0" y1="635" x2="2592.0" y2="677.8"/>
+  <line x1="2592.0" y1="677.8" x2="2592.0" y2="730.0"/>
+  <line x1="2440.0" y1="495" x2="2440.0" y2="537.8"/>
+  <line x1="2440.0" y1="537.8" x2="2440.0" y2="590.0"/>
+  <line x1="920.0" y1="635" x2="920.0" y2="677.8"/>
+  <line x1="920.0" y1="677.8" x2="920.0" y2="730.0"/>
+  <line x1="3960.0" y1="495" x2="3960.0" y2="537.8"/>
+  <line x1="3960.0" y1="537.8" x2="3960.0" y2="590.0"/>
+  <line x1="1680.0" y1="495" x2="1680.0" y2="537.8"/>
+  <line x1="1680.0" y1="537.8" x2="1680.0" y2="590.0"/>
+  <line x1="1680.0" y1="635" x2="1680.0" y2="677.8"/>
+  <line x1="1680.0" y1="677.8" x2="1680.0" y2="730.0"/>
+  <line x1="3200.0" y1="495" x2="3200.0" y2="537.8"/>
+  <line x1="3200.0" y1="537.8" x2="3200.0" y2="590.0"/>
+  <line x1="901.0" y1="215" x2="901.0" y2="257.8"/>
+  <line x1="901.0" y1="257.8" x2="901.0" y2="310.0"/>
+  <line x1="2136.0" y1="75" x2="2136.0" y2="117.8"/>
+  <line x1="901.0" y1="117.8" x2="3371.0" y2="117.8"/>
+  <line x1="901.0" y1="117.8" x2="901.0" y2="170.0"/>
+  <line x1="2193.0" y1="117.8" x2="2193.0" y2="170.0"/>
+  <line x1="3371.0" y1="117.8" x2="3371.0" y2="170.0"/>
       </g>
       <g class="gen-labels">
-  <text x="50" y="607.5" text-anchor="middle" class="gen-lbl" font-size="16px" font-weight="800" fill="#8b4513">开</text><text x="50" y="625.5" text-anchor="middle" class="gen-lbl" font-size="12px" fill="#888">19世</text>
-  <text x="50" y="467.5" text-anchor="middle" class="gen-lbl" font-size="16px" font-weight="800" fill="#8b4513">祥</text><text x="50" y="485.5" text-anchor="middle" class="gen-lbl" font-size="12px" fill="#888">18世</text>
   <text x="50" y="187.5" text-anchor="middle" class="gen-lbl" font-size="16px" font-weight="800" fill="#8b4513">绪</text><text x="50" y="205.5" text-anchor="middle" class="gen-lbl" font-size="12px" fill="#888">16世</text>
+  <text x="50" y="607.5" text-anchor="middle" class="gen-lbl" font-size="16px" font-weight="800" fill="#8b4513">开</text><text x="50" y="625.5" text-anchor="middle" class="gen-lbl" font-size="12px" fill="#888">19世</text>
   <text x="50" y="327.5" text-anchor="middle" class="gen-lbl" font-size="16px" font-weight="800" fill="#8b4513">远</text><text x="50" y="345.5" text-anchor="middle" class="gen-lbl" font-size="12px" fill="#888">17世</text>
   <text x="50" y="747.5" text-anchor="middle" class="gen-lbl" font-size="16px" font-weight="800" fill="#8b4513">世</text><text x="50" y="765.5" text-anchor="middle" class="gen-lbl" font-size="12px" fill="#888">20世</text>
+  <text x="50" y="467.5" text-anchor="middle" class="gen-lbl" font-size="16px" font-weight="800" fill="#8b4513">祥</text><text x="50" y="485.5" text-anchor="middle" class="gen-lbl" font-size="12px" fill="#888">18世</text>
   <text x="50" y="47.5" text-anchor="middle" class="gen-lbl" font-size="16px" font-weight="800" fill="#8b4513">田</text><text x="50" y="65.5" text-anchor="middle" class="gen-lbl" font-size="12px" fill="#888">15世</text>
       </g>
       <g class="nodes">
@@ -467,23 +563,15 @@ svg#tree{display:block}
     <div class="modal-body" id="m-body"></div>
     <div class="modal-ft">
       
-    <div id="fb-wrap" style="margin-top:14px;border-top:1px solid #f0dcc8;padding-top:14px">
-      <div style="font-size:.8em;color:#aaa;margin-bottom:8px">如有信息有误，请提交修改建议：</div>
+    <div id="fb-wrap">
+      <div class="fb-label">如有信息有误，请提交修改建议：</div>
       <form id="fb-form" onsubmit="submitFb(event)">
         <input type="hidden" id="fb-person" name="人物姓名">
         <textarea name="修改建议" required rows="3"
-          style="width:100%;border:1px solid #ddd;border-radius:8px;padding:8px;
-                 font-size:.85em;resize:vertical;font-family:inherit"
           placeholder="请描述需要修改的内容（如：出生年、子女信息等）…"></textarea>
-        <input type="text" name="你的姓名" placeholder="你的姓名（选填）"
-          style="width:100%;margin-top:6px;border:1px solid #ddd;border-radius:8px;
-                 padding:8px;font-size:.85em;font-family:inherit">
-        <button type="submit"
-          style="width:100%;margin-top:8px;padding:10px;background:#fff;color:#8b4513;
-                 border:1.5px solid #8b4513;border-radius:10px;font-size:.9em;cursor:pointer">
-          提交修改建议
-        </button>
-        <div id="fb-status" style="text-align:center;font-size:.8em;margin-top:6px;color:#666"></div>
+        <input type="text" name="你的姓名" placeholder="你的姓名（选填）">
+        <button type="submit" class="btn-submit">提交修改建议</button>
+        <div id="fb-status"></div>
       </form>
     </div>
       <button class="btn-close" onclick="closeModal()">关 闭</button>
@@ -492,7 +580,7 @@ svg#tree{display:block}
 </div>
 
 <script>
-const D = {"杜刘威": {"name": "杜刘威", "gen": "五世（19世，辈字：开）", "gender": "男", "father": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜继亮')\">杜继亮</a>", "mother": "—", "children": "—", "siblings": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜刘阳')\">杜刘阳</a>", "notes": "—"}, "杜继平": {"name": "杜继平", "gen": "四世（18世，辈字：祥）", "gender": "男", "father": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜诗信')\">杜诗信</a>", "mother": "—", "children": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜新峰')\">杜新峰</a>", "siblings": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜继安')\">杜继安</a>、<a href=\"javascript:void(0)\" onclick=\"showDetail('杜继恩')\">杜继恩</a>", "notes": "—"}, "杜文明": {"name": "杜文明", "gen": "五世（19世，辈字：开）", "gender": "男", "father": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜继全')\">杜继全</a>", "mother": "—", "children": "—", "siblings": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜文凯')\">杜文凯</a>", "notes": "—"}, "杜新峰": {"name": "杜新峰", "gen": "五世（19世，辈字：开）", "gender": "男", "father": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜继平')\">杜继平</a>", "mother": "—", "children": "—", "siblings": "—", "notes": "—"}, "杜继明": {"name": "杜继明", "gen": "四世（18世，辈字：祥）", "gender": "男", "father": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜诗太')\">杜诗太</a>", "mother": "—", "children": "—", "siblings": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜继亮')\">杜继亮</a>、<a href=\"javascript:void(0)\" onclick=\"showDetail('杜顺科')\">杜顺科</a>", "notes": "—"}, "杜好林": {"name": "杜好林", "gen": "二世（16世，辈字：绪）", "gender": "男", "father": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜如松')\">杜如松</a>", "mother": "—", "children": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜诗信')\">杜诗信</a>、<a href=\"javascript:void(0)\" onclick=\"showDetail('杜诗中')\">杜诗中</a>、<a href=\"javascript:void(0)\" onclick=\"showDetail('杜诗太')\">杜诗太</a>", "siblings": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜好仁')\">杜好仁</a>、<a href=\"javascript:void(0)\" onclick=\"showDetail('杜好贤')\">杜好贤</a>", "notes": "—"}, "杜搏威": {"name": "杜搏威", "gen": "五世（19世，辈字：开）", "gender": "男", "father": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜继合')\">杜继合</a>", "mother": "—", "children": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜浩然')\">杜浩然</a>", "siblings": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜华威')\">杜华威</a>", "notes": "—"}, "杜诗太": {"name": "杜诗太", "gen": "三世（17世，辈字：远）", "gender": "男", "father": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜好林')\">杜好林</a>", "mother": "—", "children": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜继亮')\">杜继亮</a>、<a href=\"javascript:void(0)\" onclick=\"showDetail('杜继明')\">杜继明</a>、<a href=\"javascript:void(0)\" onclick=\"showDetail('杜顺科')\">杜顺科</a>", "siblings": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜诗信')\">杜诗信</a>、<a href=\"javascript:void(0)\" onclick=\"showDetail('杜诗中')\">杜诗中</a>", "notes": "—"}, "杜文彬": {"name": "杜文彬", "gen": "五世（19世，辈字：开）", "gender": "男", "father": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜继武')\">杜继武</a>", "mother": "—", "children": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜秋润')\">杜秋润</a>、<a href=\"javascript:void(0)\" onclick=\"showDetail('杜雨润')\">杜雨润</a>", "siblings": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜文杰')\">杜文杰</a>、<a href=\"javascript:void(0)\" onclick=\"showDetail('杜文峰')\">杜文峰</a>", "notes": "—"}, "杜雨辰": {"name": "杜雨辰", "gen": "六世（20世，辈字：世）", "gender": "男", "father": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜文坡')\">杜文坡</a>", "mother": "—", "children": "—", "siblings": "—", "notes": "—"}, "杜宇恒": {"name": "杜宇恒", "gen": "六世（20世，辈字：世）", "gender": "男", "father": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜新辉')\">杜新辉</a>", "mother": "—", "children": "—", "siblings": "—", "notes": "—"}, "杜继合": {"name": "杜继合", "gen": "四世（18世，辈字：祥）", "gender": "男", "father": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜诗豪')\">杜诗豪</a>", "mother": "—", "children": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜华威')\">杜华威</a>、<a href=\"javascript:void(0)\" onclick=\"showDetail('杜搏威')\">杜搏威</a>", "siblings": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜继民')\">杜继民</a>、<a href=\"javascript:void(0)\" onclick=\"showDetail('杜继田')\">杜继田</a>", "notes": "—"}, "杜奕辰": {"name": "杜奕辰", "gen": "六世（20世，辈字：世）", "gender": "男", "father": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜志伟')\">杜志伟</a>", "mother": "—", "children": "—", "siblings": "—", "notes": "—"}, "杜新鹏": {"name": "杜新鹏", "gen": "五世（19世，辈字：开）", "gender": "男", "father": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜继安')\">杜继安</a>", "mother": "—", "children": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜宇晗')\">杜宇晗</a>", "siblings": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜新威')\">杜新威</a>、<a href=\"javascript:void(0)\" onclick=\"showDetail('杜新辉')\">杜新辉</a>", "notes": "—"}, "杜继军": {"name": "杜继军", "gen": "四世（18世，辈字：祥）", "gender": "男", "father": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜诗中')\">杜诗中</a>", "mother": "—", "children": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜晨龙')\">杜晨龙</a>", "siblings": "—", "notes": "—"}, "杜新威": {"name": "杜新威", "gen": "五世（19世，辈字：开）", "gender": "男", "father": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜继安')\">杜继安</a>", "mother": "—", "children": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜俊宇')\">杜俊宇</a>", "siblings": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜新鹏')\">杜新鹏</a>、<a href=\"javascript:void(0)\" onclick=\"showDetail('杜新辉')\">杜新辉</a>", "notes": "—"}, "杜顺科": {"name": "杜顺科", "gen": "四世（18世，辈字：祥）", "gender": "男", "father": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜诗太')\">杜诗太</a>", "mother": "—", "children": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜鸣一')\">杜鸣一</a>", "siblings": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜继亮')\">杜继亮</a>、<a href=\"javascript:void(0)\" onclick=\"showDetail('杜继明')\">杜继明</a>", "notes": "—"}, "杜龙翔": {"name": "杜龙翔", "gen": "六世（20世，辈字：世）", "gender": "男", "father": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜文鹏')\">杜文鹏</a>", "mother": "—", "children": "—", "siblings": "—", "notes": "—"}, "杜刘阳": {"name": "杜刘阳", "gen": "五世（19世，辈字：开）", "gender": "男", "father": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜继亮')\">杜继亮</a>", "mother": "—", "children": "—", "siblings": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜刘威')\">杜刘威</a>", "notes": "—"}, "杜文峰": {"name": "杜文峰", "gen": "五世（19世，辈字：开）", "gender": "男", "father": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜继武')\">杜继武</a>", "mother": "—", "children": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜奥翔')\">杜奥翔</a>", "siblings": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜文杰')\">杜文杰</a>、<a href=\"javascript:void(0)\" onclick=\"showDetail('杜文彬')\">杜文彬</a>", "notes": "—"}, "杜继全": {"name": "杜继全", "gen": "四世（18世，辈字：祥）", "gender": "男", "father": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜诗凡')\">杜诗凡</a>", "mother": "—", "children": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜文凯')\">杜文凯</a>、<a href=\"javascript:void(0)\" onclick=\"showDetail('杜文明')\">杜文明</a>", "siblings": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜继武')\">杜继武</a>、<a href=\"javascript:void(0)\" onclick=\"showDetail('杜继文')\">杜继文</a>、<a href=\"javascript:void(0)\" onclick=\"showDetail('杜继双')\">杜继双</a>", "notes": "—"}, "杜宇晗": {"name": "杜宇晗", "gen": "六世（20世，辈字：世）", "gender": "男", "father": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜新鹏')\">杜新鹏</a>", "mother": "—", "children": "—", "siblings": "—", "notes": "—"}, "杜好仁": {"name": "杜好仁", "gen": "二世（16世，辈字：绪）", "gender": "男", "father": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜如松')\">杜如松</a>", "mother": "—", "children": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜诗凡')\">杜诗凡</a>", "siblings": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜好贤')\">杜好贤</a>、<a href=\"javascript:void(0)\" onclick=\"showDetail('杜好林')\">杜好林</a>", "notes": "—"}, "杜文鹏": {"name": "杜文鹏", "gen": "五世（19世，辈字：开）", "gender": "男", "father": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜继民')\">杜继民</a>", "mother": "—", "children": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜龙翔')\">杜龙翔</a>", "siblings": "—", "notes": "—"}, "杜思麟": {"name": "杜思麟", "gen": "六世（20世，辈字：世）", "gender": "男", "father": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜永海')\">杜永海</a>", "mother": "—", "children": "—", "siblings": "—", "notes": "—"}, "杜大多": {"name": "杜大多", "gen": "六世（20世，辈字：世）", "gender": "男", "father": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜文辉')\">杜文辉</a>", "mother": "—", "children": "—", "siblings": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜二多')\">杜二多</a>", "notes": "—"}, "杜文坡": {"name": "杜文坡", "gen": "五世（19世，辈字：开）", "gender": "男", "father": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜继文')\">杜继文</a>", "mother": "—", "children": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜雨辰')\">杜雨辰</a>", "siblings": "—", "notes": "—"}, "杜继亮": {"name": "杜继亮", "gen": "四世（18世，辈字：祥）", "gender": "男", "father": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜诗太')\">杜诗太</a>", "mother": "—", "children": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜刘威')\">杜刘威</a>、<a href=\"javascript:void(0)\" onclick=\"showDetail('杜刘阳')\">杜刘阳</a>", "siblings": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜继明')\">杜继明</a>、<a href=\"javascript:void(0)\" onclick=\"showDetail('杜顺科')\">杜顺科</a>", "notes": "—"}, "杜鸣一": {"name": "杜鸣一", "gen": "五世（19世，辈字：开）", "gender": "男", "father": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜顺科')\">杜顺科</a>", "mother": "—", "children": "—", "siblings": "—", "notes": "—"}, "杜如松": {"name": "杜如松", "gen": "一世（15世，辈字：田）", "gender": "男", "father": "—", "mother": "—", "children": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜好仁')\">杜好仁</a>、<a href=\"javascript:void(0)\" onclick=\"showDetail('杜好贤')\">杜好贤</a>、<a href=\"javascript:void(0)\" onclick=\"showDetail('杜好林')\">杜好林</a>", "siblings": "—", "notes": "—"}, "杜诗凡": {"name": "杜诗凡", "gen": "三世（17世，辈字：远）", "gender": "男", "father": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜好仁')\">杜好仁</a>", "mother": "—", "children": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜继武')\">杜继武</a>、<a href=\"javascript:void(0)\" onclick=\"showDetail('杜继文')\">杜继文</a>、<a href=\"javascript:void(0)\" onclick=\"showDetail('杜继双')\">杜继双</a>、<a href=\"javascript:void(0)\" onclick=\"showDetail('杜继全')\">杜继全</a>", "siblings": "—", "notes": "—"}, "杜文涛": {"name": "杜文涛", "gen": "五世（19世，辈字：开）", "gender": "男", "father": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜继双')\">杜继双</a>", "mother": "—", "children": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜尚哲')\">杜尚哲</a>", "siblings": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜文辉')\">杜文辉</a>", "notes": "—"}, "杜诗义": {"name": "杜诗义", "gen": "三世（17世，辈字：远）", "gender": "男", "father": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜好贤')\">杜好贤</a>", "mother": "—", "children": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜继俊')\">杜继俊</a>", "siblings": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜诗豪')\">杜诗豪</a>", "notes": "—"}, "杜华威": {"name": "杜华威", "gen": "五世（19世，辈字：开）", "gender": "男", "father": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜继合')\">杜继合</a>", "mother": "—", "children": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜浩宇')\">杜浩宇</a>", "siblings": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜搏威')\">杜搏威</a>", "notes": "—"}, "杜新辉": {"name": "杜新辉", "gen": "五世（19世，辈字：开）", "gender": "男", "father": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜继安')\">杜继安</a>", "mother": "—", "children": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜宇恒')\">杜宇恒</a>", "siblings": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜新威')\">杜新威</a>、<a href=\"javascript:void(0)\" onclick=\"showDetail('杜新鹏')\">杜新鹏</a>", "notes": "—"}, "杜文杰": {"name": "杜文杰", "gen": "五世（19世，辈字：开）", "gender": "男", "father": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜继武')\">杜继武</a>", "mother": "—", "children": "—", "siblings": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜文峰')\">杜文峰</a>、<a href=\"javascript:void(0)\" onclick=\"showDetail('杜文彬')\">杜文彬</a>", "notes": "—"}, "杜继恩": {"name": "杜继恩", "gen": "四世（18世，辈字：祥）", "gender": "男", "father": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜诗信')\">杜诗信</a>", "mother": "—", "children": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜志伟')\">杜志伟</a>", "siblings": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜继安')\">杜继安</a>、<a href=\"javascript:void(0)\" onclick=\"showDetail('杜继平')\">杜继平</a>", "notes": "—"}, "杜康宁": {"name": "杜康宁", "gen": "五世（19世，辈字：开）", "gender": "男", "father": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜继田')\">杜继田</a>", "mother": "—", "children": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜俊熙')\">杜俊熙</a>", "siblings": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜永海')\">杜永海</a>", "notes": "—"}, "杜科举": {"name": "杜科举", "gen": "六世（20世，辈字：世）", "gender": "男", "father": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜文凯')\">杜文凯</a>", "mother": "—", "children": "—", "siblings": "—", "notes": "—"}, "杜洋": {"name": "杜洋", "gen": "五世（19世，辈字：开）", "gender": "男", "father": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜继俊')\">杜继俊</a>", "mother": "—", "children": "—", "siblings": "—", "notes": "—"}, "杜永海": {"name": "杜永海", "gen": "五世（19世，辈字：开）", "gender": "男", "father": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜继田')\">杜继田</a>", "mother": "—", "children": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜思麟')\">杜思麟</a>", "siblings": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜康宁')\">杜康宁</a>", "notes": "—"}, "杜继田": {"name": "杜继田", "gen": "四世（18世，辈字：祥）", "gender": "男", "father": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜诗豪')\">杜诗豪</a>", "mother": "—", "children": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜康宁')\">杜康宁</a>、<a href=\"javascript:void(0)\" onclick=\"showDetail('杜永海')\">杜永海</a>", "siblings": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜继民')\">杜继民</a>、<a href=\"javascript:void(0)\" onclick=\"showDetail('杜继合')\">杜继合</a>", "notes": "—"}, "杜继安": {"name": "杜继安", "gen": "四世（18世，辈字：祥）", "gender": "男", "father": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜诗信')\">杜诗信</a>", "mother": "—", "children": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜新威')\">杜新威</a>、<a href=\"javascript:void(0)\" onclick=\"showDetail('杜新鹏')\">杜新鹏</a>、<a href=\"javascript:void(0)\" onclick=\"showDetail('杜新辉')\">杜新辉</a>", "siblings": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜继恩')\">杜继恩</a>、<a href=\"javascript:void(0)\" onclick=\"showDetail('杜继平')\">杜继平</a>", "notes": "—"}, "杜诗豪": {"name": "杜诗豪", "gen": "三世（17世，辈字：远）", "gender": "男", "father": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜好贤')\">杜好贤</a>", "mother": "—", "children": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜继民')\">杜继民</a>、<a href=\"javascript:void(0)\" onclick=\"showDetail('杜继田')\">杜继田</a>、<a href=\"javascript:void(0)\" onclick=\"showDetail('杜继合')\">杜继合</a>", "siblings": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜诗义')\">杜诗义</a>", "notes": "—"}, "杜文辉": {"name": "杜文辉", "gen": "五世（19世，辈字：开）", "gender": "男", "father": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜继双')\">杜继双</a>", "mother": "—", "children": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜大多')\">杜大多</a>、<a href=\"javascript:void(0)\" onclick=\"showDetail('杜二多')\">杜二多</a>", "siblings": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜文涛')\">杜文涛</a>", "notes": "—"}, "杜浩然": {"name": "杜浩然", "gen": "六世（20世，辈字：世）", "gender": "男", "father": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜搏威')\">杜搏威</a>", "mother": "—", "children": "—", "siblings": "—", "notes": "—"}, "杜浩宇": {"name": "杜浩宇", "gen": "六世（20世，辈字：世）", "gender": "男", "father": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜华威')\">杜华威</a>", "mother": "—", "children": "—", "siblings": "—", "notes": "—"}, "杜雨润": {"name": "杜雨润", "gen": "六世（20世，辈字：世）", "gender": "男", "father": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜文彬')\">杜文彬</a>", "mother": "—", "children": "—", "siblings": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜秋润')\">杜秋润</a>", "notes": "—"}, "杜继俊": {"name": "杜继俊", "gen": "四世（18世，辈字：祥）", "gender": "男", "father": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜诗义')\">杜诗义</a>", "mother": "—", "children": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜洋')\">杜洋</a>", "siblings": "—", "notes": "—"}, "杜好贤": {"name": "杜好贤", "gen": "二世（16世，辈字：绪）", "gender": "男", "father": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜如松')\">杜如松</a>", "mother": "—", "children": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜诗豪')\">杜诗豪</a>、<a href=\"javascript:void(0)\" onclick=\"showDetail('杜诗义')\">杜诗义</a>", "siblings": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜好仁')\">杜好仁</a>、<a href=\"javascript:void(0)\" onclick=\"showDetail('杜好林')\">杜好林</a>", "notes": "—"}, "杜诗信": {"name": "杜诗信", "gen": "三世（17世，辈字：远）", "gender": "男", "father": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜好林')\">杜好林</a>", "mother": "—", "children": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜继安')\">杜继安</a>、<a href=\"javascript:void(0)\" onclick=\"showDetail('杜继恩')\">杜继恩</a>、<a href=\"javascript:void(0)\" onclick=\"showDetail('杜继平')\">杜继平</a>", "siblings": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜诗中')\">杜诗中</a>、<a href=\"javascript:void(0)\" onclick=\"showDetail('杜诗太')\">杜诗太</a>", "notes": "—"}, "杜文凯": {"name": "杜文凯", "gen": "五世（19世，辈字：开）", "gender": "男", "father": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜继全')\">杜继全</a>", "mother": "—", "children": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜科举')\">杜科举</a>", "siblings": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜文明')\">杜文明</a>", "notes": "—"}, "杜二多": {"name": "杜二多", "gen": "六世（20世，辈字：世）", "gender": "男", "father": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜文辉')\">杜文辉</a>", "mother": "—", "children": "—", "siblings": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜大多')\">杜大多</a>", "notes": "—"}, "杜继民": {"name": "杜继民", "gen": "四世（18世，辈字：祥）", "gender": "男", "father": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜诗豪')\">杜诗豪</a>", "mother": "—", "children": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜文鹏')\">杜文鹏</a>", "siblings": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜继田')\">杜继田</a>、<a href=\"javascript:void(0)\" onclick=\"showDetail('杜继合')\">杜继合</a>", "notes": "—"}, "杜秋润": {"name": "杜秋润", "gen": "六世（20世，辈字：世）", "gender": "男", "father": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜文彬')\">杜文彬</a>", "mother": "—", "children": "—", "siblings": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜雨润')\">杜雨润</a>", "notes": "—"}, "杜继文": {"name": "杜继文", "gen": "四世（18世，辈字：祥）", "gender": "男", "father": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜诗凡')\">杜诗凡</a>", "mother": "—", "children": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜文坡')\">杜文坡</a>", "siblings": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜继武')\">杜继武</a>、<a href=\"javascript:void(0)\" onclick=\"showDetail('杜继双')\">杜继双</a>、<a href=\"javascript:void(0)\" onclick=\"showDetail('杜继全')\">杜继全</a>", "notes": "—"}, "杜继武": {"name": "杜继武", "gen": "四世（18世，辈字：祥）", "gender": "男", "father": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜诗凡')\">杜诗凡</a>", "mother": "—", "children": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜文杰')\">杜文杰</a>、<a href=\"javascript:void(0)\" onclick=\"showDetail('杜文峰')\">杜文峰</a>、<a href=\"javascript:void(0)\" onclick=\"showDetail('杜文彬')\">杜文彬</a>", "siblings": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜继文')\">杜继文</a>、<a href=\"javascript:void(0)\" onclick=\"showDetail('杜继双')\">杜继双</a>、<a href=\"javascript:void(0)\" onclick=\"showDetail('杜继全')\">杜继全</a>", "notes": "—"}, "杜继双": {"name": "杜继双", "gen": "四世（18世，辈字：祥）", "gender": "男", "father": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜诗凡')\">杜诗凡</a>", "mother": "—", "children": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜文涛')\">杜文涛</a>、<a href=\"javascript:void(0)\" onclick=\"showDetail('杜文辉')\">杜文辉</a>", "siblings": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜继武')\">杜继武</a>、<a href=\"javascript:void(0)\" onclick=\"showDetail('杜继文')\">杜继文</a>、<a href=\"javascript:void(0)\" onclick=\"showDetail('杜继全')\">杜继全</a>", "notes": "—"}, "杜俊熙": {"name": "杜俊熙", "gen": "六世（20世，辈字：世）", "gender": "男", "father": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜康宁')\">杜康宁</a>", "mother": "—", "children": "—", "siblings": "—", "notes": "—"}, "杜诗中": {"name": "杜诗中", "gen": "三世（17世，辈字：远）", "gender": "男", "father": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜好林')\">杜好林</a>", "mother": "—", "children": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜继军')\">杜继军</a>", "siblings": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜诗信')\">杜诗信</a>、<a href=\"javascript:void(0)\" onclick=\"showDetail('杜诗太')\">杜诗太</a>", "notes": "—"}, "杜尚哲": {"name": "杜尚哲", "gen": "六世（20世，辈字：世）", "gender": "男", "father": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜文涛')\">杜文涛</a>", "mother": "—", "children": "—", "siblings": "—", "notes": "—"}, "杜俊宇": {"name": "杜俊宇", "gen": "六世（20世，辈字：世）", "gender": "男", "father": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜新威')\">杜新威</a>", "mother": "—", "children": "—", "siblings": "—", "notes": "—"}, "杜奥翔": {"name": "杜奥翔", "gen": "六世（20世，辈字：世）", "gender": "男", "father": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜文峰')\">杜文峰</a>", "mother": "—", "children": "—", "siblings": "—", "notes": "—"}, "杜晨龙": {"name": "杜晨龙", "gen": "五世（19世，辈字：开）", "gender": "男", "father": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜继军')\">杜继军</a>", "mother": "—", "children": "—", "siblings": "—", "notes": "—"}, "杜志伟": {"name": "杜志伟", "gen": "五世（19世，辈字：开）", "gender": "男", "father": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜继恩')\">杜继恩</a>", "mother": "—", "children": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜奕辰')\">杜奕辰</a>", "siblings": "—", "notes": "—"}};
+const D = {"杜好林": {"name": "杜好林", "gen": "二世（16世，辈字：绪）", "gender": "男", "father": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜如松')\">杜如松</a>", "mother": "—", "children": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜诗信')\">杜诗信</a>、<a href=\"javascript:void(0)\" onclick=\"showDetail('杜诗中')\">杜诗中</a>、<a href=\"javascript:void(0)\" onclick=\"showDetail('杜诗太')\">杜诗太</a>", "siblings": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜好仁')\">杜好仁</a>、<a href=\"javascript:void(0)\" onclick=\"showDetail('杜好贤')\">杜好贤</a>", "notes": "—"}, "杜搏威": {"name": "杜搏威", "gen": "五世（19世，辈字：开）", "gender": "男", "father": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜继合')\">杜继合</a>", "mother": "—", "children": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜浩然')\">杜浩然</a>", "siblings": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜华威')\">杜华威</a>", "notes": "—"}, "杜诗义": {"name": "杜诗义", "gen": "三世（17世，辈字：远）", "gender": "男", "father": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜好贤')\">杜好贤</a>", "mother": "—", "children": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜继俊')\">杜继俊</a>", "siblings": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜诗豪')\">杜诗豪</a>", "notes": "—"}, "杜晨龙": {"name": "杜晨龙", "gen": "五世（19世，辈字：开）", "gender": "男", "father": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜继军')\">杜继军</a>", "mother": "—", "children": "—", "siblings": "—", "notes": "—"}, "杜尚哲": {"name": "杜尚哲", "gen": "六世（20世，辈字：世）", "gender": "男", "father": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜文涛')\">杜文涛</a>", "mother": "—", "children": "—", "siblings": "—", "notes": "—"}, "杜文峰": {"name": "杜文峰", "gen": "五世（19世，辈字：开）", "gender": "男", "father": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜继武')\">杜继武</a>", "mother": "—", "children": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜奥翔')\">杜奥翔</a>", "siblings": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜文杰')\">杜文杰</a>、<a href=\"javascript:void(0)\" onclick=\"showDetail('杜文彬')\">杜文彬</a>", "notes": "—"}, "杜继武": {"name": "杜继武", "gen": "四世（18世，辈字：祥）", "gender": "男", "father": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜诗凡')\">杜诗凡</a>", "mother": "—", "children": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜文杰')\">杜文杰</a>、<a href=\"javascript:void(0)\" onclick=\"showDetail('杜文峰')\">杜文峰</a>、<a href=\"javascript:void(0)\" onclick=\"showDetail('杜文彬')\">杜文彬</a>", "siblings": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜继文')\">杜继文</a>、<a href=\"javascript:void(0)\" onclick=\"showDetail('杜继双')\">杜继双</a>、<a href=\"javascript:void(0)\" onclick=\"showDetail('杜继全')\">杜继全</a>", "notes": "—"}, "杜继军": {"name": "杜继军", "gen": "四世（18世，辈字：祥）", "gender": "男", "father": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜诗中')\">杜诗中</a>", "mother": "—", "children": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜晨龙')\">杜晨龙</a>", "siblings": "—", "notes": "—"}, "杜诗豪": {"name": "杜诗豪", "gen": "三世（17世，辈字：远）", "gender": "男", "father": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜好贤')\">杜好贤</a>", "mother": "—", "children": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜继民')\">杜继民</a>、<a href=\"javascript:void(0)\" onclick=\"showDetail('杜继田')\">杜继田</a>、<a href=\"javascript:void(0)\" onclick=\"showDetail('杜继合')\">杜继合</a>", "siblings": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜诗义')\">杜诗义</a>", "notes": "—"}, "杜宇晗": {"name": "杜宇晗", "gen": "六世（20世，辈字：世）", "gender": "男", "father": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜新鹏')\">杜新鹏</a>", "mother": "—", "children": "—", "siblings": "—", "notes": "—"}, "杜继田": {"name": "杜继田", "gen": "四世（18世，辈字：祥）", "gender": "男", "father": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜诗豪')\">杜诗豪</a>", "mother": "—", "children": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜康宁')\">杜康宁</a>、<a href=\"javascript:void(0)\" onclick=\"showDetail('杜永海')\">杜永海</a>", "siblings": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜继民')\">杜继民</a>、<a href=\"javascript:void(0)\" onclick=\"showDetail('杜继合')\">杜继合</a>", "notes": "—"}, "杜永海": {"name": "杜永海", "gen": "五世（19世，辈字：开）", "gender": "男", "father": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜继田')\">杜继田</a>", "mother": "—", "children": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜思麟')\">杜思麟</a>", "siblings": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜康宁')\">杜康宁</a>", "notes": "—"}, "杜继文": {"name": "杜继文", "gen": "四世（18世，辈字：祥）", "gender": "男", "father": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜诗凡')\">杜诗凡</a>", "mother": "—", "children": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜文坡')\">杜文坡</a>", "siblings": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜继武')\">杜继武</a>、<a href=\"javascript:void(0)\" onclick=\"showDetail('杜继双')\">杜继双</a>、<a href=\"javascript:void(0)\" onclick=\"showDetail('杜继全')\">杜继全</a>", "notes": "—"}, "杜文彬": {"name": "杜文彬", "gen": "五世（19世，辈字：开）", "gender": "男", "father": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜继武')\">杜继武</a>", "mother": "—", "children": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜秋润')\">杜秋润</a>、<a href=\"javascript:void(0)\" onclick=\"showDetail('杜雨润')\">杜雨润</a>", "siblings": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜文杰')\">杜文杰</a>、<a href=\"javascript:void(0)\" onclick=\"showDetail('杜文峰')\">杜文峰</a>", "notes": "—"}, "杜文明": {"name": "杜文明", "gen": "五世（19世，辈字：开）", "gender": "男", "father": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜继全')\">杜继全</a>", "mother": "—", "children": "—", "siblings": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜文凯')\">杜文凯</a>", "notes": "—"}, "杜继安": {"name": "杜继安", "gen": "四世（18世，辈字：祥）", "gender": "男", "father": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜诗信')\">杜诗信</a>", "mother": "—", "children": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜新威')\">杜新威</a>、<a href=\"javascript:void(0)\" onclick=\"showDetail('杜新鹏')\">杜新鹏</a>、<a href=\"javascript:void(0)\" onclick=\"showDetail('杜新辉')\">杜新辉</a>", "siblings": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜继恩')\">杜继恩</a>、<a href=\"javascript:void(0)\" onclick=\"showDetail('杜继平')\">杜继平</a>", "notes": "—"}, "杜鸣一": {"name": "杜鸣一", "gen": "五世（19世，辈字：开）", "gender": "男", "father": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜顺科')\">杜顺科</a>", "mother": "—", "children": "—", "siblings": "—", "notes": "—"}, "杜浩宇": {"name": "杜浩宇", "gen": "六世（20世，辈字：世）", "gender": "男", "father": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜华威')\">杜华威</a>", "mother": "—", "children": "—", "siblings": "—", "notes": "—"}, "杜新鹏": {"name": "杜新鹏", "gen": "五世（19世，辈字：开）", "gender": "男", "father": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜继安')\">杜继安</a>", "mother": "—", "children": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜宇晗')\">杜宇晗</a>", "siblings": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜新威')\">杜新威</a>、<a href=\"javascript:void(0)\" onclick=\"showDetail('杜新辉')\">杜新辉</a>", "notes": "—"}, "杜文杰": {"name": "杜文杰", "gen": "五世（19世，辈字：开）", "gender": "男", "father": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜继武')\">杜继武</a>", "mother": "—", "children": "—", "siblings": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜文峰')\">杜文峰</a>、<a href=\"javascript:void(0)\" onclick=\"showDetail('杜文彬')\">杜文彬</a>", "notes": "—"}, "杜刘威": {"name": "杜刘威", "gen": "五世（19世，辈字：开）", "gender": "男", "father": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜继亮')\">杜继亮</a>", "mother": "—", "children": "—", "siblings": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜刘阳')\">杜刘阳</a>", "notes": "—"}, "杜华威": {"name": "杜华威", "gen": "五世（19世，辈字：开）", "gender": "男", "father": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜继合')\">杜继合</a>", "mother": "—", "children": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜浩宇')\">杜浩宇</a>", "siblings": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜搏威')\">杜搏威</a>", "notes": "—"}, "杜继双": {"name": "杜继双", "gen": "四世（18世，辈字：祥）", "gender": "男", "father": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜诗凡')\">杜诗凡</a>", "mother": "—", "children": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜文涛')\">杜文涛</a>、<a href=\"javascript:void(0)\" onclick=\"showDetail('杜文辉')\">杜文辉</a>", "siblings": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜继武')\">杜继武</a>、<a href=\"javascript:void(0)\" onclick=\"showDetail('杜继文')\">杜继文</a>、<a href=\"javascript:void(0)\" onclick=\"showDetail('杜继全')\">杜继全</a>", "notes": "—"}, "杜二多": {"name": "杜二多", "gen": "六世（20世，辈字：世）", "gender": "男", "father": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜文辉')\">杜文辉</a>", "mother": "—", "children": "—", "siblings": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜大多')\">杜大多</a>", "notes": "—"}, "杜新辉": {"name": "杜新辉", "gen": "五世（19世，辈字：开）", "gender": "男", "father": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜继安')\">杜继安</a>", "mother": "—", "children": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜宇恒')\">杜宇恒</a>", "siblings": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜新威')\">杜新威</a>、<a href=\"javascript:void(0)\" onclick=\"showDetail('杜新鹏')\">杜新鹏</a>", "notes": "—"}, "杜文辉": {"name": "杜文辉", "gen": "五世（19世，辈字：开）", "gender": "男", "father": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜继双')\">杜继双</a>", "mother": "—", "children": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜大多')\">杜大多</a>、<a href=\"javascript:void(0)\" onclick=\"showDetail('杜二多')\">杜二多</a>", "siblings": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜文涛')\">杜文涛</a>", "notes": "—"}, "杜诗信": {"name": "杜诗信", "gen": "三世（17世，辈字：远）", "gender": "男", "father": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜好林')\">杜好林</a>", "mother": "—", "children": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜继安')\">杜继安</a>、<a href=\"javascript:void(0)\" onclick=\"showDetail('杜继恩')\">杜继恩</a>、<a href=\"javascript:void(0)\" onclick=\"showDetail('杜继平')\">杜继平</a>", "siblings": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜诗中')\">杜诗中</a>、<a href=\"javascript:void(0)\" onclick=\"showDetail('杜诗太')\">杜诗太</a>", "notes": "—"}, "杜继合": {"name": "杜继合", "gen": "四世（18世，辈字：祥）", "gender": "男", "father": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜诗豪')\">杜诗豪</a>", "mother": "—", "children": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜华威')\">杜华威</a>、<a href=\"javascript:void(0)\" onclick=\"showDetail('杜搏威')\">杜搏威</a>", "siblings": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜继民')\">杜继民</a>、<a href=\"javascript:void(0)\" onclick=\"showDetail('杜继田')\">杜继田</a>", "notes": "—"}, "杜浩然": {"name": "杜浩然", "gen": "六世（20世，辈字：世）", "gender": "男", "father": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜搏威')\">杜搏威</a>", "mother": "—", "children": "—", "siblings": "—", "notes": "—"}, "杜奕辰": {"name": "杜奕辰", "gen": "六世（20世，辈字：世）", "gender": "男", "father": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜志伟')\">杜志伟</a>", "mother": "—", "children": "—", "siblings": "—", "notes": "—"}, "杜诗中": {"name": "杜诗中", "gen": "三世（17世，辈字：远）", "gender": "男", "father": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜好林')\">杜好林</a>", "mother": "—", "children": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜继军')\">杜继军</a>", "siblings": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜诗信')\">杜诗信</a>、<a href=\"javascript:void(0)\" onclick=\"showDetail('杜诗太')\">杜诗太</a>", "notes": "—"}, "杜好贤": {"name": "杜好贤", "gen": "二世（16世，辈字：绪）", "gender": "男", "father": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜如松')\">杜如松</a>", "mother": "—", "children": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜诗豪')\">杜诗豪</a>、<a href=\"javascript:void(0)\" onclick=\"showDetail('杜诗义')\">杜诗义</a>", "siblings": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜好仁')\">杜好仁</a>、<a href=\"javascript:void(0)\" onclick=\"showDetail('杜好林')\">杜好林</a>", "notes": "—"}, "杜继全": {"name": "杜继全", "gen": "四世（18世，辈字：祥）", "gender": "男", "father": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜诗凡')\">杜诗凡</a>", "mother": "—", "children": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜文凯')\">杜文凯</a>、<a href=\"javascript:void(0)\" onclick=\"showDetail('杜文明')\">杜文明</a>", "siblings": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜继武')\">杜继武</a>、<a href=\"javascript:void(0)\" onclick=\"showDetail('杜继文')\">杜继文</a>、<a href=\"javascript:void(0)\" onclick=\"showDetail('杜继双')\">杜继双</a>", "notes": "—"}, "杜雨润": {"name": "杜雨润", "gen": "六世（20世，辈字：世）", "gender": "男", "father": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜文彬')\">杜文彬</a>", "mother": "—", "children": "—", "siblings": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜秋润')\">杜秋润</a>", "notes": "—"}, "杜俊宇": {"name": "杜俊宇", "gen": "六世（20世，辈字：世）", "gender": "男", "father": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜新威')\">杜新威</a>", "mother": "—", "children": "—", "siblings": "—", "notes": "—"}, "杜俊熙": {"name": "杜俊熙", "gen": "六世（20世，辈字：世）", "gender": "男", "father": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜康宁')\">杜康宁</a>", "mother": "—", "children": "—", "siblings": "—", "notes": "—"}, "杜宇恒": {"name": "杜宇恒", "gen": "六世（20世，辈字：世）", "gender": "男", "father": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜新辉')\">杜新辉</a>", "mother": "—", "children": "—", "siblings": "—", "notes": "—"}, "杜文凯": {"name": "杜文凯", "gen": "五世（19世，辈字：开）", "gender": "男", "father": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜继全')\">杜继全</a>", "mother": "—", "children": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜科举')\">杜科举</a>", "siblings": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜文明')\">杜文明</a>", "notes": "—"}, "杜继恩": {"name": "杜继恩", "gen": "四世（18世，辈字：祥）", "gender": "男", "father": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜诗信')\">杜诗信</a>", "mother": "—", "children": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜志伟')\">杜志伟</a>", "siblings": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜继安')\">杜继安</a>、<a href=\"javascript:void(0)\" onclick=\"showDetail('杜继平')\">杜继平</a>", "notes": "—"}, "杜康宁": {"name": "杜康宁", "gen": "五世（19世，辈字：开）", "gender": "男", "father": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜继田')\">杜继田</a>", "mother": "—", "children": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜俊熙')\">杜俊熙</a>", "siblings": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜永海')\">杜永海</a>", "notes": "—"}, "杜诗凡": {"name": "杜诗凡", "gen": "三世（17世，辈字：远）", "gender": "男", "father": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜好仁')\">杜好仁</a>", "mother": "—", "children": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜继武')\">杜继武</a>、<a href=\"javascript:void(0)\" onclick=\"showDetail('杜继文')\">杜继文</a>、<a href=\"javascript:void(0)\" onclick=\"showDetail('杜继双')\">杜继双</a>、<a href=\"javascript:void(0)\" onclick=\"showDetail('杜继全')\">杜继全</a>", "siblings": "—", "notes": "—"}, "杜奥翔": {"name": "杜奥翔", "gen": "六世（20世，辈字：世）", "gender": "男", "father": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜文峰')\">杜文峰</a>", "mother": "—", "children": "—", "siblings": "—", "notes": "—"}, "杜继明": {"name": "杜继明", "gen": "四世（18世，辈字：祥）", "gender": "男", "father": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜诗太')\">杜诗太</a>", "mother": "—", "children": "—", "siblings": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜继亮')\">杜继亮</a>、<a href=\"javascript:void(0)\" onclick=\"showDetail('杜顺科')\">杜顺科</a>", "notes": "—"}, "杜刘阳": {"name": "杜刘阳", "gen": "五世（19世，辈字：开）", "gender": "男", "father": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜继亮')\">杜继亮</a>", "mother": "—", "children": "—", "siblings": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜刘威')\">杜刘威</a>", "notes": "—"}, "杜文坡": {"name": "杜文坡", "gen": "五世（19世，辈字：开）", "gender": "男", "father": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜继文')\">杜继文</a>", "mother": "—", "children": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜雨辰')\">杜雨辰</a>", "siblings": "—", "notes": "—"}, "杜继亮": {"name": "杜继亮", "gen": "四世（18世，辈字：祥）", "gender": "男", "father": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜诗太')\">杜诗太</a>", "mother": "—", "children": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜刘威')\">杜刘威</a>、<a href=\"javascript:void(0)\" onclick=\"showDetail('杜刘阳')\">杜刘阳</a>", "siblings": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜继明')\">杜继明</a>、<a href=\"javascript:void(0)\" onclick=\"showDetail('杜顺科')\">杜顺科</a>", "notes": "—"}, "杜龙翔": {"name": "杜龙翔", "gen": "六世（20世，辈字：世）", "gender": "男", "father": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜文鹏')\">杜文鹏</a>", "mother": "—", "children": "—", "siblings": "—", "notes": "—"}, "杜洋": {"name": "杜洋", "gen": "五世（19世，辈字：开）", "gender": "男", "father": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜继俊')\">杜继俊</a>", "mother": "—", "children": "—", "siblings": "—", "notes": "—"}, "杜志伟": {"name": "杜志伟", "gen": "五世（19世，辈字：开）", "gender": "男", "father": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜继恩')\">杜继恩</a>", "mother": "—", "children": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜奕辰')\">杜奕辰</a>", "siblings": "—", "notes": "—"}, "杜诗太": {"name": "杜诗太", "gen": "三世（17世，辈字：远）", "gender": "男", "father": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜好林')\">杜好林</a>", "mother": "—", "children": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜继亮')\">杜继亮</a>、<a href=\"javascript:void(0)\" onclick=\"showDetail('杜继明')\">杜继明</a>、<a href=\"javascript:void(0)\" onclick=\"showDetail('杜顺科')\">杜顺科</a>", "siblings": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜诗信')\">杜诗信</a>、<a href=\"javascript:void(0)\" onclick=\"showDetail('杜诗中')\">杜诗中</a>", "notes": "—"}, "杜思麟": {"name": "杜思麟", "gen": "六世（20世，辈字：世）", "gender": "男", "father": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜永海')\">杜永海</a>", "mother": "—", "children": "—", "siblings": "—", "notes": "—"}, "杜新峰": {"name": "杜新峰", "gen": "五世（19世，辈字：开）", "gender": "男", "father": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜继平')\">杜继平</a>", "mother": "—", "children": "—", "siblings": "—", "notes": "—"}, "杜新威": {"name": "杜新威", "gen": "五世（19世，辈字：开）", "gender": "男", "father": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜继安')\">杜继安</a>", "mother": "—", "children": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜俊宇')\">杜俊宇</a>", "siblings": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜新鹏')\">杜新鹏</a>、<a href=\"javascript:void(0)\" onclick=\"showDetail('杜新辉')\">杜新辉</a>", "notes": "—"}, "杜雨辰": {"name": "杜雨辰", "gen": "六世（20世，辈字：世）", "gender": "男", "father": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜文坡')\">杜文坡</a>", "mother": "—", "children": "—", "siblings": "—", "notes": "—"}, "杜继俊": {"name": "杜继俊", "gen": "四世（18世，辈字：祥）", "gender": "男", "father": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜诗义')\">杜诗义</a>", "mother": "—", "children": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜洋')\">杜洋</a>", "siblings": "—", "notes": "—"}, "杜文涛": {"name": "杜文涛", "gen": "五世（19世，辈字：开）", "gender": "男", "father": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜继双')\">杜继双</a>", "mother": "—", "children": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜尚哲')\">杜尚哲</a>", "siblings": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜文辉')\">杜文辉</a>", "notes": "—"}, "杜秋润": {"name": "杜秋润", "gen": "六世（20世，辈字：世）", "gender": "男", "father": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜文彬')\">杜文彬</a>", "mother": "—", "children": "—", "siblings": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜雨润')\">杜雨润</a>", "notes": "—"}, "杜顺科": {"name": "杜顺科", "gen": "四世（18世，辈字：祥）", "gender": "男", "father": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜诗太')\">杜诗太</a>", "mother": "—", "children": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜鸣一')\">杜鸣一</a>", "siblings": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜继亮')\">杜继亮</a>、<a href=\"javascript:void(0)\" onclick=\"showDetail('杜继明')\">杜继明</a>", "notes": "—"}, "杜继民": {"name": "杜继民", "gen": "四世（18世，辈字：祥）", "gender": "男", "father": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜诗豪')\">杜诗豪</a>", "mother": "—", "children": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜文鹏')\">杜文鹏</a>", "siblings": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜继田')\">杜继田</a>、<a href=\"javascript:void(0)\" onclick=\"showDetail('杜继合')\">杜继合</a>", "notes": "—"}, "杜大多": {"name": "杜大多", "gen": "六世（20世，辈字：世）", "gender": "男", "father": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜文辉')\">杜文辉</a>", "mother": "—", "children": "—", "siblings": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜二多')\">杜二多</a>", "notes": "—"}, "杜文鹏": {"name": "杜文鹏", "gen": "五世（19世，辈字：开）", "gender": "男", "father": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜继民')\">杜继民</a>", "mother": "—", "children": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜龙翔')\">杜龙翔</a>", "siblings": "—", "notes": "—"}, "杜继平": {"name": "杜继平", "gen": "四世（18世，辈字：祥）", "gender": "男", "father": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜诗信')\">杜诗信</a>", "mother": "—", "children": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜新峰')\">杜新峰</a>", "siblings": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜继安')\">杜继安</a>、<a href=\"javascript:void(0)\" onclick=\"showDetail('杜继恩')\">杜继恩</a>", "notes": "—"}, "杜好仁": {"name": "杜好仁", "gen": "二世（16世，辈字：绪）", "gender": "男", "father": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜如松')\">杜如松</a>", "mother": "—", "children": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜诗凡')\">杜诗凡</a>", "siblings": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜好贤')\">杜好贤</a>、<a href=\"javascript:void(0)\" onclick=\"showDetail('杜好林')\">杜好林</a>", "notes": "—"}, "杜如松": {"name": "杜如松", "gen": "一世（15世，辈字：田）", "gender": "男", "father": "—", "mother": "—", "children": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜好仁')\">杜好仁</a>、<a href=\"javascript:void(0)\" onclick=\"showDetail('杜好贤')\">杜好贤</a>、<a href=\"javascript:void(0)\" onclick=\"showDetail('杜好林')\">杜好林</a>", "siblings": "—", "notes": "—"}, "杜科举": {"name": "杜科举", "gen": "六世（20世，辈字：世）", "gender": "男", "father": "<a href=\"javascript:void(0)\" onclick=\"showDetail('杜文凯')\">杜文凯</a>", "mother": "—", "children": "—", "siblings": "—", "notes": "—"}};
 
 async function submitFb(e) {
   e.preventDefault();
