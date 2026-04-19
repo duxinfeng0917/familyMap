@@ -1,0 +1,33 @@
+# Python
+.venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.egg-info/
+
+# Obsidian
+.obsidian/workspace.json
+.obsidian/plugins/
+
+# macOS
+.DS_Store
+**/.DS_Store
+._*
+
+# Images (大体积原始图片)
+family_map.jpg
+new_file.png
+
+# Word / Office 临时文件
+~$*.docx
+~$*.xlsx
+
+# Claude Code 内部
+.claude/
+
+# 编辑器
+.vscode/
+*.swp
+*.swo
