@@ -281,23 +281,15 @@ def generate(people):
 
     if FORMSPREE_ENDPOINT:
         feedback_block = f'''
-    <div id="fb-wrap" style="margin-top:14px;border-top:1px solid #f0dcc8;padding-top:14px">
-      <div style="font-size:.8em;color:#aaa;margin-bottom:8px">如有信息有误，请提交修改建议：</div>
+    <div id="fb-wrap">
+      <div class="fb-label">如有信息有误，请提交修改建议：</div>
       <form id="fb-form" onsubmit="submitFb(event)">
         <input type="hidden" id="fb-person" name="人物姓名">
         <textarea name="修改建议" required rows="3"
-          style="width:100%;border:1px solid #ddd;border-radius:8px;padding:8px;
-                 font-size:.85em;resize:vertical;font-family:inherit"
           placeholder="请描述需要修改的内容（如：出生年、子女信息等）…"></textarea>
-        <input type="text" name="你的姓名" placeholder="你的姓名（选填）"
-          style="width:100%;margin-top:6px;border:1px solid #ddd;border-radius:8px;
-                 padding:8px;font-size:.85em;font-family:inherit">
-        <button type="submit"
-          style="width:100%;margin-top:8px;padding:10px;background:#fff;color:#8b4513;
-                 border:1.5px solid #8b4513;border-radius:10px;font-size:.9em;cursor:pointer">
-          提交修改建议
-        </button>
-        <div id="fb-status" style="text-align:center;font-size:.8em;margin-top:6px;color:#666"></div>
+        <input type="text" name="你的姓名" placeholder="你的姓名（选填）">
+        <button type="submit" class="btn-submit">提交修改建议</button>
+        <div id="fb-status"></div>
       </form>
     </div>'''
         feedback_js = f'''
@@ -330,219 +322,317 @@ async function submitFb(e) {{
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
 <title>杜氏家谱</title>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&family=Noto+Serif+SC:wght@400;600;700;900&display=swap');
+
+:root{{
+  --red:    #7B1818;
+  --red-dk: #4E0F0F;
+  --red-md: #9A2424;
+  --gold:   #B07800;
+  --gold-l: #C9A030;
+  --gold-p: #EED890;
+  --ink:    #1C0A00;
+  --ink-80: #3A1E0A;
+  --ink-50: #7A5A3A;
+  --ink-30: #B09878;
+  --bg:     #FAF6EE;
+  --bg-w:   #F2EAE0;
+  --paper:  #FFFDF8;
+  --bdr:    #CEBB96;
+  --bdr-l:  #E5D8BC;
+  --sh-xs:  0 1px 3px rgba(80,20,0,.10);
+  --sh-sm:  0 2px 8px rgba(80,20,0,.14);
+  --sh-md:  0 4px 16px rgba(80,20,0,.18);
+  --sh-lg:  0 8px 32px rgba(80,20,0,.22);
+  --sh-xl:  0 16px 48px rgba(0,0,0,.28);
+  --serif:  "Noto Serif SC","PingFang SC","STSong","SimSun",serif;
+  --sans:   "Noto Sans SC","PingFang SC","STHeiti",sans-serif;
+  --dur:    200ms;
+  --ease:   cubic-bezier(.25,.46,.45,.94);
+  --r-s:    8px;
+  --r-m:    12px;
+  --r-l:    18px;
+  --r-xl:   24px;
+}}
+
 *{{box-sizing:border-box;margin:0;padding:0}}
 body{{
-  font-family:"Noto Serif SC","PingFang SC","STSong","SimSun",serif;
-  background:#f0ebe0;color:#2c1a0e;
+  font-family:var(--serif);
+  background:var(--bg);color:var(--ink);
   display:flex;flex-direction:column;height:100vh;overflow:hidden;
 }}
 
-/* ── 顶部 header ── */
+/* ── Header ── */
 header{{
-  background:linear-gradient(160deg,#5c1f00 0%,#8b3a0f 50%,#a8521e 100%);
-  color:#fff;padding:12px 16px 10px;text-align:center;flex-shrink:0;
-  position:relative;
-  box-shadow:0 3px 12px rgba(0,0,0,.35);
+  background:linear-gradient(160deg,var(--red-dk) 0%,var(--red) 55%,var(--red-md) 100%);
+  color:#fff;padding:14px 16px 12px;text-align:center;flex-shrink:0;
+  position:relative;box-shadow:0 4px 20px rgba(0,0,0,.38);overflow:hidden;
 }}
 header::before{{
   content:'';position:absolute;inset:0;
-  background:repeating-linear-gradient(
-    90deg,transparent,transparent 18px,rgba(255,255,255,.03) 18px,rgba(255,255,255,.03) 19px
-  );pointer-events:none;
+  background-image:
+    repeating-linear-gradient(90deg,rgba(255,255,255,.022) 0,rgba(255,255,255,.022) 1px,transparent 1px,transparent 22px),
+    repeating-linear-gradient(0deg,rgba(255,255,255,.012) 0,rgba(255,255,255,.012) 1px,transparent 1px,transparent 22px);
+  pointer-events:none;
+}}
+header::after{{
+  content:'';position:absolute;top:0;left:0;right:0;height:3px;
+  background:linear-gradient(90deg,transparent 0%,var(--gold-l) 30%,var(--gold) 50%,var(--gold-l) 70%,transparent 100%);
+}}
+.header-body{{position:relative;z-index:1}}
+.header-title-row{{
+  display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:5px;
+}}
+.header-line{{
+  flex:1;max-width:72px;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(200,160,40,.55));
+}}
+.header-line:last-child{{
+  background:linear-gradient(90deg,rgba(200,160,40,.55),transparent);
+}}
+.header-diamond{{
+  width:5px;height:5px;background:var(--gold-l);
+  transform:rotate(45deg);opacity:.85;flex-shrink:0;
 }}
 header h1{{
-  font-size:1.75em;letter-spacing:8px;
-  text-shadow:0 1px 0 rgba(255,255,255,.15),0 2px 8px rgba(0,0,0,.4);
-  font-weight:900;position:relative;
+  font-size:1.78em;letter-spacing:10px;text-indent:10px;font-weight:900;
+  color:#FFF8F0;text-shadow:0 1px 0 rgba(255,255,255,.10),0 2px 12px rgba(0,0,0,.4);
 }}
-header h1::before,header h1::after{{
-  content:'◈';font-size:.5em;vertical-align:middle;
-  margin:0 10px;opacity:.6;
+header p{{
+  font-family:var(--sans);font-size:.71em;opacity:.68;letter-spacing:2px;
+  font-weight:300;color:#F5EEE8;
 }}
-header p{{font-size:.72em;margin-top:5px;opacity:.75;letter-spacing:1px}}
 
 /* ── 辈份诗横幅 ── */
 .poem{{
-  background:linear-gradient(90deg,#3d1200,#6b2e08,#3d1200);
-  color:#ffd060;text-align:center;padding:6px 12px;
-  font-size:.85em;letter-spacing:4px;flex-shrink:0;
-  text-shadow:0 1px 4px rgba(0,0,0,.5);
-  border-bottom:1px solid #2a0d00;
+  background:linear-gradient(90deg,#2A0C00 0%,#521E06 35%,#5A2208 50%,#521E06 65%,#2A0C00 100%);
+  color:var(--gold-p);text-align:center;padding:7px 16px;
+  font-size:.84em;letter-spacing:5px;text-indent:5px;flex-shrink:0;
+  font-weight:600;text-shadow:0 1px 6px rgba(0,0,0,.5);
+  border-bottom:1px solid rgba(0,0,0,.2);
 }}
 
 /* ── 沿革信息栏 ── */
 .info-bar{{
-  background:linear-gradient(90deg,#fdf8f0,#fef9f2,#fdf8f0);
-  border-bottom:1px solid #dcc9a8;
-  padding:5px 16px;font-size:.73em;color:#7a5230;line-height:1.65;
+  background:linear-gradient(90deg,var(--bg-w),var(--paper),var(--bg-w));
+  border-bottom:1px solid var(--bdr-l);padding:6px 20px;
+  font-family:var(--sans);font-size:.73em;color:var(--ink-50);line-height:1.7;
   flex-shrink:0;text-align:center;cursor:pointer;user-select:none;
-  transition:background .2s;
+  transition:background var(--dur) var(--ease);
 }}
-.info-bar:hover{{background:#fdf0e0}}
-.info-bar .hl{{color:#8b3a0f;font-weight:700}}
-.info-bar .arrow{{font-size:.8em;margin-left:4px;transition:transform .3s;display:inline-block}}
+.info-bar:hover{{background:linear-gradient(90deg,#EDE4D4,#F6F1E9,#EDE4D4)}}
+.info-bar .hl{{color:var(--red);font-weight:600}}
+.info-bar .arrow{{font-size:.8em;margin-left:4px;transition:transform .25s var(--ease);display:inline-block}}
 .info-bar.open .arrow{{transform:rotate(180deg)}}
 
 /* ── 辈份诗对照面板 ── */
 .poem-detail{{
-  display:none;
-  background:linear-gradient(180deg,#fdf8f0,#faf3e8);
-  border-bottom:1px solid #dcc9a8;
-  padding:10px 16px 12px;flex-shrink:0;
+  display:none;background:linear-gradient(180deg,var(--paper),var(--bg));
+  border-bottom:1px solid var(--bdr-l);padding:14px 20px 16px;flex-shrink:0;
 }}
 .poem-detail.show{{display:block}}
-.poem-origin{{font-size:.72em;color:#a07850;text-align:center;margin-bottom:8px;letter-spacing:1px}}
-.poem-grid{{display:flex;flex-wrap:wrap;justify-content:center;gap:5px 7px}}
+.poem-origin{{
+  font-family:var(--sans);font-size:.71em;color:var(--ink-30);
+  text-align:center;margin-bottom:12px;letter-spacing:1px;line-height:1.65;
+}}
+.poem-grid{{display:flex;flex-wrap:wrap;justify-content:center;gap:6px 8px}}
 .poem-cell{{
   display:flex;flex-direction:column;align-items:center;
-  background:#fff;border:1px solid #e0ccaa;border-radius:10px;
-  padding:5px 9px;min-width:44px;
-  box-shadow:0 1px 4px rgba(139,58,15,.08);
-  transition:transform .15s,box-shadow .15s;
+  background:var(--paper);border:1px solid var(--bdr-l);border-radius:var(--r-m);
+  padding:6px 10px;min-width:46px;box-shadow:var(--sh-xs);
+  transition:transform var(--dur) var(--ease),box-shadow var(--dur),border-color var(--dur);
 }}
-.poem-cell:hover{{transform:translateY(-1px);box-shadow:0 3px 8px rgba(139,58,15,.15)}}
-.poem-cell .pc{{font-size:1.25em;font-weight:900;color:#8b3a0f;line-height:1.2}}
-.poem-cell .pg{{font-size:.65em;color:#b09070;margin-top:2px}}
+.poem-cell:hover{{transform:translateY(-2px);box-shadow:var(--sh-sm);border-color:var(--bdr)}}
+.poem-cell .pc{{font-size:1.3em;font-weight:900;color:var(--red);line-height:1.2}}
+.poem-cell .pg{{font-family:var(--sans);font-size:.62em;color:var(--ink-30);margin-top:3px}}
 .poem-cell.active{{
-  background:linear-gradient(145deg,#8b3a0f,#c0722a);
-  border-color:#8b3a0f;
-  box-shadow:0 2px 8px rgba(139,58,15,.35);
+  background:linear-gradient(145deg,var(--red-dk),var(--red));
+  border-color:var(--red);box-shadow:var(--sh-sm),inset 0 1px 0 rgba(255,255,255,.08);
 }}
-.poem-cell.active .pc{{color:#fff}}
-.poem-cell.active .pg{{color:#ffd090}}
+.poem-cell.active .pc{{color:#FFF8F0}}
+.poem-cell.active .pg{{color:var(--gold-p);opacity:.88}}
 
 /* ── 视图切换按钮 ── */
 .view-btn{{
-  position:absolute;top:10px;right:14px;z-index:100;
-  background:linear-gradient(135deg,#8b3a0f,#c0722a);
-  color:#fff;border:none;border-radius:20px;
-  padding:7px 16px;font-size:.78em;cursor:pointer;
-  box-shadow:0 3px 10px rgba(139,58,15,.4);
-  font-family:inherit;letter-spacing:1px;
-  transition:box-shadow .2s,transform .15s;
+  position:absolute;top:50%;right:16px;transform:translateY(-50%);z-index:100;
+  background:rgba(255,255,255,.13);border:1px solid rgba(255,255,255,.28);
+  color:#FFF8F0;border-radius:var(--r-l);
+  padding:6px 16px;font-size:.75em;cursor:pointer;
+  font-family:var(--sans);letter-spacing:1.5px;font-weight:500;
+  backdrop-filter:blur(8px);
+  transition:background var(--dur),box-shadow var(--dur),transform .15s;
 }}
-.view-btn:hover{{box-shadow:0 5px 14px rgba(139,58,15,.5);transform:translateY(-1px)}}
-.view-btn:active{{transform:translateY(0)}}
+.view-btn:hover{{background:rgba(255,255,255,.22);box-shadow:0 2px 12px rgba(0,0,0,.28)}}
+.view-btn:active{{transform:translateY(calc(-50% + 1px))}}
 
 /* ── 树形画布 ── */
-#canvas-wrap{{flex:1;overflow:hidden;position:relative;cursor:grab;touch-action:none}}
+#canvas-wrap{{
+  flex:1;overflow:hidden;position:relative;cursor:grab;touch-action:none;
+  background:
+    radial-gradient(ellipse 80% 50% at 50% 0%,rgba(160,120,60,.07) 0%,transparent 65%),
+    repeating-linear-gradient(0deg,var(--bg) 0px,var(--bg) 29px,var(--bg-w) 29px,var(--bg-w) 30px);
+}}
 #canvas-wrap.dragging{{cursor:grabbing}}
 svg#tree{{display:block}}
-.node{{cursor:pointer;filter:drop-shadow(0 2px 4px rgba(0,0,0,.12))}}
-.node rect{{transition:filter .15s,transform .15s}}
-.node:hover rect{{filter:brightness(.92)}}
+.node{{cursor:pointer}}
+.node rect{{transition:filter .15s}}
+.node:hover rect{{filter:brightness(.90) drop-shadow(0 2px 6px rgba(0,0,0,.18))}}
+.node:active rect{{filter:brightness(.83)}}
 .node-name{{
-  font-size:14px;font-weight:700;fill:#1a0e00;pointer-events:none;
+  font-size:14px;font-weight:700;fill:#1A0800;pointer-events:none;
   font-family:"Noto Serif SC","PingFang SC",serif;
 }}
-.gen-lbl{{
-  font-family:"Noto Serif SC","PingFang SC",serif;
-  font-weight:700;
-}}
+.gen-lbl{{font-family:"Noto Serif SC","PingFang SC",serif;font-weight:700}}
+svg .edges line{{stroke:#C0A068 !important;stroke-opacity:.65}}
 .hint{{
-  position:absolute;bottom:14px;right:16px;font-size:.68em;color:#c0a882;
-  background:rgba(255,252,245,.85);padding:4px 10px;border-radius:20px;
-  pointer-events:none;border:1px solid #e8d5b7;letter-spacing:.5px;
-  backdrop-filter:blur(4px);
+  position:absolute;bottom:16px;right:18px;
+  font-family:var(--sans);font-size:.67em;color:var(--ink-30);
+  background:rgba(255,252,245,.92);padding:5px 12px;border-radius:var(--r-l);
+  pointer-events:none;border:1px solid var(--bdr-l);letter-spacing:.5px;
+  backdrop-filter:blur(6px);box-shadow:var(--sh-xs);
 }}
 
 /* ── 详情弹窗 ── */
 .overlay{{
   display:none;position:fixed;inset:0;
-  background:rgba(20,8,0,.55);backdrop-filter:blur(3px);
+  background:rgba(12,4,0,.62);backdrop-filter:blur(5px);
   z-index:200;align-items:center;justify-content:center;
 }}
 .overlay.on{{display:flex}}
 .modal{{
-  background:#fffdf8;border-radius:20px;padding:0;width:88%;
-  max-width:380px;max-height:85vh;overflow:hidden;
-  box-shadow:0 16px 48px rgba(0,0,0,.3);
-  display:flex;flex-direction:column;
+  background:var(--paper);border-radius:var(--r-xl);
+  width:88%;max-width:380px;max-height:88vh;overflow:hidden;
+  box-shadow:var(--sh-xl);display:flex;flex-direction:column;
+  border:1px solid var(--bdr-l);
 }}
 .modal-hd{{
-  background:linear-gradient(135deg,#5c1f00,#8b3a0f);
-  color:#fff;padding:18px 22px 14px;flex-shrink:0;
+  background:linear-gradient(150deg,var(--red-dk) 0%,var(--red) 100%);
+  color:#fff;padding:22px 24px 18px;flex-shrink:0;
+  position:relative;overflow:hidden;
 }}
-.modal-title{{font-size:1.5em;font-weight:900;letter-spacing:3px;
-              text-shadow:0 1px 4px rgba(0,0,0,.3)}}
-.modal-sub{{font-size:.72em;opacity:.75;margin-top:4px;letter-spacing:1px}}
-.modal-body{{padding:18px 22px;overflow-y:auto;flex:1}}
+.modal-hd::before{{
+  content:'';position:absolute;inset:0;
+  background:repeating-linear-gradient(90deg,rgba(255,255,255,.02) 0,rgba(255,255,255,.02) 1px,transparent 1px,transparent 20px);
+  pointer-events:none;
+}}
+.modal-hd::after{{
+  content:'';position:absolute;bottom:0;left:24px;right:24px;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(196,160,40,.38),transparent);
+}}
+.modal-title{{
+  font-size:1.6em;font-weight:900;letter-spacing:4px;text-indent:4px;
+  text-shadow:0 1px 6px rgba(0,0,0,.3);color:#FFF8F0;position:relative;
+}}
+.modal-sub{{
+  font-family:var(--sans);font-size:.72em;opacity:.68;
+  margin-top:5px;letter-spacing:1px;position:relative;color:#F0DDD0;
+}}
+.modal-body{{padding:20px 24px;overflow-y:auto;flex:1}}
 .row{{
   display:flex;align-items:flex-start;
-  padding:8px 0;border-bottom:1px solid #f0e8da;font-size:.88em;
+  padding:9px 0;border-bottom:1px solid var(--bdr-l);font-size:.88em;
 }}
 .row:last-child{{border-bottom:none}}
 .lbl{{
-  color:#b09070;width:70px;flex-shrink:0;font-size:.85em;
-  padding-top:1px;letter-spacing:.5px;
+  font-family:var(--sans);color:var(--ink-30);width:72px;flex-shrink:0;
+  font-size:.83em;padding-top:1px;letter-spacing:.5px;
 }}
-.val{{color:#2c1a0e;flex:1;line-height:1.7}}
-.val a{{color:#8b3a0f;text-decoration:none;font-weight:700;
-        border-bottom:1px dotted #c0722a;}}
-.modal-ft{{padding:14px 22px;background:#fdf8f0;border-top:1px solid #ede0cc;flex-shrink:0}}
+.val{{color:var(--ink-80);flex:1;line-height:1.75}}
+.val a{{
+  color:var(--red);text-decoration:none;font-weight:700;
+  border-bottom:1px solid rgba(123,24,24,.22);
+  transition:border-color var(--dur),color var(--dur);
+}}
+.val a:hover{{color:var(--red-md);border-bottom-color:var(--red)}}
+.modal-ft{{
+  padding:16px 24px;
+  background:linear-gradient(180deg,var(--bg-w),var(--bg));
+  border-top:1px solid var(--bdr-l);flex-shrink:0;
+}}
+#fb-wrap{{margin-top:16px;border-top:1px solid var(--bdr-l);padding-top:16px}}
+#fb-wrap .fb-label{{font-family:var(--sans);font-size:.78em;color:var(--ink-30);margin-bottom:10px}}
+#fb-form textarea,#fb-form input[type=text]{{
+  width:100%;border:1px solid var(--bdr-l);border-radius:var(--r-s);
+  padding:9px 12px;font-size:.84em;font-family:var(--sans);
+  color:var(--ink-80);background:var(--paper);
+  transition:border-color var(--dur);outline:none;resize:vertical;
+}}
+#fb-form input[type=text]{{margin-top:8px;resize:none}}
+#fb-form textarea:focus,#fb-form input[type=text]:focus{{border-color:var(--red)}}
+#fb-form .btn-submit{{
+  width:100%;margin-top:10px;padding:11px;
+  background:var(--paper);color:var(--red);
+  border:1.5px solid var(--red);border-radius:var(--r-s);
+  font-family:var(--sans);font-size:.88em;cursor:pointer;
+  letter-spacing:1px;font-weight:500;
+  transition:background var(--dur),color var(--dur);
+}}
+#fb-form .btn-submit:hover{{background:var(--red);color:#FFF8F0}}
+#fb-status{{font-family:var(--sans);text-align:center;font-size:.78em;margin-top:8px;color:var(--ink-50)}}
 .btn-close{{
-  width:100%;padding:12px;
-  background:linear-gradient(135deg,#8b3a0f,#c0722a);
-  color:#fff;border:none;border-radius:12px;
-  font-size:.95em;cursor:pointer;font-family:inherit;letter-spacing:1px;
-  box-shadow:0 3px 10px rgba(139,58,15,.35);transition:opacity .2s;
+  width:100%;padding:13px;
+  background:linear-gradient(135deg,var(--red),var(--red-md));
+  color:#FFF8F0;border:none;border-radius:var(--r-m);
+  font-size:.92em;cursor:pointer;font-family:var(--sans);
+  letter-spacing:2px;font-weight:500;box-shadow:var(--sh-sm);
+  transition:opacity var(--dur),box-shadow var(--dur),transform .15s;
 }}
-.btn-close:hover{{opacity:.9}}
-.btn-edit{{
-  width:100%;margin-top:8px;padding:11px;background:#fff;color:#8b3a0f;
-  border:1.5px solid #c0722a;border-radius:12px;
-  font-size:.9em;cursor:pointer;font-family:inherit;letter-spacing:1px;
-}}
+.btn-close:hover{{opacity:.9;box-shadow:var(--sh-md)}}
+.btn-close:active{{transform:scale(.99)}}
 
 /* ── 竖列名册 ── */
 #list-view{{
   display:none;flex:1;overflow-x:auto;overflow-y:auto;
   background:repeating-linear-gradient(
-    0deg,#ede7d9 0px,#ede7d9 1px,#f0ebe0 1px,#f0ebe0 28px
+    0deg,var(--bg-w) 0px,var(--bg-w) 1px,var(--bg) 1px,var(--bg) 32px
   );
-  padding:20px 16px;
+  padding:24px 20px;
 }}
 #list-view.show{{display:flex;align-items:flex-start;gap:0}}
 .gen-col{{
   display:flex;flex-direction:column;align-items:center;
-  min-width:84px;
-  border-right:1px solid #d4c0a0;
-  padding:0 8px;
+  min-width:92px;border-right:1px solid var(--bdr-l);padding:0 10px;
 }}
 .gen-col:last-child{{border-right:none}}
 .gen-col-hd{{
   display:flex;flex-direction:column;align-items:center;
-  background:linear-gradient(145deg,#5c1f00,#8b3a0f);
-  color:#fff;border-radius:12px;
-  padding:8px 12px;margin-bottom:12px;text-align:center;
-  box-shadow:0 4px 12px rgba(139,58,15,.35);
-  min-width:68px;
+  background:linear-gradient(145deg,var(--red-dk),var(--red));
+  color:#FFF8F0;border-radius:var(--r-m);
+  padding:10px 14px;margin-bottom:14px;text-align:center;
+  box-shadow:var(--sh-md);min-width:68px;
+  border:1px solid rgba(255,255,255,.08);
 }}
-.gen-col-hd .ch{{font-size:1.5em;font-weight:900;line-height:1.1;letter-spacing:1px}}
-.gen-col-hd .ws{{font-size:.65em;opacity:.8;margin-top:3px;letter-spacing:.5px}}
+.gen-col-hd .ch{{font-size:1.6em;font-weight:900;line-height:1.1;letter-spacing:1px}}
+.gen-col-hd .ws{{font-family:var(--sans);font-size:.62em;opacity:.72;margin-top:4px;letter-spacing:.5px;font-weight:300}}
 .name-card{{
-  background:rgba(255,253,248,.9);
-  border:1px solid #dcc9a8;border-radius:10px;
-  padding:7px 10px;margin-bottom:7px;
-  font-size:.9em;font-weight:700;
-  color:#2c1a0e;cursor:pointer;text-align:center;width:100%;
-  box-shadow:0 1px 4px rgba(0,0,0,.06);
-  transition:background .15s,box-shadow .15s,transform .15s;
+  background:rgba(255,253,248,.96);border:1px solid var(--bdr-l);border-radius:var(--r-s);
+  padding:8px 12px;margin-bottom:8px;font-size:.88em;font-weight:700;
+  color:var(--ink-80);cursor:pointer;text-align:center;width:100%;
+  box-shadow:var(--sh-xs);
+  transition:background var(--dur),box-shadow var(--dur),transform var(--dur),border-color var(--dur),color var(--dur);
   letter-spacing:.5px;
 }}
 .name-card:hover{{
-  background:#fff7ee;border-color:#c0722a;
-  box-shadow:0 3px 10px rgba(139,58,15,.18);
-  transform:translateY(-1px);
+  background:#FFF0E5;border-color:var(--red);box-shadow:var(--sh-sm);
+  transform:translateY(-1px);color:var(--red);
 }}
+.name-card:active{{transform:translateY(0)}}
 </style>
 </head>
 <body>
 
 <header>
-  <h1>杜氏家谱</h1>
-  <p>共 <strong>{count}</strong> 位成员 &nbsp;·&nbsp; 自第15世始记</p>
+  <div class="header-body">
+    <div class="header-title-row">
+      <div class="header-line"></div>
+      <div class="header-diamond"></div>
+      <h1>杜氏家谱</h1>
+      <div class="header-diamond"></div>
+      <div class="header-line"></div>
+    </div>
+    <p>共 <strong>{count}</strong> 位成员 &nbsp;·&nbsp; 自第15世始记</p>
+  </div>
+  <button class="view-btn" id="view-btn" onclick="toggleView()">竖列名册</button>
 </header>
 <div class="poem">如峰田绪远 · 祥开世泽长 · 继祖承兆庆 · 勤宗永康昌</div>
 <div class="info-bar" id="info-bar" onclick="togglePoem()">
@@ -574,8 +664,6 @@ svg#tree{{display:block}}
     <div class="poem-cell"><span class="pc">昌</span><span class="pg">32世</span></div>
   </div>
 </div>
-
-<button class="view-btn" id="view-btn" onclick="toggleView()">竖列名册</button>
 
 <div id="canvas-wrap">
   <svg id="tree" width="{canvas_w}" height="{canvas_h}" xmlns="http://www.w3.org/2000/svg">

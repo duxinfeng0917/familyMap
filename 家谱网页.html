@@ -39,24 +39,17 @@
 }
 
 *{box-sizing:border-box;margin:0;padding:0}
-
 body{
   font-family:var(--serif);
-  background:var(--bg);
-  color:var(--ink);
+  background:var(--bg);color:var(--ink);
   display:flex;flex-direction:column;height:100vh;overflow:hidden;
 }
 
 /* ── Header ── */
 header{
   background:linear-gradient(160deg,var(--red-dk) 0%,var(--red) 55%,var(--red-md) 100%);
-  color:#fff;
-  padding:14px 16px 12px;
-  text-align:center;
-  flex-shrink:0;
-  position:relative;
-  box-shadow:0 4px 20px rgba(0,0,0,.38);
-  overflow:hidden;
+  color:#fff;padding:14px 16px 12px;text-align:center;flex-shrink:0;
+  position:relative;box-shadow:0 4px 20px rgba(0,0,0,.38);overflow:hidden;
 }
 header::before{
   content:'';position:absolute;inset:0;
@@ -71,8 +64,7 @@ header::after{
 }
 .header-body{position:relative;z-index:1}
 .header-title-row{
-  display:flex;align-items:center;justify-content:center;gap:10px;
-  margin-bottom:5px;
+  display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:5px;
 }
 .header-line{
   flex:1;max-width:72px;height:1px;
@@ -82,79 +74,55 @@ header::after{
   background:linear-gradient(90deg,rgba(200,160,40,.55),transparent);
 }
 .header-diamond{
-  width:5px;height:5px;
-  background:var(--gold-l);
-  transform:rotate(45deg);
-  opacity:.85;
-  flex-shrink:0;
+  width:5px;height:5px;background:var(--gold-l);
+  transform:rotate(45deg);opacity:.85;flex-shrink:0;
 }
 header h1{
-  font-size:1.78em;
-  letter-spacing:10px;text-indent:10px;
-  font-weight:900;
-  color:#FFF8F0;
-  text-shadow:0 1px 0 rgba(255,255,255,.10),0 2px 12px rgba(0,0,0,.4);
+  font-size:1.78em;letter-spacing:10px;text-indent:10px;font-weight:900;
+  color:#FFF8F0;text-shadow:0 1px 0 rgba(255,255,255,.10),0 2px 12px rgba(0,0,0,.4);
 }
 header p{
-  font-family:var(--sans);
-  font-size:.71em;opacity:.68;letter-spacing:2px;
+  font-family:var(--sans);font-size:.71em;opacity:.68;letter-spacing:2px;
   font-weight:300;color:#F5EEE8;
 }
 
 /* ── 辈份诗横幅 ── */
 .poem{
   background:linear-gradient(90deg,#2A0C00 0%,#521E06 35%,#5A2208 50%,#521E06 65%,#2A0C00 100%);
-  color:var(--gold-p);
-  text-align:center;
-  padding:7px 16px;
-  font-size:.84em;letter-spacing:5px;text-indent:5px;
-  flex-shrink:0;
-  font-weight:600;
-  text-shadow:0 1px 6px rgba(0,0,0,.5);
+  color:var(--gold-p);text-align:center;padding:7px 16px;
+  font-size:.84em;letter-spacing:5px;text-indent:5px;flex-shrink:0;
+  font-weight:600;text-shadow:0 1px 6px rgba(0,0,0,.5);
   border-bottom:1px solid rgba(0,0,0,.2);
 }
 
 /* ── 沿革信息栏 ── */
 .info-bar{
   background:linear-gradient(90deg,var(--bg-w),var(--paper),var(--bg-w));
-  border-bottom:1px solid var(--bdr-l);
-  padding:6px 20px;
-  font-family:var(--sans);font-size:.73em;
-  color:var(--ink-50);line-height:1.7;
-  flex-shrink:0;text-align:center;
-  cursor:pointer;user-select:none;
+  border-bottom:1px solid var(--bdr-l);padding:6px 20px;
+  font-family:var(--sans);font-size:.73em;color:var(--ink-50);line-height:1.7;
+  flex-shrink:0;text-align:center;cursor:pointer;user-select:none;
   transition:background var(--dur) var(--ease);
 }
 .info-bar:hover{background:linear-gradient(90deg,#EDE4D4,#F6F1E9,#EDE4D4)}
 .info-bar .hl{color:var(--red);font-weight:600}
-.info-bar .arrow{
-  font-size:.8em;margin-left:4px;
-  transition:transform .25s var(--ease);
-  display:inline-block;
-}
+.info-bar .arrow{font-size:.8em;margin-left:4px;transition:transform .25s var(--ease);display:inline-block}
 .info-bar.open .arrow{transform:rotate(180deg)}
 
 /* ── 辈份诗对照面板 ── */
 .poem-detail{
-  display:none;
-  background:linear-gradient(180deg,var(--paper),var(--bg));
-  border-bottom:1px solid var(--bdr-l);
-  padding:14px 20px 16px;
-  flex-shrink:0;
+  display:none;background:linear-gradient(180deg,var(--paper),var(--bg));
+  border-bottom:1px solid var(--bdr-l);padding:14px 20px 16px;flex-shrink:0;
 }
 .poem-detail.show{display:block}
 .poem-origin{
-  font-family:var(--sans);font-size:.71em;
-  color:var(--ink-30);text-align:center;
-  margin-bottom:12px;letter-spacing:1px;line-height:1.65;
+  font-family:var(--sans);font-size:.71em;color:var(--ink-30);
+  text-align:center;margin-bottom:12px;letter-spacing:1px;line-height:1.65;
 }
 .poem-grid{display:flex;flex-wrap:wrap;justify-content:center;gap:6px 8px}
 .poem-cell{
   display:flex;flex-direction:column;align-items:center;
-  background:var(--paper);
-  border:1px solid var(--bdr-l);border-radius:var(--r-m);
-  padding:6px 10px;min-width:46px;
-  box-shadow:var(--sh-xs);
+  background:var(--paper);border:1px solid var(--bdr-l);border-radius:var(--r-m);
+  padding:6px 10px;min-width:46px;box-shadow:var(--sh-xs);
   transition:transform var(--dur) var(--ease),box-shadow var(--dur),border-color var(--dur);
 }
 .poem-cell:hover{transform:translateY(-2px);box-shadow:var(--sh-sm);border-color:var(--bdr)}
@@ -162,20 +130,16 @@ header p{
 .poem-cell .pg{font-family:var(--sans);font-size:.62em;color:var(--ink-30);margin-top:3px}
 .poem-cell.active{
   background:linear-gradient(145deg,var(--red-dk),var(--red));
-  border-color:var(--red);
-  box-shadow:var(--sh-sm),inset 0 1px 0 rgba(255,255,255,.08);
+  border-color:var(--red);box-shadow:var(--sh-sm),inset 0 1px 0 rgba(255,255,255,.08);
 }
 .poem-cell.active .pc{color:#FFF8F0}
 .poem-cell.active .pg{color:var(--gold-p);opacity:.88}
 
 /* ── 视图切换按钮 ── */
 .view-btn{
-  position:absolute;top:50%;right:16px;transform:translateY(-50%);
-  z-index:100;
-  background:rgba(255,255,255,.13);
-  border:1px solid rgba(255,255,255,.28);
-  color:#FFF8F0;
-  border-radius:var(--r-l);
+  position:absolute;top:50%;right:16px;transform:translateY(-50%);z-index:100;
+  background:rgba(255,255,255,.13);border:1px solid rgba(255,255,255,.28);
+  color:#FFF8F0;border-radius:var(--r-l);
   padding:6px 16px;font-size:.75em;cursor:pointer;
   font-family:var(--sans);letter-spacing:1.5px;font-weight:500;
   backdrop-filter:blur(8px);
@@ -186,13 +150,10 @@ header p{
 
 /* ── 树形画布 ── */
 #canvas-wrap{
-  flex:1;overflow:hidden;position:relative;
-  cursor:grab;touch-action:none;
+  flex:1;overflow:hidden;position:relative;cursor:grab;touch-action:none;
   background:
     radial-gradient(ellipse 80% 50% at 50% 0%,rgba(160,120,60,.07) 0%,transparent 65%),
-    repeating-linear-gradient(
-      0deg,var(--bg) 0px,var(--bg) 29px,var(--bg-w) 29px,var(--bg-w) 30px
-    );
+    repeating-linear-gradient(0deg,var(--bg) 0px,var(--bg) 29px,var(--bg-w) 29px,var(--bg-w) 30px);
 }
 #canvas-wrap.dragging{cursor:grabbing}
 svg#tree{display:block}
@@ -201,41 +162,30 @@ svg#tree{display:block}
 .node:hover rect{filter:brightness(.90) drop-shadow(0 2px 6px rgba(0,0,0,.18))}
 .node:active rect{filter:brightness(.83)}
 .node-name{
-  font-size:14px;font-weight:700;fill:#1A0800;
-  pointer-events:none;
+  font-size:14px;font-weight:700;fill:#1A0800;pointer-events:none;
   font-family:"Noto Serif SC","PingFang SC",serif;
 }
 .gen-lbl{font-family:"Noto Serif SC","PingFang SC",serif;font-weight:700}
 svg .edges line{stroke:#C0A068 !important;stroke-opacity:.65}
-
 .hint{
   position:absolute;bottom:16px;right:18px;
-  font-family:var(--sans);font-size:.67em;
-  color:var(--ink-30);
-  background:rgba(255,252,245,.92);
-  padding:5px 12px;border-radius:var(--r-l);
-  pointer-events:none;
-  border:1px solid var(--bdr-l);
-  letter-spacing:.5px;
-  backdrop-filter:blur(6px);
-  box-shadow:var(--sh-xs);
+  font-family:var(--sans);font-size:.67em;color:var(--ink-30);
+  background:rgba(255,252,245,.92);padding:5px 12px;border-radius:var(--r-l);
+  pointer-events:none;border:1px solid var(--bdr-l);letter-spacing:.5px;
+  backdrop-filter:blur(6px);box-shadow:var(--sh-xs);
 }
 
 /* ── 详情弹窗 ── */
 .overlay{
   display:none;position:fixed;inset:0;
-  background:rgba(12,4,0,.62);
-  backdrop-filter:blur(5px);
+  background:rgba(12,4,0,.62);backdrop-filter:blur(5px);
   z-index:200;align-items:center;justify-content:center;
 }
 .overlay.on{display:flex}
 .modal{
-  background:var(--paper);
-  border-radius:var(--r-xl);
-  width:88%;max-width:380px;max-height:88vh;
-  overflow:hidden;
-  box-shadow:var(--sh-xl);
-  display:flex;flex-direction:column;
+  background:var(--paper);border-radius:var(--r-xl);
+  width:88%;max-width:380px;max-height:88vh;overflow:hidden;
+  box-shadow:var(--sh-xl);display:flex;flex-direction:column;
   border:1px solid var(--bdr-l);
 }
 .modal-hd{
@@ -267,9 +217,8 @@ svg .edges line{stroke:#C0A068 !important;stroke-opacity:.65}
 }
 .row:last-child{border-bottom:none}
 .lbl{
-  font-family:var(--sans);color:var(--ink-30);
-  width:72px;flex-shrink:0;font-size:.83em;
-  padding-top:1px;letter-spacing:.5px;
+  font-family:var(--sans);color:var(--ink-30);width:72px;flex-shrink:0;
+  font-size:.83em;padding-top:1px;letter-spacing:.5px;
 }
 .val{color:var(--ink-80);flex:1;line-height:1.75}
 .val a{
@@ -286,9 +235,8 @@ svg .edges line{stroke:#C0A068 !important;stroke-opacity:.65}
 #fb-wrap{margin-top:16px;border-top:1px solid var(--bdr-l);padding-top:16px}
 #fb-wrap .fb-label{font-family:var(--sans);font-size:.78em;color:var(--ink-30);margin-bottom:10px}
 #fb-form textarea,#fb-form input[type=text]{
-  width:100%;border:1px solid var(--bdr-l);
-  border-radius:var(--r-s);padding:9px 12px;
-  font-size:.84em;font-family:var(--sans);
+  width:100%;border:1px solid var(--bdr-l);border-radius:var(--r-s);
+  padding:9px 12px;font-size:.84em;font-family:var(--sans);
   color:var(--ink-80);background:var(--paper);
   transition:border-color var(--dur);outline:none;resize:vertical;
 }
@@ -308,9 +256,8 @@ svg .edges line{stroke:#C0A068 !important;stroke-opacity:.65}
   width:100%;padding:13px;
   background:linear-gradient(135deg,var(--red),var(--red-md));
   color:#FFF8F0;border:none;border-radius:var(--r-m);
-  font-size:.92em;cursor:pointer;
-  font-family:var(--sans);letter-spacing:2px;font-weight:500;
-  box-shadow:var(--sh-sm);
+  font-size:.92em;cursor:pointer;font-family:var(--sans);
+  letter-spacing:2px;font-weight:500;box-shadow:var(--sh-sm);
   transition:opacity var(--dur),box-shadow var(--dur),transform .15s;
 }
 .btn-close:hover{opacity:.9;box-shadow:var(--sh-md)}
@@ -319,18 +266,15 @@ svg .edges line{stroke:#C0A068 !important;stroke-opacity:.65}
 /* ── 竖列名册 ── */
 #list-view{
   display:none;flex:1;overflow-x:auto;overflow-y:auto;
-  background:
-    repeating-linear-gradient(
-      0deg,var(--bg-w) 0px,var(--bg-w) 1px,var(--bg) 1px,var(--bg) 32px
-    );
+  background:repeating-linear-gradient(
+    0deg,var(--bg-w) 0px,var(--bg-w) 1px,var(--bg) 1px,var(--bg) 32px
+  );
   padding:24px 20px;
 }
 #list-view.show{display:flex;align-items:flex-start;gap:0}
 .gen-col{
   display:flex;flex-direction:column;align-items:center;
-  min-width:92px;
-  border-right:1px solid var(--bdr-l);
-  padding:0 10px;
+  min-width:92px;border-right:1px solid var(--bdr-l);padding:0 10px;
 }
 .gen-col:last-child{border-right:none}
 .gen-col-hd{
@@ -344,18 +288,15 @@ svg .edges line{stroke:#C0A068 !important;stroke-opacity:.65}
 .gen-col-hd .ch{font-size:1.6em;font-weight:900;line-height:1.1;letter-spacing:1px}
 .gen-col-hd .ws{font-family:var(--sans);font-size:.62em;opacity:.72;margin-top:4px;letter-spacing:.5px;font-weight:300}
 .name-card{
-  background:rgba(255,253,248,.96);
-  border:1px solid var(--bdr-l);border-radius:var(--r-s);
-  padding:8px 12px;margin-bottom:8px;
-  font-size:.88em;font-weight:700;
+  background:rgba(255,253,248,.96);border:1px solid var(--bdr-l);border-radius:var(--r-s);
+  padding:8px 12px;margin-bottom:8px;font-size:.88em;font-weight:700;
   color:var(--ink-80);cursor:pointer;text-align:center;width:100%;
   box-shadow:var(--sh-xs);
   transition:background var(--dur),box-shadow var(--dur),transform var(--dur),border-color var(--dur),color var(--dur);
   letter-spacing:.5px;
 }
 .name-card:hover{
-  background:#FFF0E5;border-color:var(--red);
-  box-shadow:var(--sh-sm);
+  background:#FFF0E5;border-color:var(--red);box-shadow:var(--sh-sm);
   transform:translateY(-1px);color:var(--red);
 }
 .name-card:active{transform:translateY(0)}
@@ -376,7 +317,6 @@ svg .edges line{stroke:#C0A068 !important;stroke-opacity:.65}
   </div>
   <button class="view-btn" id="view-btn" onclick="toggleView()">竖列名册</button>
 </header>
-
 <div class="poem">如峰田绪远 · 祥开世泽长 · 继祖承兆庆 · 勤宗永康昌</div>
 <div class="info-bar" id="info-bar" onclick="togglePoem()">
   <span class="hl">溯源：</span>明洪武元年（约公元1370年）奉诏迁居开封府繁塔侧云寄桥，后逐渐流居于杞县西寨、柿园万寨、祥符仇楼、杜良等地 &nbsp;｜&nbsp;
@@ -622,17 +562,18 @@ svg .edges line{stroke:#C0A068 !important;stroke-opacity:.65}
     </div>
     <div class="modal-body" id="m-body"></div>
     <div class="modal-ft">
-      <div id="fb-wrap">
-        <div class="fb-label">如有信息有误，请提交修改建议：</div>
-        <form id="fb-form" onsubmit="submitFb(event)">
-          <input type="hidden" id="fb-person" name="人物姓名">
-          <textarea name="修改建议" required rows="3"
-            placeholder="请描述需要修改的内容（如：出生年、子女信息等）…"></textarea>
-          <input type="text" name="你的姓名" placeholder="你的姓名（选填）">
-          <button type="submit" class="btn-submit">提交修改建议</button>
-          <div id="fb-status"></div>
-        </form>
-      </div>
+      
+    <div id="fb-wrap">
+      <div class="fb-label">如有信息有误，请提交修改建议：</div>
+      <form id="fb-form" onsubmit="submitFb(event)">
+        <input type="hidden" id="fb-person" name="人物姓名">
+        <textarea name="修改建议" required rows="3"
+          placeholder="请描述需要修改的内容（如：出生年、子女信息等）…"></textarea>
+        <input type="text" name="你的姓名" placeholder="你的姓名（选填）">
+        <button type="submit" class="btn-submit">提交修改建议</button>
+        <div id="fb-status"></div>
+      </form>
+    </div>
       <button class="btn-close" onclick="closeModal()">关 闭</button>
     </div>
   </div>
@@ -660,6 +601,7 @@ async function submitFb(e) {
   btn.disabled = false; btn.textContent = '提交修改建议';
 }
 
+// ── 竖列名册视图 ──
 const GEN_POEM_MAP = {"田":"15世","绪":"16世","远":"17世","祥":"18世","开":"19世","世":"20世"};
 const GEN_CHAR_ORDER = ["田","绪","远","祥","开","世"];
 
@@ -684,12 +626,16 @@ function buildListView() {
   const list = document.getElementById('list-view');
   if (list.dataset.built) return;
   list.dataset.built = '1';
+
+  // 按辈字分组
   const groups = {};
   GEN_CHAR_ORDER.forEach(ch => groups[ch] = []);
   for (const [name, d] of Object.entries(D)) {
+    // 从世代字段提取辈字，格式：XX世（N世，辈字：X）
     const m = d.gen.match(/辈字：(.)/);
     if (m && groups[m[1]] !== undefined) groups[m[1]].push(name);
   }
+
   let html = '';
   GEN_CHAR_ORDER.forEach(ch => {
     const ws = GEN_POEM_MAP[ch];
@@ -705,6 +651,7 @@ function buildListView() {
   list.innerHTML = html;
 }
 
+// ── 辈份诗对照展开 ──
 function togglePoem() {
   const bar    = document.getElementById('info-bar');
   const detail = document.getElementById('poem-detail');
@@ -712,6 +659,7 @@ function togglePoem() {
   detail.classList.toggle('show');
 }
 
+// ── 详情弹窗 ──
 function showDetail(n) {
   const d = D[n]; if (!d) return;
   document.getElementById('m-name').textContent = d.name;
@@ -729,10 +677,11 @@ function showDetail(n) {
 }
 function closeModal() { document.getElementById('overlay').classList.remove('on'); }
 function bgClose(e) { if (e.target.id === 'overlay') closeModal(); }
-
+// ── 拖拽 & 缩放 ──
 const wrap = document.getElementById('canvas-wrap');
 const g    = document.getElementById('root-g');
 const SVG_W = 4080, SVG_H = 835;
+
 let tx = 0, ty = 0, scale = 1;
 let dragging = false, startX = 0, startY = 0, startTx = 0, startTy = 0;
 let pinchDist = 0, pinchScale = 1, pinchTx = 0, pinchTy = 0;
@@ -740,6 +689,8 @@ let pinchDist = 0, pinchScale = 1, pinchTx = 0, pinchTy = 0;
 function applyTransform() {
   g.setAttribute('transform', `translate(${tx},${ty}) scale(${scale})`);
 }
+
+// 初始居中
 function initView() {
   const cw = wrap.clientWidth, ch = wrap.clientHeight;
   scale = Math.min(cw / SVG_W, ch / SVG_H, 1) * 0.95;
@@ -750,6 +701,7 @@ function initView() {
 initView();
 window.addEventListener('resize', initView);
 
+// 鼠标拖拽
 wrap.addEventListener('mousedown', e => {
   if (e.button !== 0) return;
   dragging = true; startX = e.clientX; startY = e.clientY;
@@ -764,6 +716,7 @@ window.addEventListener('mousemove', e => {
 });
 window.addEventListener('mouseup', () => { dragging = false; wrap.classList.remove('dragging'); });
 
+// 滚轮缩放
 wrap.addEventListener('wheel', e => {
   e.preventDefault();
   const rect = wrap.getBoundingClientRect();
@@ -776,6 +729,7 @@ wrap.addEventListener('wheel', e => {
   applyTransform();
 }, { passive: false });
 
+// 触摸拖拽 & 双指缩放
 function touchDist(t) {
   const dx = t[0].clientX - t[1].clientX, dy = t[0].clientY - t[1].clientY;
   return Math.sqrt(dx*dx + dy*dy);
@@ -784,6 +738,7 @@ function touchMid(t, rect) {
   return [(t[0].clientX + t[1].clientX)/2 - rect.left,
           (t[0].clientY + t[1].clientY)/2 - rect.top];
 }
+
 wrap.addEventListener('touchstart', e => {
   e.preventDefault();
   const ts = e.touches;
@@ -820,6 +775,7 @@ wrap.addEventListener('touchend', e => {
     const touch = e.changedTouches[0];
     const dx = touch.clientX - startX;
     const dy = touch.clientY - startY;
+    // 移动小于 10px 视为点击，手动触发 showDetail
     if (dragging && Math.abs(dx) < 10 && Math.abs(dy) < 10) {
       const el = document.elementFromPoint(touch.clientX, touch.clientY);
       const node = el && el.closest('.node');
